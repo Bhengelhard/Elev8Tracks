@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+  	<link rel="stylesheet" href="/css/home.css" rel="stylesheet">
+  	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src='/js/spotify.js'></script>
+    <script src='/js/google.js'></script>
+    <script src='/js/home.js'></script>
+    <title>Home</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  </head>
+  <script></script>
+  <body>
+    <div id="navbar">
+      <div id="myLists" class="nav">MY LISTS</div>
+      <div id="lists" class="nav">LISTS</div>
+      <div id="title">E  L  E  V  A  T  E</div>
+      <div id="songs" class="nav">SONGS</div>
+      <div id="blog" class="nav">BLOG</div>
+    </div>
+    	<div id="spotify">
+    		<div id="user">
+      		<div id="login">
+      			Log in with Spotify
+      		</div>
+      		<div id="loggedin">
+      			<div id="user">
+      				<image src=""></image>
+      				<div class="name"></div>
+            </div>
+      		</div>
+    		</div>
+    	</div>
+    <div id="content">
+    </div>
+    <div id="listDetails">
+      <div id="listTitle"></div>
+      <div id="prevPlayer"></div>
+      <div id="videoPlayer" data-vid="-"></div>
+      <div id="songList">
+        <div id="songSelector"></div>
+        <div id='buffer'></div>
+      </div>
+    </div>
+</html>
