@@ -45,4 +45,4 @@ app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 
 console.log('Listening on 8888');
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 8888);
