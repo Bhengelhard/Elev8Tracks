@@ -1,17 +1,10 @@
-/**
+function spotify() {
+
+
+        /**
          * Obtains parameters from the hash of the URL
          * @return Object
          */
-        function getHashParams() {
-          console.log('test2');
-          var hashParams = {};
-          var e, r = /([^&;=]+)=?([^&;]*)/g,
-              q = window.location.hash.substring(1);
-          while ( e = r.exec(q)) {
-             hashParams[e[1]] = decodeURIComponent(e[2]);
-          }
-          return hashParams;
-        }
 
         // var userProfileSource = document.getElementById('user-profile-template').innerHTML,
         //     userProfileTemplate = Handlebars.compile(userProfileSource),
@@ -45,28 +38,50 @@
                 },
                 success: function(response) {
                   //userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-                  console.log('logged in');
-                  $('#login').hide();
+                      $.ajax({
+                          url: 'https://api.spotify.com/v1/users/' + response.id + '/playlists',
+                          headers: {
+                            'Authorization': 'Bearer ' + access_token
+                          },
+                          success: function (res) {
+                              //callback(response);
+                              $('#login').hide();
+                              $('#loggedin').show();
+                              $('#loggedin .name').html(response.display_name);
+                              $('#loggedin img').attr('src',String(response.images[0].url));
+                              for(var i = 0; i < res.items.length; i++) {
+                                var playlist = '<div class="playlist">' + res.items[i].name + '</div>';
+                                $('#playlists').append(playlist);
+                                console.log('test');
+                              }
+                              console.log(res);
+                          }
+                      });
+                  console.log(response);
                 }
             });
           } else {
               // render initial screen
               $('#login').show();
+              $('#loggedin').hide();
+              $('#loggedin .name').html('');
           }
 
-          $('#refresh').click(function() {
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              // oauthPlaceholder.innerHTML = oauthTemplate({
-              //   access_token: access_token,
-              //   refresh_token: refresh_token
-              // });
-              console.log('refresh');
-            });
-          }, false);
+          $('#login').click(function() {
+            window.location.href = '/login';
+          });
+
+        }
+
+}
+
+function getHashParams() {
+          console.log('test2');
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
         }
