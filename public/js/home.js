@@ -11,7 +11,6 @@ $(document).ready(function() {
 	spotify();
 
 	$.get('/playlists', function(res) {
-		console.log('tester');
 		loadPlaylists(res);
 	});
 
