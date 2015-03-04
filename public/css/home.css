@@ -329,12 +329,11 @@ body {
 	src: url("../Neou-Bold.otf");
 }
 #playlists {
-	margin-top: 50px;
 	line-height: 0px;
 }
 .playlist {
-	width: 25%;
-	height: 18vw;
+	width: 20%;
+	height: 14vw;
 	min-height: 126px;
 	position: relative;
 	display: inline-block;
@@ -365,11 +364,15 @@ body {
 } .playlist .description:hover {
 	background-color: rgba(0,0,0,0.7);
 } .playlist .description .name {
-	position: relative;
-	top: 20px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
 	line-height: 24px;
-	color: rgba(255,255,255,0.5);
-	font-size: 24px;
+	color: rgba(255,255,255,1);
+	/*background-color: rgba(0,0,0,.7);*/
+	font-size: 18px;
+	padding: 2px;
 	font-family: "Neou-Bold";
 } .playlist .description:hover .name {
 	color: rgba(255,255,255,1);
@@ -392,8 +395,14 @@ body {
 }
 
 #content {
+	position: fixed;
+	top: 50px;
 	background-color: #000;
 	min-width: 700px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow: scroll;
 }
 
 .nav {
@@ -426,4 +435,11 @@ body {
 	float: left;
 } #myLists {
 	float: left;
+}
+
+#search {
+	z-index: 140;
+	position: fixed;
+	top: 100px;
+	left: 50px;
 }

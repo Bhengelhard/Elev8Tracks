@@ -4,6 +4,7 @@ var ratio = 0.5625;
 var prevplayer;
 var currentPlay;
 var currentTime;
+var searchExecute = false;
 
 $(document).ready(function() {
 
@@ -15,6 +16,9 @@ $(document).ready(function() {
 	});
 
 	$.getScript("https://www.youtube.com/iframe_api", function() {
+ 		console.log('success');
+ 	});
+ 	$.getScript("https://apis.google.com/js/client.js?onload=googleApiClientReady", function() {
  		console.log('success');
  	});
  	$(document).on('mouseover','#overlay',function() {
@@ -38,6 +42,29 @@ $(document).ready(function() {
 	$('.nav#lists').addClass('active');
 	$(document).keypress(function(e) {
 		videoHandler(e);
+	});
+
+	// $.get('https://www.googleapis.com/youtube/v3/search?part=snippet&q=odesza&videoCaption=closedCaption&type=video&key=AIzaSyBZE6I-CUBBvPFqrZvUWRnslVc-UB3I9bY', function(res) {
+	// 	console.log(res);
+	// });
+	// function search() {
+	//   var q = $('#query').val();
+	//   var request = gapi.client.youtube.search.list({
+	//     q: q,
+	//     part: 'snippet'
+	//   });
+	//   request.execute(function(response) {
+	//     var str = JSON.stringify(response.result);
+	//     $('#search-container').html('<pre>' + str + '</pre>');
+	//   });
+	// }
+	$('#search').keypress(function(e) {
+		var query = $(e.target).val();
+		var pre = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=';
+		var post = '&videoCaption=closedCaption&type=video&key=AIzaSyBZE6I-CUBBvPFqrZvUWRnslVc-UB3I9bY';
+		// $.get(pre + query + post, function(res) {
+		// 	console.log(res);
+		// });
 	})
 
 });
@@ -69,7 +96,6 @@ function nav(e) {
 function loadSongs(res) {
 	var lists = $('<div id="playlists"></div>');
 	$('#content').empty().append(lists);
-	console.log(res);
 	renderSongs(res);
 }
 function loadPlaylists(res) {
@@ -316,6 +342,18 @@ function onPrevPlayerStateChange(e) {
 function videoHandler(e) {
 	var key = e.keyCode;
 	console.log(key);
+	if($('#search').is(':focus')) {
+		if(key == 13) {
+			var query = $(e.target).val() + String.fromCharCode(key);
+			var pre = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=';
+			var post = '&videoCaption=closedCaption&type=video&key=AIzaSyBZE6I-CUBBvPFqrZvUWRnslVc-UB3I9bY';
+			console.log(query);
+				$.get(pre + query + post, function(res) {
+					console.log(res);
+				});
+		}
+	} else {
+
 	switch(key) {
 		case 32:
 			if($('#videoPlayer').attr('data-vid') != '-') {
@@ -334,7 +372,37 @@ function videoHandler(e) {
 					$('#videoPlayer').addClass('active');
 				}
 			}
+			break;
+		case 102:
+			toggleFullScreen(document.body);
+			break;
 	}
 	e.stopPropagation();
 	e.preventDefault();
+	}
+}
+
+function toggleFullScreen(elem) {
+    // ## The below if statement seems to work better ## if ((document.fullScreenElement && document.fullScreenElement !== null) || (document.msfullscreenElement && document.msfullscreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+        if (elem.requestFullScreen) {
+            elem.requestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullScreen) {
+            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+    } else {
+        if (document.cancelFullScreen) {
+            document.cancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
 }
