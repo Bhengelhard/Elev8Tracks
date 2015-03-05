@@ -113,17 +113,25 @@ function loadBlogs(res) {
 }
 
 function renderSongs(songs) {
+	var ids = [];
 	for(var i = 0; i < songs.length; i++) {
 		var description = $('<div class="description"><span class="name">'+songs[i].name+'</span><span class="glyphicon glyphicon-play-circle"></span></div>');
 		if(String(songs[i].vid) == String($('#videoPlayer').attr('data-vid'))) {
 			description.addClass('playing');
 			console.log('successful');
 		}
-		var thumb = $('<div class="playlist" data-id="'+songs[i].id+'" data-vid="'+songs[i].vid+'"><img src="http://img.youtube.com/vi/'+songs[i].vid+'/0.jpg" class="list song"/></div>');
+		var thumb = $('<div id="s'+i+'" class="playlist" data-id="'+songs[i].id+'" data-vid="'+songs[i].vid+'"><img src="http://img.youtube.com/vi/'+songs[i].vid+'/0.jpg" class="list song"/></div>');
 		//var list = $('<div data-id="'+lists[i].id+'" class="list"></div>');
 		thumb.append(description);
 		$("#playlists").append(thumb);
+		ids.push('#s'+i);
 	}
+	// console.log($(ids[0]));
+	// shuffle(ids);
+	// console.log(ids[0]);
+	// for(var j = 0; j < songs.length; j++) {
+	// 	listAnimate($(ids[j]));
+	// }
 	$('#playlists .playlist').click(playSong);
 }
 
@@ -404,4 +412,17 @@ function toggleFullScreen(elem) {
             document.msExitFullscreen();
         }
     }
+}
+
+function shuffle(o) {
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+function listAnimate(e) {
+	console.log(e);
+	random = Math.ceil(Math.random() * 10)*50;
+	setTimeout(function() {
+		e.removeClass('hidden');
+	},random);
 }

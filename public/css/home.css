@@ -332,12 +332,21 @@ body {
 	line-height: 0px;
 }
 .playlist {
+	position: absolute;
 	width: 20%;
 	height: 14vw;
 	min-height: 126px;
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+.playlist.hidden {
+	opacity: 0;
 }
 .playlist img{
 	display: inline-block;
