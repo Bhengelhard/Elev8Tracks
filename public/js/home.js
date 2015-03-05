@@ -94,16 +94,22 @@ function nav(e) {
 }
 function loadSongs(res) {
 	var lists = $('<div id="playlists"></div>');
-	$('#content').empty().append(lists);
-	renderSongs(res);
+	listRemove();
+	setTimeout(function() {
+		$('#content').empty().append(lists);
+		renderSongs(res);
+	}, 200);
 }
 function loadPlaylists(res) {
 	console.log(res);
 	var lists = $('<div id="playlists"></div>'),
 		overlay = $('<div id="overlay"></div>'),
 		cover = $('<div class="cover play"></div>');
-	$('#content').empty().append(lists).append(overlay).append(cover);
-	renderLists(res);
+	listRemove();
+	setTimeout(function() {
+		$('#content').empty().append(lists).append(overlay).append(cover);
+		renderLists(res);
+	}, 200);
 }
 
 function loadBlogs(res) {
@@ -123,15 +129,12 @@ function renderSongs(songs) {
 		var thumb = $('<div id="s'+i+'" class="playlist" data-id="'+songs[i].id+'" data-vid="'+songs[i].vid+'"><img src="http://img.youtube.com/vi/'+songs[i].vid+'/0.jpg" class="list song"/></div>');
 		//var list = $('<div data-id="'+lists[i].id+'" class="list"></div>');
 		thumb.append(description);
+		thumb.css('left',(i+1%5)*50);
 		$("#playlists").append(thumb);
 		ids.push('#s'+i);
 	}
-	// console.log($(ids[0]));
-	// shuffle(ids);
-	// console.log(ids[0]);
-	// for(var j = 0; j < songs.length; j++) {
-	// 	listAnimate($(ids[j]));
-	// }
+	listAnimate();
+
 	$('#playlists .playlist').click(playSong);
 }
 
@@ -143,8 +146,10 @@ function renderLists(lists) {
 		var thumb = $('<div class="playlist" data-id="'+lists[i].id+'"><img src="http://img.youtube.com/vi/'+id+'/0.jpg" class="list"/></div>');
 		//var list = $('<div data-id="'+lists[i].id+'" class="list"></div>');
 		thumb.append(description);
+		thumb.css('left',(i+1%5)*50);
 		$("#playlists").append(thumb);
 	}
+	listAnimate();
 	$('#playlists .playlist').click(showList);
 }
 
@@ -419,10 +424,27 @@ function shuffle(o) {
     return o;
 };
 
-function listAnimate(e) {
-	console.log(e);
-	random = Math.ceil(Math.random() * 10)*50;
-	setTimeout(function() {
-		e.removeClass('hidden');
-	},random);
+function listAnimate() {
+	$('.playlist').animate({
+		left: 0,
+		opacity: 1
+	},{
+		duration: 600,
+		easing: "easeOutQuint"
+	});
+}
+
+function listRemove() {
+	console.log('called');
+	var i = $('.playlist').length;
+	num = 1;
+	$('.playlist').each(function(index, item) {
+		$(this).animate({
+			left: '+='+Math.floor((num-i)%5)*100,
+			opacity: 0
+		}, {
+			duration: 600,
+			easing: "easeOutQuint"
+		});
+	});
 }
