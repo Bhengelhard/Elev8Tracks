@@ -30,7 +30,6 @@ function spotify() {
             //   access_token: access_token,
             //   refresh_token: refresh_token
             // });
-            console.log('test3');
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
                 headers: {
@@ -45,13 +44,14 @@ function spotify() {
                           },
                           success: function (res) {
                               //callback(response);
-                              $('#login').hide();
-                              $('#loggedin').show();
+                              // $('#login').hide();
+                              // $('#loggedin').show();
+                              //$('#content').append($('<div id="loggedin"><div id="user"><image src=""></image><div class="name"></div></div><div id="spotifyLists"></div></div>'))
                               $('#loggedin .name').html(response.display_name);
                               $('#loggedin img').attr('src',String(response.images[0].url));
                               for(var i = 0; i < res.items.length; i++) {
-                                var playlist = '<div class="playlist">' + res.items[i].name + '</div>';
-                                $('#playlists').append(playlist);
+                                var playlist = '<div class="spotifyList">' + res.items[i].name + '</div>';
+                                $('#spotifyLists').append(playlist);
                                 console.log('test');
                               }
                               console.log(res);
@@ -61,15 +61,15 @@ function spotify() {
                 }
             });
           } else {
-              // render initial screen
-              $('#login').show();
-              $('#loggedin').hide();
-              $('#loggedin .name').html('');
+              // // render initial screen
+              // $('#login').show();
+              // $('#loggedin').hide();
+              // $('#loggedin .name').html('');
           }
 
-          $('#login').click(function() {
-            window.location.href = '/login';
-          });
+          // $('#spotifyLogin span').click(function() {
+          //   window.location.href = '/login';
+          // });
 
         }
 

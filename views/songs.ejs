@@ -1,0 +1,11 @@
+<div id="playlists">
+  <% songs.forEach(function(song) { %>
+  <div id="s<%= song.attributes.id %>" class="block" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
+    <img src="http://img.youtube.com/vi/<%=song.attributes.vid %>/0.jpg" class="list song"/>
+    <div class="description">
+      <span class="name"><%=song.attributes.name %></span>
+      <span class="glyphicon glyphicon-play-circle"></span>
+    </div>
+  </div>
+  <% }); %>
+</div>

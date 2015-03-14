@@ -3,14 +3,22 @@ var Song = require('../models/song');
 var Blog = require('../models/blog');
 
 exports.index = function(req, res) {
-	res.render('index');
+	Playlist.collection().fetch()
+		.then(function(m) {
+			res.render('index', {lists: m});
+		});
 };
 exports.index2 = function(req, res) {
 	res.render('index2');
 };
 
 exports.playlists = function(req, res) {
-	console.log('testing');
+	Playlist.collection().fetch()
+		.then(function(m) {
+			res.render('lists', {lists: m});
+		});
+}
+exports.playlistmodel = function(req, res) {
 	Playlist.collection().fetch()
 		.then(function(m) {
 			res.send(m);
@@ -20,7 +28,7 @@ exports.playlists = function(req, res) {
 exports.songs = function(req, res) {
 	Song.collection().fetch()
 		.then(function(m) {
-			res.send(m);
+			res.render('songs', {songs: m});
 		});
 }
 
@@ -29,4 +37,7 @@ exports.blogs = function(req, res) {
 		.then(function(m) {
 			res.send(m);
 		});
+}
+exports.myLists = function(req, res) {
+	res.render('myLists', {layout: false});
 }

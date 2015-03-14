@@ -17,32 +17,20 @@
   <script></script>
   <body>
     <div id="navbar">
+      <div id="selector"></div>
       <div id="myLists" class="nav">MY LISTS</div>
       <div id="lists" class="nav">LISTS</div>
       <div id="title">E  L  E  V  A  T  E</div>
       <div id="songs" class="nav">SONGS</div>
       <div id="blog" class="nav">BLOG</div>
     </div>
-    	<div id="spotify">
-    		<div id="user">
-      		<div id="login">
-      			Log in with Spotify
-      		</div>
-      		<div id="loggedin">
-      			<div id="user">
-      				<image src=""></image>
-      				<div class="name"></div>
-            </div>
-      		</div>
-    		</div>
-    	</div>
-    <!-- <input type="text" id="search"> -->
     <div id="content">
-      <!-- <div id="backdrop" ></div>
-      <img src="http://img.youtube.com/vi/lG5aSZBAuPs/0.jpg" class="list song"/> -->
+      <% include lists %>
     </div>
     <div id="listDetails">
       <div id="listTitle"></div>
+      <div id="overlay"></div>
+      <div id="cover" class="play"></div>
       <div id="prevPlayer"></div>
       <div id="videoPlayer" data-vid="-"></div>
       <div id="songList">
