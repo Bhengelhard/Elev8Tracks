@@ -192,16 +192,17 @@ function renderLists(lists) {
 
  function showList() {
 	$('#overlay').addClass('active');
+	console.log(playlists);
 	var id = parseInt($(this).attr('data-id'))-1;
- 	var videos = playlists[id].videoIDs.split(',');
-	var vNames = playlists[id].vNames.split(',');
+ 	var videos = playlists[id].videoids.split(',');
+	var vnames = playlists[id].vnames.split(',');
 	var artists = playlists[id].artists.split(',');
 	var title = $('<span>'+playlists[id].name+'</span>');
 	var play = $('<span class="glyphicon glyphicon-play-circle"></span>');
 	$('#listTitle').append(play);
 	$('#listTitle').append(title);
 	for(var i = 0; i < videos.length; i++) {
-		var nameCan = $('<div class="song" data-id="'+videos[i]+'" id="name'+i+'"><span>'+vNames[i]+'</span><span>'+artists[i]+'</span></div>');
+		var nameCan = $('<div class="song" data-id="'+videos[i]+'" id="name'+i+'"><span>'+vnames[i]+'</span><span>'+artists[i]+'</span></div>');
 		$('#songList #buffer').before(nameCan);
 	}
 	$('#cover').removeClass('play');
