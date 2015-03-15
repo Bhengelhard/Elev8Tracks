@@ -297,9 +297,16 @@ body {
 	pointer-events: all;
 }
 #videoPlayer {
-	position: fixed;
+	position: absolute;
 	top: 0%;
-	left: 120%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+}
+#player {
+	position: fixed;
+	top: 100%;
+	left: 0%;
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
@@ -309,9 +316,63 @@ body {
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
-} #videoPlayer.active {
-	left: 0%;
+} #player.active {
+	top: 0%;
 	pointer-events: all;
+} #player .glyphicon-menu-down {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 50px;
+	color: #fff;
+	opacity: .2;
+} #player #controls {
+	position: absolute;
+	top: -40px;
+	right: 0px;
+	width: 200px;
+	height: 40px;
+	background-color: #000;
+	border-top-left-radius: 4px;
+	pointer-events: all;
+	overflow: hidden;
+} #player #controls .glyphicon-menu-up {
+	position: absolute;
+	top: 11px;
+	left: 10px;
+	font-size: 20px;
+	color: #fff;
+	pointer-events: all;
+} #player #controls #playToggle {
+	position: absolute;
+	top: 8px;
+	left: 40px;
+	font-size: 20px;
+	color: #fff;
+	pointer-events: all;
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+} #player #controls #playToggle.pause {
+	top: -40px;
+} #player #controls .glyphicon-play {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+} #player #controls .glyphicon-pause {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+} #controls #playingName {
+	position: absolute;
+	top: 10px;
+	left: 70px;
+	width: 120px;
+	color: #fff;
+	opacity: 1;
+	overflow: hidden;
 }
 
 #navbar {
@@ -383,8 +444,8 @@ body {
 	background-color: rgba(0,0,0,0.7);
 } .block .description .name {
 	position: absolute;
-	bottom: 0px;
-	left: 0px;
+	top: 5px;
+	left: 5px;
 	width: 100%;
 	line-height: 24px;
 	color: rgba(255,255,255,1);
@@ -485,4 +546,32 @@ body {
 	left: 0px;
 	width: 100%;
 	z-index: 99;
+}
+
+#blogs {
+	background-color: #fff;
+	position: fixed;
+	top: 50px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow: scroll;
+}
+.post {
+	position: relative;
+	width: 100%;
+}
+.post .block {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 320px;
+	height: 180px;
+	opacity: 1;
+}
+.post .blog {
+	position: absolute;
+	top: 10px;
+	left: 350px;
+	right: 10px;
 }

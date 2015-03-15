@@ -12,7 +12,7 @@
     <script src='/js/jquery.easing.compatibility.js'></script>
     <script src='/js/home.js'></script>
     <title>Home</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   </head>
   <script></script>
   <body>
@@ -32,7 +32,17 @@
       <div id="overlay"></div>
       <div id="cover" class="play"></div>
       <div id="prevPlayer"></div>
-      <div id="videoPlayer" data-vid="-"></div>
+      <div id="player" data-vid="-"><div id="videoPlayer"></div>
+      <span class="glyphicon glyphicon-menu-down"></span>
+      <div id="controls">
+        <span class="glyphicon glyphicon-menu-up"></span>
+        <div id="playToggle">
+          <span class="glyphicon glyphicon-pause"></span>
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+        <div id="playingName"></div>
+      </div>
+      </div>
       <div id="songList">
         <div id="songSelector"></div>
         <div id='buffer'></div>

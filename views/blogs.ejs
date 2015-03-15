@@ -1,0 +1,10 @@
+<div id="blogs">
+  <% blogs.forEach(function(blog) { %>
+  <div class="post">
+    <div class="block" data-vid="<%=blog.attributes.vid %>">
+      <img src="http://img.youtube.com/vi/<%=blog.attributes.vid %>/0.jpg" class="list"/>
+    </div>
+    <div class="blog"><%=blog.attributes.text %></div>
+  </div>
+  <% }); %>
+</div>
