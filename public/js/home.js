@@ -300,6 +300,7 @@ function playList(e) {
 		player.loadVideoById(vid,0,"large").setVolume(100);
 	}
 	$('.song.playing').removeClass('playing');
+	$('#player').addClass('active');
 	video.addClass('playing');
 }
 
@@ -344,18 +345,17 @@ function onPlayerReady(e) {
 function onPlayerStateChange(e) {
 	var type = $('.nav.active').attr('id');
 	if (e.target.getPlayerState() == 1) {
-		switch(type) {
-			case 'lists':
-				// var video = $('.song.playing');
-				// var height = video.css('height');
-				// var pos_y = video.position().top + $('#songList').scrollTop();
-				// $('#songList #songSelector').css('top',pos_y).css('height',height);
-		    	$('#cover').addClass('play');
-		    	$('#player').addClass('active');
-		    	break;
-		    case 'songs':
-		    	break;
-		}
+		// switch(type) {
+		// 	case 'lists':
+		// 		// var video = $('.song.playing');
+		// 		// var height = video.css('height');
+		// 		// var pos_y = video.position().top + $('#songList').scrollTop();
+		// 		// $('#songList #songSelector').css('top',pos_y).css('height',height);
+		//     	$('#cover').addClass('play');
+		//     	break;
+		//     case 'songs':
+		//     	break;
+		// }
 		$('#videoPlayer').addClass('playing');
 		$('#playToggle').addClass('play');
     } else if (e.target.getPlayerState() == 2) {
