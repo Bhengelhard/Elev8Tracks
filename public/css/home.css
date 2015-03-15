@@ -330,7 +330,7 @@ body {
 	position: absolute;
 	top: -40px;
 	right: 0px;
-	width: 200px;
+	width: 250px;
 	height: 40px;
 	background-color: #000;
 	border-top-left-radius: 4px;
@@ -342,20 +342,18 @@ body {
 	left: 10px;
 	font-size: 20px;
 	color: #fff;
-	pointer-events: all;
 } #player #controls #playToggle {
 	position: absolute;
 	top: 8px;
 	left: 40px;
 	font-size: 20px;
 	color: #fff;
-	pointer-events: all;
 	-webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
-} #player #controls #playToggle.pause {
+} #player #controls #playToggle.play {
 	top: -40px;
 } #player #controls .glyphicon-play {
 	position: absolute;
@@ -370,6 +368,7 @@ body {
 	top: 10px;
 	left: 70px;
 	width: 120px;
+	height: 20px;
 	color: #fff;
 	opacity: 1;
 	overflow: hidden;

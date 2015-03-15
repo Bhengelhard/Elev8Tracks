@@ -238,7 +238,7 @@ function renderLists(lists) {
 
 function playSong(e) {
 	var vid = $(e.target).closest('.block').attr('data-vid');
-	var name = $(e.target).closest('.block').find('.description .name');
+	var name = $(e.target).closest('.block').find('.description .name').text();
 	$('#controls #playingName').html(name);
 	if($(e.target).closest('.block').find('.description').hasClass('playing')) {
 		$('#player').addClass('active').attr('data-vid',vid);
@@ -346,10 +346,10 @@ function onPlayerStateChange(e) {
 	if (e.target.getPlayerState() == 1) {
 		switch(type) {
 			case 'lists':
-				var video = $('.song.playing');
-				var height = video.css('height');
-				var pos_y = video.position().top + $('#songList').scrollTop();
-				$('#songList #songSelector').css('top',pos_y).css('height',height);
+				// var video = $('.song.playing');
+				// var height = video.css('height');
+				// var pos_y = video.position().top + $('#songList').scrollTop();
+				// $('#songList #songSelector').css('top',pos_y).css('height',height);
 		    	$('#cover').addClass('play');
 		    	$('#player').addClass('active');
 		    	break;
@@ -357,7 +357,7 @@ function onPlayerStateChange(e) {
 		    	break;
 		}
 		$('#videoPlayer').addClass('playing');
-		$('#playToggle').addClass('pause');
+		$('#playToggle').addClass('play');
     } else if (e.target.getPlayerState() == 2) {
     	console.log(type);
     	switch(type) {
@@ -373,19 +373,17 @@ function onPlayerStateChange(e) {
 
 		    		} else {
 		    			$('#player').removeClass('active');
-		    			$('#playToggle').removeClass('pause');
 		    		}
 		    	} else {
 		    		$('#videoPlayer').removeClass('playing');
-		    		$('#playToggle').removeClass('pause');
 		    		break;
 		    	}
 		    	break;
 		    case 'songs':
 		    	$('#videoPlayer').removeClass('playing');
-		    	$('#playToggle').removeClass('pause');
 		    	break;
     	}
+    	$('#playToggle').removeClass('play');
     }
 }
 
