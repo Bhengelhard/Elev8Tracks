@@ -1,4 +1,4 @@
-<div id="playlists">
+<div id="videos">
   <% songs.forEach(function(song) { %>
   <div id="s<%= song.attributes.id %>" class="block" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
     <img src="http://img.youtube.com/vi/<%=song.attributes.vid %>/0.jpg" class="list song"/>
@@ -10,3 +10,4 @@
   </div>
   <% }); %>
 </div>
+<input type="text" id="videoSearch">

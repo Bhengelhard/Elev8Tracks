@@ -41,3 +41,19 @@ exports.blogs = function(req, res) {
 exports.myLists = function(req, res) {
 	res.render('myLists', {layout: false});
 }
+
+exports.storeSong = function(req, res) {
+	var id = req.params.data.split('&')[0];
+	var name = req.params.data.split('&')[1];
+	var artist = req.params.data.split('&')[2];
+	new Song({vid: id}).fetch({require: true})
+		.then(function(m) {
+			m.save({vid: id, name: name, artist: artist},{patch: true});
+			console.log(m);
+			res.send(200, {});
+		}).catch(function(e) {
+			new Song().save({vid: id, name: name, artist: artist},{patch: true});
+			console.log('not found');
+			res.send(400,{});
+		})
+}

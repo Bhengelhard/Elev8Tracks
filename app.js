@@ -39,6 +39,8 @@ app.get('/blogs', routes.blogs);
 app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
+app.post('/storeSong/:data', routes.storeSong);
+
 var stateKey = 'spotify_auth_state';
 
 var spotify = require('./controllers/spotifyC.js');

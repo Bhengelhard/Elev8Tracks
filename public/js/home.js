@@ -103,6 +103,9 @@ $(document).ready(function() {
     	if($('#player').attr('data-vid') != '-')
     		$('#player').addClass('active');
     });
+    $(document).on("click","#inputSubmit",function() {
+    	insertSong();
+    })
 });
 
 function nav(e) {
@@ -117,7 +120,7 @@ function nav(e) {
 			$.get('/songs', function(res) {
 				$('#content').html(res);
 				$('.block').click(playSong);
-				listAnimate();
+				animateBlocks(res);
 			});
 			break;
 		case 'lists':
@@ -126,7 +129,7 @@ function nav(e) {
 				$.get('/playlistmodel', function(m) {
 					playlists = m;
 					$('.block').click(showList);
-					listAnimate();
+					animateBlocks(res);
 				})
 			});
 			break;
@@ -432,9 +435,11 @@ function videoHandler(e) {
 		case 102:
 			toggleFullScreen(document.body);
 			break;
+		default:
+			var text = $('#videoSearch').focus();
 	}
-	e.stopPropagation();
-	e.preventDefault();
+	// e.stopPropagation();
+	// e.preventDefault();
 	// }
 }
 
@@ -468,14 +473,15 @@ function shuffle(o) {
     return o;
 };
 
-function listAnimate() {
-	$('.block').animate({
-		//left: 0,
-		opacity: 1
-	},{
-		duration: 600,
-		easing: "easeOutQuint"
-	});
+function animateBlocks(res) {
+	//console.log();
+	// $('.block').animate({
+	// 	//left: 0,
+	// 	opacity: 1
+	// },{
+	// 	duration: 600,
+	// 	easing: "easeOutQuint"
+	// });
 }
 
 function listRemove(nav) {
@@ -504,4 +510,20 @@ function listRemove(nav) {
 			easing: "easeOutQuint"
 		});
 	});
+}
+
+function insertSong() {
+	if($('#inputPassword').val() == 'gogetthem') {
+		var id = $("#url").val().split("v=")[1];
+		if(id.indexOf('&') > -1)
+			id = id.split('&')[0];
+		var data = id + '&' + $('#inputName').val() + '&' + $('#inputArtist').val();
+		$.post("/storeSong/"+data, function() {
+			console.log('back');
+			$('#songInput').val('');
+		});
+	} else {
+		alert('incorrect password');
+		$('#inputPassword').val('');
+	}
 }
