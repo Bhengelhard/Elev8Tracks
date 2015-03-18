@@ -520,7 +520,7 @@ function insertSong() {
 		var data = id + '&' + $('#inputName').val() + '&' + $('#inputArtist').val();
 		$.post("/storeSong/"+data, function() {
 			console.log('back');
-			$('#songInput').val('');
+			$('#songInput input').val('');
 		});
 	} else {
 		alert('incorrect password');

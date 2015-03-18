@@ -53,7 +53,6 @@ exports.storeSong = function(req, res) {
 			res.send(200, {});
 		}).catch(function(e) {
 			new Song().save({vid: id, name: name, artist: artist},{patch: true});
-			console.log('not found');
-			res.send(400,{});
+			res.send(200,{});
 		})
 }

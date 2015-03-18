@@ -687,6 +687,8 @@ body {
 	font-family: "Neou-Thin"
 	font-size: 30px;
 	padding: 10px;
+} #inputSubmit:active {
+	background-color: #2190FF;
 } #inputPassword {
 	position: absolute;
 	top: 400px;
