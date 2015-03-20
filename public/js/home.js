@@ -105,6 +105,9 @@ $(document).ready(function() {
     });
     $(document).on("click","#inputSubmit",function() {
     	insertSong();
+    });
+    $(document).on("click","#blogSubmit",function() {
+    	insertblog();
     })
 });
 
@@ -521,6 +524,25 @@ function insertSong() {
 		$.post("/storeSong/"+data, function() {
 			console.log('back');
 			$('#songInput input').val('');
+		});
+	} else {
+		alert('incorrect password');
+		$('#inputPassword').val('');
+	}
+}
+
+function insertblog() {
+	if($('#inputPassword').val() == 'gogetthem') {
+		var id = $("#blogurl").val().split("v=")[1];
+		if(id.indexOf('&') > -1)
+			id = id.split('&')[0];
+		var dt = new Date($.now());
+		var stamp = dt.getFullYear() + '-' + String(dt.getMonth()+1) + '-' + dt.getDate() +' '+ dt.getHours() + ':' + dt.getMinutes() +':'+ dt.getSeconds();
+		console.log(stamp);
+		var data = id + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + $('#inputLinks').val();
+		$.post("/storeBlog/"+data, function() {
+			console.log('back');
+			$('#blogInput input').val('');
 		});
 	} else {
 		alert('incorrect password');

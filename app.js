@@ -40,6 +40,7 @@ app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
 app.post('/storeSong/:data', routes.storeSong);
+app.post('/storeBlog/:data', routes.storeBlog);
 
 var stateKey = 'spotify_auth_state';
 

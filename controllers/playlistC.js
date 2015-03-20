@@ -56,3 +56,19 @@ exports.storeSong = function(req, res) {
 			res.send(200,{});
 		})
 }
+
+exports.storeBlog = function(req, res) {
+	var id = req.params.data.split(']&[')[0];
+	var text = req.params.data.split(']&[')[1];
+	var date = req.params.data.split(']&[')[2];
+	var links = req.params.data.split(']&[')[3];
+	new Blog({vid: id}).fetch({require: true})
+		.then(function(m) {
+			m.save({vid: id, text: text, date: date, links: links},{patch: true});
+			console.log(m);
+			res.send(200, {});
+		}).catch(function(e) {
+			new Blog().save({vid: id, text: text, date: date, links: links},{patch: true});
+			res.send(200,{});
+		})
+}
