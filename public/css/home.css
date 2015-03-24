@@ -427,7 +427,7 @@ body {
 	line-height: 0px;
 	margin-top: 50px;
 }
-.block {
+#videos .block, #playlists .block {
 	box-sizing:border-box;
   	-moz-box-sizing:border-box;
   	-webkit-box-sizing:border-box;
@@ -600,7 +600,7 @@ body {
 }
 
 #blogs {
-	background-color: #fff;
+	background-color: #ddd;
 	position: fixed;
 	top: 50px;
 	left: 0px;
@@ -610,21 +610,72 @@ body {
 }
 .post {
 	position: relative;
-	width: 100%;
+	width: 60%;
+	min-width: 420px;
+	background-color: #fff;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	-webkit-box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
+	-moz-box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
+	box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
 }
 .post .block {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	width: 320px;
-	height: 180px;
+	position: relative;
+	width: 100%;
+	height: 33vw;
+	min-height: 236.25px;
+	margin-bottom: 10px;
 	opacity: 1;
+	border: none;
 }
 .post .blog {
-	position: absolute;
-	top: 10px;
-	left: 350px;
-	right: 10px;
+	position: relative;
+	width: 100%;
+	padding: 10px;
+}
+.post .block img {
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+} .post .block .glyphicon {
+	font-size: 50px;
+	left: 50%;
+	margin-left: -20px;
+	top: 50%;
+	margin-top: -20px;
+	z-index: 1000;
+  	color: #fff;
+  	opacity: 0;
+  	-webkit-transition: opacity .2s ease;
+    -moz-transition: opacity .2s ease;
+    -ms-transition: opacity .2s ease;
+    -o-transition: opacity .2s ease;
+    transition: opacity .2s ease;
+} .post .block:hover .glyphicon{
+	opacity: 1;
+} .post .block:active .glyphicon {
+	color: #FF4400;
+}
+.post .blogName {
+	font-size: 45px;
+  	font-weight: 900;
+  	padding-left: 10px;
+}
+.post .blogArtist {
+	font-style: italic;
+	padding-left: 10px;
+}
+.post .artistLink, .post .directorLink {
+	margin: 10px 0px 15px 15px;
+	color: #FF4400;
+	border: 1px solid #FF4400;
+	display: inline-block;
+	padding: 4px;
+} .post .artistLink:hover, .post .directorLink:hover {
+	background-color: #FF4400;
+	color: #fff;
 }
 
 #videoSearch {
@@ -703,30 +754,16 @@ body {
 	left: 0px;
 	width: 100%;
 	height: 100%;
-} #inputText {
-	position: absolute;
-	top: 50px;
+} #blogurl, #inputText, #inputBlogName, #inputBlogArtist, #inputBlogDirector, #inputArtistLink, #inputDirectorLink {
+	position: relative;
 	left: 50%;
 	width: 500px;
 	height: 30px;
 	margin-left: -250px;
-} #blogurl {
-	position: absolute;
-	top: 0px;
-	left: 50%;
-	width: 500px;
-	height: 30px;
-	margin-left: -250px;
-} #inputLinks {
-	position: absolute;
-	top: 100px;
-	left: 50%;
-	width: 500px;
-	height: 30px;
-	margin-left: -250px;
+	margin-bottom: 20px;
+	display: block;
 } #blogSubmit {
-	position: absolute;
-	top: 150px;
+	position: relative;
 	left: 50%;
 	width: 100px;
 	margin-left: -50px;
@@ -738,4 +775,17 @@ body {
 	padding: 10px;
 } #blogSubmit:active {
 	background-color: #2190FF;
+}
+.remove {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	width: 20px;
+	height: 20px;
+	background-color: #FF4400;
+	text-align: center;
+	padding-top: 10px;
+	pointer-events: all;
+} .remove.active {
+	background-color: #0077FF;
 }

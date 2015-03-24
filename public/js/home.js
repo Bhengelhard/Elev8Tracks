@@ -41,31 +41,8 @@ $(document).ready(function() {
 	});
 	$('.nav#lists').addClass('active');
 	$('#navbar #selector').css('left', '17.5%');
-	$(document).keypress(function(e) {
+	$('html').keyup(function(e) {
 		videoHandler(e);
-	});
-
-	// $.get('https://www.googleapis.com/youtube/v3/search?part=snippet&q=odesza&videoCaption=closedCaption&type=video&key=AIzaSyBZE6I-CUBBvPFqrZvUWRnslVc-UB3I9bY', function(res) {
-	// 	console.log(res);
-	// });
-	// function search() {
-	//   var q = $('#query').val();
-	//   var request = gapi.client.youtube.search.list({
-	//     q: q,
-	//     part: 'snippet'
-	//   });
-	//   request.execute(function(response) {
-	//     var str = JSON.stringify(response.result);
-	//     $('#search-container').html('<pre>' + str + '</pre>');
-	//   });
-	// }
-	$('#search').keypress(function(e) {
-		var query = $(e.target).val();
-		var pre = 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=';
-		var post = '&videoCaption=closedCaption&type=video&key=AIzaSyBZE6I-CUBBvPFqrZvUWRnslVc-UB3I9bY';
-		// $.get(pre + query + post, function(res) {
-		// 	console.log(res);
-		// });
 	});
 
 	if($('.block').length > 0) {
@@ -80,17 +57,6 @@ $(document).ready(function() {
 	$('#player .glyphicon-menu-down').click(function() {
 		$('#player').removeClass('active');
 	});
-
-	// $('#player #videoPlayer').mousemove(function() {
- //    if (timer) {
- //        clearTimeout(timer);
- //        timer = 0;
- //    }
- //    console.log('hey');
- //    $('#player .glyphicon').fadeIn();
- //    timer = setTimeout(function() {
- //        $('#player .glyphicon').fadeOut();
- //    }, 3000);
 
     $('#controls .glyphicon-play').click(function() {
     	player.playVideo();
@@ -108,7 +74,19 @@ $(document).ready(function() {
     });
     $(document).on("click","#blogSubmit",function() {
     	insertblog();
-    })
+    });
+    $(document).on("click",".remove",function(event) {
+    	event.stopPropagation();
+		event.preventDefault();
+    	removeBlock(event);
+    });
+    $(document).on("keydown",function(e) {
+    	if(e.keyCode == 8 && !$(e.target).is("input, textarea")) {
+    		e.stopPropagation();
+			e.preventDefault();
+    	}
+    	$('#videoSearch').focus();
+    });
 });
 
 function nav(e) {
@@ -122,8 +100,8 @@ function nav(e) {
 		case 'songs':
 			$.get('/songs', function(res) {
 				$('#content').html(res);
+				$('#content').append($('<input type="text" id="videoSearch">'));
 				$('.block').click(playSong);
-				animateBlocks(res);
 			});
 			break;
 		case 'lists':
@@ -132,7 +110,6 @@ function nav(e) {
 				$.get('/playlistmodel', function(m) {
 					playlists = m;
 					$('.block').click(showList);
-					animateBlocks(res);
 				})
 			});
 			break;
@@ -402,6 +379,7 @@ function onPrevPlayerStateChange(e) {
 
 function videoHandler(e) {
 	var key = e.keyCode;
+	console.log(key);
 	// if($('#search').is(':focus')) {
 	// 	if(key == 13) {
 	// 		var query = $(e.target).val() + String.fromCharCode(key);
@@ -439,10 +417,11 @@ function videoHandler(e) {
 			toggleFullScreen(document.body);
 			break;
 		default:
-			var text = $('#videoSearch').focus();
+			searchLock();
+			break;
 	}
-	// e.stopPropagation();
-	// e.preventDefault();
+	e.stopPropagation();
+	e.preventDefault();
 	// }
 }
 
@@ -476,15 +455,41 @@ function shuffle(o) {
     return o;
 };
 
-function animateBlocks(res) {
-	//console.log();
-	// $('.block').animate({
-	// 	//left: 0,
-	// 	opacity: 1
-	// },{
-	// 	duration: 600,
-	// 	easing: "easeOutQuint"
-	// });
+function animateBlockExit() {
+	$('#videos').remove()
+	// var rows = Math.ceil($('.block').length/5);
+	// var timeout = 0;
+	// var start = 0;
+	// var end = 5;
+	// console.log(rows);
+	// for(var i = 0; i < 5; i++) {
+	
+	// 		animateBlockRow($('.block').slice(start, end));
+
+	// 	timeout += 50;
+	// 	start += 5;
+	// 	end += 5;
+	// }
+	// setTimeout(function() {
+	// 	console.log($('.block').slice(5));
+	// 	$('.block').remove();
+	// },400);
+}
+
+function animateBlockRow(bk) {
+	var timeout = 0;
+	// bk.eq(0).animate({
+	// 	left: '-=50px',
+	// 	opacity: '0'
+	// },200);
+	for(var i = 0; i < bk.length; i++) {
+			bk.eq(i).animate({
+				left: '-=50px',
+				opacity: '0'
+			},200, function() {
+				bk.eq(i).remove();
+			});
+	}
 }
 
 function listRemove(nav) {
@@ -538,8 +543,11 @@ function insertblog() {
 			id = id.split('&')[0];
 		var dt = new Date($.now());
 		var stamp = dt.getFullYear() + '-' + String(dt.getMonth()+1) + '-' + dt.getDate() +' '+ dt.getHours() + ':' + dt.getMinutes() +':'+ dt.getSeconds();
-		console.log(stamp);
-		var data = id + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + $('#inputLinks').val();
+		var finder = '/';
+		re = new RegExp(finder, "g");
+		var al = $('#inputArtistLink').val().replace(re, '^^');
+		var dl = $('#inputDirectorLink').val().replace(re, '^^');
+		var data = id + ']&[' + $('#inputBlogName').val() + ']&[' + $('#inputBlogArtist').val() + ']&[' + $('#inputBlogDirector').val() + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + al + ']&[' + dl;
 		$.post("/storeBlog/"+data, function() {
 			console.log('back');
 			$('#blogInput input').val('');
@@ -548,4 +556,57 @@ function insertblog() {
 		alert('incorrect password');
 		$('#inputPassword').val('');
 	}
+}
+
+function loadBlogs() {
+	$('#blogs img').each(function() {
+		var img = new Image();
+		img.src = $(this).attr('src');
+		console.log($(this).attr('src'));
+		 console.log(img.naturalWidth);
+		if (typeof img.naturalWidth !== "undefined" && img.naturalWidth === 0) {
+	        console.log('no image');
+	    }
+	});
+}
+
+function replaceImg(e) {
+	var vid = $(e.target).closest('.block').attr('data-vid');
+
+	$(e.target).attr('src', "http://img.youtube.com/vi/"+vid+"/maxresdefault.jpg");
+}
+
+function removeBlock(e) {
+	if($(e.target).attr('data-click') == 0) {
+		$(e.target).attr('data-click',1);
+		$(e.target).addClass('active');
+	} else {
+		var data = $(e.target).closest('.block').attr('data-vid');
+		$.post('/removeBlock/'+data, function() {
+			$(e.target).closest('.block').remove();
+		})
+	}
+}
+
+var lock = 0;
+function searchLock() {
+	lock++;
+	lock = lock%100;
+	var key = lock;
+	setTimeout(function() {
+		if(key == lock) {
+			searchDB();
+		}
+	},500);
+}
+
+function searchDB() {
+	var sval = $('#videoSearch').val();
+	if(!sval)
+		sval = '*';
+	animateBlockExit();
+	$.post('/videoSearch/'+sval, function(res) {
+		$('#content').append(res);
+		$('.block').click(playSong);
+	});
 }

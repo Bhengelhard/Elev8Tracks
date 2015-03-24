@@ -2,9 +2,19 @@
   <% blogs.forEach(function(blog) { %>
   <div class="post">
     <div class="block" data-vid="<%=blog.attributes.vid %>">
-      <img src="http://img.youtube.com/vi/<%=blog.attributes.vid %>/0.jpg" class="list"/>
+      <img src="/images/<%=blog.attributes.vid%>.png" class="list" onerror="replaceImg(event)"/>
+      <span class="glyphicon glyphicon-play"></span>
     </div>
+    <div class="blogName"><%=blog.attributes.name %></div>
+    <div class="blogArtist"><%=blog.attributes.artist %></div>
     <div class="blog"><%=blog.attributes.text %></div>
+    <% if(blog.attributes.artist && blog.attributes.artistLink) { %>
+      <div class="artistLink" onclick="window.open('<%=blog.attributes.artistLink %>','artistpage');"><%=blog.attributes.artist %></div>
+    <% } %>
+    <% if(blog.attributes.director && blog.attributes.directorLink) { %>
+      <div class="directorLink" onclick="window.open('<%=blog.attributes.directorLink %>','directorpage');"><%=blog.attributes.director %></div>
+    <% } %>
   </div>
   <% }); %>
 </div>
+<script> loadBlogs() </script>
