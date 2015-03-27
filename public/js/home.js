@@ -220,6 +220,10 @@ function renderLists(lists) {
 }
 
 function playSong(e) {
+	$('.hidePlayer').addClass('active');
+	setTimeout(function() {
+		$('.hidePlayer').removeClass('active');
+	},700);
 	var vid = $(e.target).closest('.block').attr('data-vid');
 	var name = $(e.target).closest('.block').find('.description .name').text();
 	$('#controls #playingName').html(name);
@@ -417,7 +421,8 @@ function videoHandler(e) {
 			toggleFullScreen(document.body);
 			break;
 		default:
-			searchLock();
+			if($('#videoSearch').length > 0)
+				searchLock();
 			break;
 	}
 	e.stopPropagation();
@@ -470,10 +475,24 @@ function animateBlockExit() {
 	// 	start += 5;
 	// 	end += 5;
 	// }
+	// animateBlockRow($('.block').slice(0, 5));
 	// setTimeout(function() {
 	// 	console.log($('.block').slice(5));
 	// 	$('.block').remove();
 	// },400);
+}
+
+function animateBlocksRow(bk, num) {
+	if(bk.eq(num)) {
+		bk.eq(num).animate({
+			left: '-=50px',
+			opacity: '0'
+		},200, function() {
+			animateBlocksRow(bk, num++);
+		});
+	} else {
+		return;
+	}
 }
 
 function animateBlockRow(bk) {
