@@ -417,7 +417,7 @@ function videoHandler(e) {
 				}
 			}
 			break;
-		case 102:
+		case 18:
 			toggleFullScreen(document.body);
 			break;
 		default:
