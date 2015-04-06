@@ -35,6 +35,7 @@ exports.songs = function(req, res) {
 exports.blogs = function(req, res) {
 	Blog.collection().fetch()
 		.then(function(m) {
+			console.log(m);
 			res.render('blogs', {blogs: m});
 		});
 }
