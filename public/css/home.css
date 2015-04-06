@@ -230,15 +230,18 @@ body {
 #spotifyLogin {
 	position: relative;
 	width: 100%;
-	height: 50px;
 	padding: 10px;
 	background-color: #000;
 	color: #fff;
 	z-index: 100;
 	opacity: 1;
 	text-align: center;
-} #spotifyLogin span {
+} #spotifyLogin div {
+	position: absolute;
 	padding: 7px;
+	width: 250px;
+	left: 50%;
+	margin-left: -125px;
 	background-color: #81B71A;
 	border-radius: 3px;
 	font-size: 20px;
@@ -267,6 +270,8 @@ body {
 	position: absolute;
 	width: 80%;
 	left: 10%;
+} #spotifyData {
+	color: #fff;
 }
 
 #theaterPause {
@@ -753,13 +758,7 @@ body {
 	padding: 10px;
 } #inputSubmit:active {
 	background-color: #2190FF;
-} #inputPassword {
-	position: relative;
-	left: 50%;
-	width: 200px;
-	margin-left: -100px;
-	text-align: center;
-}
+} 
 #blogInput {
 	position: relative;
 	width: 100%;
@@ -798,4 +797,48 @@ body {
 	pointer-events: all;
 } .remove.active {
 	background-color: #0077FF;
+}
+
+#constructionBlock {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	z-index: 2000;
+} #constructionBlock .glyphicon {
+	font-size: 50px;
+	color: #aaa;
+	position: absolute;
+	left: 50%;
+	margin-left: -25px;
+	top: 20%;
+} #inputPassword {
+	position: absolute;
+	left: 50%;
+	width: 200px;
+	top: 20%;
+	margin-left: -100px;
+	margin-top: 100px;
+	text-align: center;
+	background-color: #000;
+	border-top: 2px solid #303030;
+	border-bottom: 2px solid #303030;
+	color: #fff;
+	font-size: 18px;
+	border-left: none;
+	border-right: none;
+	font-family: "Neou-Thin";
+	padding-top: 5px;
+} #constructionBlock #constructionTitle {
+	position: absolute;
+	left: 50%;
+	width: 500px;
+	text-align: center;
+	top: 20%;
+	margin-top:70px;
+	margin-left: -250px;
+	color: #fff;
+	font-family: "Neou-Thin";
 }

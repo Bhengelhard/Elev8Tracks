@@ -1,3 +1,9 @@
+var access_token;
+var userid;
+var spotifyUser = [];
+var spotifySongs = [];
+var spotifyArtists = [];
+
 function spotify() {
 
 
@@ -16,48 +22,23 @@ function spotify() {
 
         var params = getHashParams();
 
-        var access_token = params.access_token,
-            refresh_token = params.refresh_token,
+        access_token = params.access_token;
+        var refresh_token = params.refresh_token,
             error = params.error;
 
         if (error) {
           alert('There was an error during the authentication');
         } else {
-          console.log('test1');
           if (access_token) {
-            // render oauth info
-            // oauthPlaceholder.innerHTML = oauthTemplate({
-            //   access_token: access_token,
-            //   refresh_token: refresh_token
-            // });
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
                 headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  //userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-                      $.ajax({
-                          url: 'https://api.spotify.com/v1/users/' + response.id + '/playlists',
-                          headers: {
-                            'Authorization': 'Bearer ' + access_token
-                          },
-                          success: function (res) {
-                              //callback(response);
-                              // $('#login').hide();
-                              // $('#loggedin').show();
-                              //$('#content').append($('<div id="loggedin"><div id="user"><image src=""></image><div class="name"></div></div><div id="spotifyLists"></div></div>'))
-                              $('#loggedin .name').html(response.display_name);
-                              $('#loggedin img').attr('src',String(response.images[0].url));
-                              for(var i = 0; i < res.items.length; i++) {
-                                var playlist = '<div class="spotifyList">' + res.items[i].name + '</div>';
-                                $('#spotifyLists').append(playlist);
-                                console.log('test');
-                              }
-                              console.log(res);
-                          }
-                      });
                   console.log(response);
+                  userid = response.id;
+                  getPlaylists();
                 }
             });
           } else {
@@ -67,16 +48,11 @@ function spotify() {
               // $('#loggedin .name').html('');
           }
 
-          // $('#spotifyLogin span').click(function() {
-          //   window.location.href = '/login';
-          // });
-
         }
 
 }
 
 function getHashParams() {
-          console.log('test2');
           var hashParams = {};
           var e, r = /([^&;=]+)=?([^&;]*)/g,
               q = window.location.hash.substring(1);
@@ -85,3 +61,31 @@ function getHashParams() {
           }
           return hashParams;
         }
+
+function getPlaylists() {
+  $.ajax({
+    url: 'https://api.spotify.com/v1/users/' + userid + '/playlists',
+    headers: {
+      'Authorization': 'Bearer ' + access_token
+    },
+    success: function (res) {
+      for(var i = 0; i < res['items'].length; i++) {
+        var listID = res['items'][i].id;
+        $.ajax({
+          url: 'https://api.spotify.com/v1/users/' + userid + '/playlists/' + res['items'][i].id + '/tracks',
+          headers: {
+            'Authorization': 'Bearer ' + access_token
+          },
+          success: function(tracks) {
+            for(var j = 0; j < tracks.items.length; j++) {
+              spotifySongs.push(tracks.items[j].track.name);
+              for(var k = 0; k < tracks.items[j].track.artists.length; k++) {
+                spotifyArtists.push(tracks.items[j].track.artists[k].name);
+              }
+            }
+          }
+        });
+      }
+    }
+  });
+}

@@ -58,27 +58,28 @@ exports.storeSong = function(req, res) {
 }
 
 exports.storeBlog = function(req, res) {
-	var id = req.params.data.split(']&[')[0];
-	var name = req.params.data.split(']&[')[1];
-	var artist = req.params.data.split(']&[')[2];
-	var director = req.params.data.split(']&[')[3];
-	var text = req.params.data.split(']&[')[4];
-	var stamp = req.params.data.split(']&[')[5];
-	var al = req.params.data.split(']&[')[6];
-	var dl = req.params.data.split(']&[')[7];
-	while(al.indexOf('^^') > -1) {
-		al = al.replace('^^','/');
-	}
-	while(dl.indexOf('^^') > -1) {
-		dl = dl.replace('^^','/');
-	}
-	new Blog({vid: id}).fetch({require: true})
+	console.log(req.body.name);
+	// var id = req.params.data.split(']&[')[0];
+	// var name = req.params.data.split(']&[')[1];
+	// var artist = req.params.data.split(']&[')[2];
+	// var director = req.params.data.split(']&[')[3];
+	// var text = req.params.data.split(']&[')[4];
+	// var stamp = req.params.data.split(']&[')[5];
+	// var al = req.params.data.split(']&[')[6];
+	// var dl = req.params.data.split(']&[')[7];
+	// while(al.indexOf('^^') > -1) {
+	// 	al = al.replace('^^','/');
+	// }
+	// while(dl.indexOf('^^') > -1) {
+	// 	dl = dl.replace('^^','/');
+	// }
+	new Blog({vid: req.body.id}).fetch({require: true})
 		.then(function(m) {
-			m.save({vid: id, name: name, artist: artist, director: director, text: text, date: stamp, artistLink: al, directorLink: dl},{patch: true});
+			m.save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
 			console.log(m);
 			res.send(200, {});
 		}).catch(function(e) {
-			new Blog().save({vid: id, name: name, artist: artist, director: director, text: text, date: stamp, artistLink: al, directorLink: dl},{patch: true});
+			new Blog().save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
 			res.send(200,{});
 		})
 }

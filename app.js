@@ -2,6 +2,8 @@ var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
+var bodyParser = require('body-parser');
 
 var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
 var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
@@ -12,7 +14,12 @@ var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());
+app.use(cookieParser());
+app.use(expressSession({secret: '1234567890QWERTY'}));
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+// app.use(express.json());
+// app.use(express.urlencoded());
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -40,7 +47,7 @@ app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
 app.post('/storeSong/:data', routes.storeSong);
-app.post('/storeBlog/:data', routes.storeBlog);
+app.post('/storeBlog', routes.storeBlog);
 app.post('/removeBlock/:data', routes.removeBlock);
 app.post('/videoSearch/:data', routes.videoSearch);
 

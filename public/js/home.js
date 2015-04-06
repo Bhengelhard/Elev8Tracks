@@ -10,6 +10,10 @@ var timer;
 $(document).ready(function() {
 
 	spotify();
+	$(document).on("click","#spotifyLogin div", function() {
+		console.log('redirect');
+        window.location.href = '/login';
+    });
 
 	// $.get('/playlists', function(res) {
 	// 	loadPlaylists(res);
@@ -81,6 +85,16 @@ $(document).ready(function() {
     	removeBlock(event);
     });
     $(document).on("keydown",function(e) {
+    	if($('#inputPassword').length > 0) {
+	    	if(event.keyCode == 13) {
+	    		if($('#inputPassword').val() == "gogetthem") {
+	    			$('#constructionBlock').remove();
+	    		} else {
+					alert('incorrect password');
+					$('#inputPassword').val('');
+				}
+	    	} 
+		}
     	if(e.keyCode == 8 && !$(e.target).is("input, textarea")) {
     		e.stopPropagation();
 			e.preventDefault();
@@ -540,7 +554,6 @@ function listRemove(nav) {
 }
 
 function insertSong() {
-	if($('#inputPassword').val() == 'gogetthem') {
 		var id = $("#url").val().split("v=")[1];
 		if(id.indexOf('&') > -1)
 			id = id.split('&')[0];
@@ -549,14 +562,9 @@ function insertSong() {
 			console.log('back');
 			$('#songInput input').val('');
 		});
-	} else {
-		alert('incorrect password');
-		$('#inputPassword').val('');
-	}
 }
 
 function insertblog() {
-	if($('#inputPassword').val() == 'gogetthem') {
 		var id = $("#blogurl").val().split("v=")[1];
 		if(id.indexOf('&') > -1)
 			id = id.split('&')[0];
@@ -566,15 +574,23 @@ function insertblog() {
 		re = new RegExp(finder, "g");
 		var al = $('#inputArtistLink').val().replace(re, '^^');
 		var dl = $('#inputDirectorLink').val().replace(re, '^^');
-		var data = id + ']&[' + $('#inputBlogName').val() + ']&[' + $('#inputBlogArtist').val() + ']&[' + $('#inputBlogDirector').val() + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + al + ']&[' + dl;
-		$.post("/storeBlog/"+data, function() {
-			console.log('back');
-			$('#blogInput input').val('');
+		//var data = id + ']&[' + $('#inputBlogName').val() + ']&[' + $('#inputBlogArtist').val() + ']&[' + $('#inputBlogDirector').val() + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + al + ']&[' + dl;
+		$.ajax({
+			url: "/storeBlog",
+	        type: "post",
+	        dataType: "json",
+	        data: JSON.stringify({id: id, name: $('#inputBlogName').val(), artist: $('#inputBlogArtist').val(), director: $('#inputBlogDirector').val(), text: $('#inputText').val(), stamp: stamp, al: $('#inputArtistLink').val(), dl: $('#inputDirectorLink').val()}),
+	        contentType: "application/json",
+	        cache: false,
+	        timeout: 5000,
+	        success:function(res) {
+	        	console.log('hey');
+		    }
 		});
-	} else {
-		alert('incorrect password');
-		$('#inputPassword').val('');
-	}
+		// $.post("/storeBlog/"+data, function() {
+		// 	console.log('back');
+		// 	$('#blogInput input').val('');
+		// });
 }
 
 function loadBlogs() {
