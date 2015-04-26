@@ -18,21 +18,27 @@
   <body>
     <div id="navbar">
       <div id="selector"></div>
+      <div id="myListsToggle"><span class="glyphicon glyphicon-menu-right"></span></div>
       <div id="myLists" class="nav">MY LISTS</div>
       <div id="lists" class="nav">LISTS</div>
       <div id="title">E  L  E  V  A  T  E</div>
-      <div id="songs" class="nav">SONGS</div>
+      <div id="songs" class="nav">Search</div>
       <div id="blog" class="nav">BLOG</div>
     </div>
     <div id="content">
       <% include lists %>
     </div>
-    <div id="listDetails">
+    <div id="listDetails" class="hidden">
       <div id="listTitle"></div>
       <div id="overlay"></div>
       <div id="cover" class="play"></div>
       <div id="prevPlayer"></div>
-      <div id="player" data-vid="-"><div id="videoPlayer"></div>
+      <div id="songList">
+        <div id="songSelector"></div>
+        <div id='buffer'></div>
+      </div>
+    </div>
+    <div id="player" data-vid="-"><div id="videoPlayer"></div>
       <div class="hidePlayer"><span class="glyphicon glyphicon-menu-down"></span></div>
       <div id="controls">
         <span class="glyphicon glyphicon-menu-up"></span>
@@ -43,12 +49,8 @@
         <div id="playingName"></div>
         <div id="controlFade"></div>
       </div>
-      </div>
-      <div id="songList">
-        <div id="songSelector"></div>
-        <div id='buffer'></div>
-      </div>
     </div>
+    <div id="userSaveLists"></div>
     <div id="constructionBlock">
       <span class="glyphicon glyphicon-wrench"></span>
       <div id="constructionTitle">The Site is under Construction. Login to Help.</div>

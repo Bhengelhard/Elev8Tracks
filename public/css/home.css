@@ -104,6 +104,28 @@ body {
 	left: -50%;
 } #listTitle span:hover {
 	color:#FF4400;
+} #listEdit {
+	position: absolute;
+    color: #fff;
+    z-index: 130;
+    font-size: 24px;
+    font-weight: 100;
+    top: 40px;
+    right: 50px;
+} #listEdit:hover {
+	color: #ff4400;
+} #listNameEdit {
+  	position: absolute;
+    left: 3%;
+    margin-left: 50px;
+    z-index: 120;
+    font-size: 30px;
+    background-color: transparent;
+    border: none;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    color: #fff;
+    pointer-events: all;
 }
 
 #songList {
@@ -227,26 +249,7 @@ body {
 	background-color: #000;
 }
 
-#spotifyLogin {
-	position: relative;
-	width: 100%;
-	padding: 10px;
-	background-color: #000;
-	color: #fff;
-	z-index: 100;
-	opacity: 1;
-	text-align: center;
-} #spotifyLogin div {
-	position: absolute;
-	padding: 7px;
-	width: 250px;
-	left: 50%;
-	margin-left: -125px;
-	background-color: #81B71A;
-	border-radius: 3px;
-	font-size: 20px;
-	font-family: "Neou-Thin";
-} #spotify .active {
+#spotify .active {
 	left: 0px;
 } #spotify #login {
 	border: none;
@@ -447,10 +450,15 @@ body {
 	line-height: 0px;
 	margin-top: 50px;
 }
-#videos .block, #playlists .block {
+.block {
 	box-sizing:border-box;
   	-moz-box-sizing:border-box;
   	-webkit-box-sizing:border-box;
+  	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
 	width: 20%;
 	height: 14vw;
 	min-height: 126px;
@@ -460,6 +468,8 @@ body {
 	opacity: 1;
 	float: left;
 	border: 1px solid #000;
+	background-color: #222;
+	overflow: hidden;
 }
 .block.hidden {
 	opacity: 0;
@@ -499,7 +509,8 @@ body {
   	-moz-box-shadow:    0px 0px 30px 20px rgba(0,0,0,.5); 
   	box-shadow:         0px 0px 30px 20px rgba(0,0,0,.5); 
 	font-size: 20px;
-	font-family: "Neou-Thin";
+	/*font-family: "Neou-Thin";*/
+	font-weight: 100;
 	-webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
@@ -526,6 +537,8 @@ body {
   	background-color: rgba(0,0,0,0);
 } .block .description:hover .artist {
 	left: 0%;
+} .block .description:hover .saveToList {
+	opacity: 1;
 } .block .description .glyphicon {
 	position: absolute;
 	top: 50%;
@@ -542,6 +555,9 @@ body {
 	color: rgba(255,68,0,1);
 } .block .description.playing .name {
 	color: rgba(255,255,255,1);
+} .block.thin {
+	width: 0px;
+	border: none;
 }
 
 #content {
@@ -841,4 +857,309 @@ body {
 	margin-left: -250px;
 	color: #fff;
 	font-family: "Neou-Thin";
+}
+
+#account {
+	position: relative;
+	width: 100%;
+	text-align: center;
+} #account #spotifyLogin {
+	position: relative;
+	width: 100%;
+	padding: 10px;
+	background-color: #000;
+	color: #fff;
+	z-index: 100;
+	opacity: 1;
+	text-align: center;
+} #account #spotifyLogin div {
+	position: absolute;
+	padding: 3px;
+	width: 250px;
+	left: 50%;
+	margin-left: -125px;
+	background-color: #81B71A;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: 100;
+} #account input {
+	background-color: #000;
+  	border: none;
+  	border-top: 1px solid #555;
+  	border-bottom: 1px solid #555;
+  	font-size: 20px;
+  	text-align: center;
+  	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	margin-top: 10px;
+  	font-weight: 100;
+  	color: #fff;
+} #account #accountLogin, #account #accountSignUp {
+	padding: 3px;
+	width: 100px;
+	left: 50%;
+	margin-left: -50px;
+	background-color: #FF4400;
+	border-radius: 3px;
+	font-size: 14px;
+	font-weight: 100;
+	color: #fff;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	margin-top: 10px;
+}
+#account .hidden {
+	display: none;
+}
+#logout {
+	background-color: #0080FF;
+	position: relative;
+	display: block;
+	top: 20px;
+	left: 50%;
+	margin-left: -37.5px;
+	text-align: center;
+	width:75px;
+	color: #fff;
+	padding: 5px;
+}
+#createListTitle {
+	display: inline-block;
+    position: relative;
+    margin: 5%;
+    padding: 5px;
+    width: 90%;
+    text-align: center;
+    color: #fff;
+    font-weight: 100;
+    cursor: default;
+} #createListName {
+	position: relative;
+    left: 5%;
+    width: 90%;
+    margin-top: 5%;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    font-size: 2vw;
+    color: #fff;
+    padding: 3%;
+    font-weight: 100;
+} #createList {
+	position: absolute;
+    top: 50%;
+    left: 25%;
+    color: #fff;
+    font-size: 7vw;
+    font-weight: 100;
+    width: 50%;
+    height: 40%;
+    text-align: center;
+    background-color: #222;
+    vertical-align: middle;
+    line-height: 60%;
+} #createList:hover {
+	background-color: #444;
+}
+#userLists {
+	overflow: auto;
+}
+.saveToList {
+	-webkit-transition: opacity .2s ease;
+    -moz-transition: opacity .2s ease;
+    -ms-transition: opacity .2s ease;
+    -o-transition: opacity .2s ease;
+    transition: opacity .2s ease;
+	position: absolute;
+    right: 15px;
+    bottom: 25px;
+    font-size: 35px;
+    font-size: 4vw;
+    font-weight: 100;
+    opacity: 0;
+    cursor: default;
+} .saveToList:hover {
+	color: #ff4400;
+}
+#saveLists {
+	position: absolute;
+    width: 20%;
+    max-height: 25vw;
+    background-color: #000;
+    z-index: 110;
+    padding-top:2px;
+    overflow: scroll;
+}
+#saveClose {
+	color: #fff;
+    font-weight: 100;
+    font-size: 30px;
+    font-size: 3vw;
+    position: absolute;
+    right: 10px;
+}
+.saveList {
+	-webkit-transition: left .2s ease;
+    -moz-transition: left .2s ease;
+    -ms-transition: left .2s ease;
+    -o-transition: left .2s ease;
+    transition: left .2s ease;
+	color: #fff;
+    font-size: 20px;
+    font-size: 1.75vw;
+    font-weight: 100;
+    padding: 1% 10% 1% 5%;
+    background-color: none;
+    margin-bottom: 2px;
+    width: 100%;
+    position: relative;
+} .saveList:hover {
+	background-color: #444;
+} .saveList:active {
+	background-color: #ff4400;
+} .saveList.included {
+	background-color: #ff4400;
+}
+
+.checkBox {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	  position: absolute;
+  left: 5%;
+  border: 1px solid #fff;
+  width: 10%;
+  height: 50%;
+  top: 25%;
+} .checkBoxCheck {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 35px;
+  font-size: 3vw;
+  line-height: 45%;
+    background-color: none;
+    opacity:0;
+} .saveList.on .checkBoxCheck {
+	opacity:1;
+} .saveList.on .checkBox {
+	background-color: #ff4400;
+} .saveList.on {
+	background-color: #ff4400;
+}
+#blockDragger {
+	-webkit-transition: border-width .1s ease;
+    -moz-transition: border-width .1s ease;
+    -ms-transition: border-width .1s ease;
+    -o-transition: border-width .1s ease;
+    transition: border-width .1s ease;
+	background-color: #ff4400;
+	opacity:.3;
+	position: absolute;
+	z-index: 1000;
+	border-style: solid;
+	border-color: #ff4400;
+	border-width: 2px;
+	pointer-events: none;
+}
+#userSaveLists {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	position: fixed;
+	top: 50px;
+	left: -20%;
+	width:15%;
+	background-color:#000;
+}
+#myListsToggle {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	position: absolute;
+    left: 2%;
+    top: 15px;
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    line-height: 20px;
+    z-index: 110;
+} #myListsToggle.active {
+	background-color: #ff4400;
+	-ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+}
+.listDelete {
+	position: absolute;
+    bottom: 15%;
+    right: 5%;
+    font-size: 40px;
+    font-weight: 100;
+    color: #fff;
+    opacity: 0;
+    cursor: default;
+} .description:hover .listDelete {
+	opacity: 1;
+} .listDelete:hover {
+	color: #ff4400;
+}
+
+.promptOverlay {
+	  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0,0,0,.7);
+  z-index: 120;
+  } .promptDelete {
+  	position: absolute;
+    width: 300px;
+    height: 150px;
+    background-color: #fff;
+    left: 50%;
+    margin-left: -150px;
+    top: -50%;
+    margin-top: -75px;
+} #promptDeleteText {
+	font-size: 24px;
+  font-weight: 100;
+  text-align: center;
+  margin: 10px;
+} #promptDeleteYes, #promptDeleteNo {
+	position: absolute;
+    font-size: 24px;
+    font-weight: 100;
+    width: 75px;
+    color: #fff;
+    text-align: center;
+} #promptDeleteNo {
+	background-color: #ff4400;
+	right: 40px;
+} #promptDeleteYes {
+	background-color: #0091FF;
+	left: 40px;
+}
+#listDetails {
+	opacity: 1;
+} #listDetails.hidden {
+	opacity: 0;
 }

@@ -6,7 +6,10 @@
       <span class="name"><%=song.attributes.name %></span>
       <span class="artist"><%=song.attributes.artist %></span>
       <span class="glyphicon glyphicon-play-circle"></span>
+      <% if(session.admin == 1) { %>
       <div class="remove" data-click="0">-</div>
+      <% } %>
+
     </div>
   </div>
   <% }); %>

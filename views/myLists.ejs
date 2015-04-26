@@ -1,11 +1,37 @@
-<div id="loggedin">
-  <div id="user">
-    <image src=""></image>
-    <div class="name"></div>
-  </div>
-  <div id="spotifyLists"></div>
+<div id="userLists">
+<% if(lists.attributes) { %>
+	<div id="s<%= lists.attributes.id %>" class="block" data-id="<%=lists.attributes.id %>" data-num="0">
+	  	<% if(lists.attributes.thumbnail) { %>
+	    	<img src="http://img.youtube.com/vi/<%=lists.attributes.thumbnail %>/0.jpg" class="list song"/>
+	    <% } %>
+	    <div class="description">
+	      <span class="name"><%=lists.attributes.name %></span>
+	      <div class="listDelete" onclick="promptListDelete(event)">&#215</div>
+	    </div>
+	</div>
+<% } else {
+	var i = 0;
+	lists.forEach(function(list) { %>
+	  <div id="s<%= list.attributes.id %>" class="block" data-id="<%=list.attributes.id %>" data-num="<%= i %>">
+	  	<% if(list.attributes.thumbnail) { %>
+	    	<img src="http://img.youtube.com/vi/<%=list.attributes.thumbnail %>/0.jpg" class="list song"/>
+	    <% } %>
+	    <div class="description">
+	      <span class="name"><%=list.attributes.name %></span>
+	      <div class="listDelete" onclick="promptListDelete(event)">&#215</div>
+	    </div>
+	  </div>
+	  <% i++; %>
+	  <% });
+	} %>
+<div id="addList" class="block">
+	<input type="text" id="createListName" placeholder="Playlist Name">
+	<div id="createList" onclick="createList()">+</div>
 </div>
-<div id="spotifyLogin"><div>Login to Spotify</div></div>
+</div>
+<div id="logout" onclick="logout()">Logout</div>
+
+<% if(session.admin == 1) { %>
 <div id="songInput">
 <input type="text" id="url" placeholder="URL">
 <input type="text" id="inputName" placeholder="Name">
@@ -22,4 +48,5 @@
 <input type="text" id="inputDirectorLink" placeholder="Director Website URL">
 <div id="blogSubmit">SUBMIT</div>
 </div>
-<div class="spotifyData">asdfasdfasdfasdf</div>
+<% } %>
+<div class="spotifyData"></div>

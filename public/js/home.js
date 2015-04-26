@@ -6,6 +6,7 @@ var currentPlay;
 var currentTime;
 var searchExecute = false;
 var timer;
+var userPlaylists = {};
 
 $(document).ready(function() {
 
@@ -28,18 +29,14 @@ $(document).ready(function() {
  	$(document).on('mouseover','#overlay',function() {
 		$('#songList #songSelector').css('height','0px');
 	});
-	$(document).on('click','#overlay',function() {
-		hideList();
-	});
-	$(document).on('click','.song',function(e) {
-		playList(e);
-	});
+	$(document).on('click','#overlay',hideList);
+	$(document).on('click','.song',playList);
 	$(document).on('mouseover','.song',function(e) {
 		moveSelector(e);
 	});
-	$(document).on('click','#listTitle',function(e) {
-		playList(false);
-	});
+
+	$(document).on('click','#listTitle',playList);
+
 	$('.nav').click(function(e) {
 		nav(e);
 	});
@@ -101,6 +98,11 @@ $(document).ready(function() {
     	}
     	$('#videoSearch').focus();
     });
+
+    $('#myListsToggle').click(function() {
+    	console.log('test');
+    	showUserLists();
+    });
 });
 
 function nav(e) {
@@ -115,7 +117,11 @@ function nav(e) {
 			$.get('/songs', function(res) {
 				$('#content').html(res);
 				$('#content').append($('<input type="text" id="videoSearch">'));
-				$('.block').click(playSong);
+				$('.block').on("mousedown", blockClick);
+			});
+			$.get('/userPlaylists', function(res) {
+				userPlaylists = res;
+				fillUserLists();
 			});
 			break;
 		case 'lists':
@@ -123,6 +129,7 @@ function nav(e) {
 				$('#content').html(res);
 				$.get('/playlistmodel', function(m) {
 					playlists = m;
+
 					$('.block').click(showList);
 				})
 			});
@@ -130,17 +137,22 @@ function nav(e) {
 		case 'blog':
 			$.get('/blogs', function(res) {
 				$('#content').html(res);
-				$('.block').click(playSong);
+				$('.block').on("mousedown", blockClick);
 			});
 			break;
 		case 'myLists':
 			$.get('/myLists', function(res) {
+				console.log(res);
 				$('#content').html(res);
+				$.get('/userPlaylists', function(res) {
+					playlists = res;
+					$('.block').click(showList);
+				});
 			});
 			//loadMyLists();
 			break;
 		}
-	},200)
+	},200);
 }
 function loadSongs(res) {
 	var lists = $('<div id="playlists"></div>');
@@ -215,13 +227,19 @@ function renderLists(lists) {
 }
 
  function showList() {
+ 	if($(this).find('.listDelete').length > 0) {
+ 		$('<div id="listEdit" onclick="enableEdit()">EDIT</div>').appendTo($('#listDetails'));
+ 	}
 	$('#overlay').addClass('active');
+	$('#listDetails').removeClass('hidden');
 	console.log(playlists);
-	var id = parseInt($(this).attr('data-id'))-1;
+	var id = parseInt($(this).attr('data-num'));
  	var videos = playlists[id].videoids.split(',');
+ 	console.log(playlists[id]);
 	var vnames = playlists[id].vnames.split(',');
 	var artists = playlists[id].artists.split(',');
-	var title = $('<span>'+playlists[id].name+'</span>');
+	$('#listDetails').attr('data-listid',playlists[id].id);
+	var title = $('<span class="listName">'+playlists[id].name+'</span>');
 	var play = $('<span class="glyphicon glyphicon-play-circle"></span>');
 	$('#listTitle').append(play);
 	$('#listTitle').append(title);
@@ -234,6 +252,7 @@ function renderLists(lists) {
 }
 
 function playSong(e) {
+	$('#saveLists').remove();
 	$('.hidePlayer').addClass('active');
 	setTimeout(function() {
 		$('.hidePlayer').removeClass('active');
@@ -283,11 +302,13 @@ function hideList() {
 	$('#songList').removeClass('active');
 	$('#songList #songSelector').css('height','0px');
 	$('#listTitle').empty();
+	$('#listEdit').remove();
+	$('#listDetails').addClass('hidden');
 	prevplayer.stopVideo();
 }
 
 function playList(e) {
-	if(!e)
+	if($(e.target).closest('.song').length == 0)
 		var video = $('#name0');
 	else 
 		var video = $(e.target).closest('.song');
@@ -637,11 +658,343 @@ function searchLock() {
 
 function searchDB() {
 	var sval = $('#videoSearch').val();
-	if(!sval)
-		sval = '*';
 	animateBlockExit();
-	$.post('/videoSearch/'+sval, function(res) {
-		$('#content').append(res);
-		$('.block').click(playSong);
+	$.ajax({
+		url: "/videoSearch",
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify({sval: sval}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        	$('#content').append(res.html);
+			$('.block').on("mousedown", blockClick);
+        }
+    });
+}
+
+function accountSignUp(e) {
+	if($(e.target).html() == "CREATE ACCOUNT") {
+		$('.signUp').removeClass('hidden');
+		$('#accountSignUp').html('SIGN UP');
+	} else {
+		$('.signUp').addClass('hidden');
+		$('#accountSignUp').html('CREATE ACCOUNT');
+		console.log($('#newAccountUser'));
+		if($('#newAccountUser').val() != '' && $('#newAccountPassword').val() != '' && $('#newAccountEmail').val() != '') {
+			$.ajax({
+				url: "/signUp",
+		        type: "post",
+		        dataType: "json",
+		        data: JSON.stringify({user: $('#newAccountUser').val(), password: $('#newAccountPassword').val(), email: $('#newAccountEmail').val()}),
+		        contentType: "application/json",
+		        cache: false,
+		        timeout: 5000,
+		        success:function(res) {
+			       	$('#content').html(res);
+			    },
+			    error: function(res) {
+			    	alert('User Already Exists.');
+			       	$('.signUp').val('');
+			    }
+			});
+		} else {
+			alert('All fields must be filled in.');
+		}
+	}
+}
+
+function accountLogin() {
+	console.log($('#account #user').val());
+	console.log($('#account #password').val());
+	$.ajax({
+		url: "/login",
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify({user: $('#account #user').val(), password: $('#account #password').val()}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+	       	$('#content').html(res.html);
+	    },
+	    error: function(res) {
+	    	console.log(res);
+	    	alert('User Not Found.');
+	       	$('#account #user').val('');
+	       	$('#account #password').val('');
+	    }
+	});
+}
+
+function logout() {
+	console.log('test');
+	$.get('/logout', function(res) {
+		$('#content').html(res.html);
+	});
+}
+
+function createList() {
+	if($('#createListName').val() != '') {
+		$.ajax({
+			url: "/createList",
+	        type: "post",
+	        dataType: "json",
+	        data: JSON.stringify({listName: $('#createListName').val()}),
+	        contentType: "application/json",
+	        cache: false,
+	        timeout: 5000,
+	        success:function(res) {
+	        	$('#createListName').val('');
+	        	console.log(res);
+	        	var list = $('<div class="block" data-id="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><span class="glyphicon glyphicon-play-circle"></span></div></div>');
+	        	list.css('width','0px').css('border','none');
+	        	$('#addList').before(list);
+	        	list.animate({
+	        		width: '20%'
+	        	}, 200, function() {
+	        		list.css('border','1px solid #000');
+	        	});
+		    },
+		    error: function(res) {
+		    	alert('Could not create the playlist. That name may already be taken.');
+		       	$('#createListName').val('');
+		    }
+		});
+	} else {
+		alert('Please enter a playlist name.');
+	}
+}
+
+function listMenu(e) {
+	$('#saveLists').animate({
+		height: '0px'
+	}, 100, function() {
+		$('#saveLists').remove();
+	});
+	pos_x = $(e.target).closest('.block').position().left;
+	pos_y = $(e.target).closest('.block').position().top + $(e.target).closest('.block').height() + $('#content').scrollTop();
+	var saveLists = $('<div id="saveLists"><div id="saveClose" onclick="removeSaveList(event)">&#215</div></div>');
+	for(var i = 0; i < userPlaylists.length; i++) {
+		var list = $('<div class="saveList"><div class="checkBox"><div class="checkBoxCheck">&#215</div></div><div class="saveListName">'+userPlaylists[i].name+'</div></div>');
+		saveLists.append(list);
+	}
+	saveLists.css('top',pos_y).css('left',pos_x).css('height','0px');
+	$('#content').append(saveLists);
+	var height = (i+1)*$('.saveList').first().height();
+	saveLists.animate({
+		height: height
+	}, 200);
+	$('.saveList').click(function(event) {
+		saveSong(event, $(e.target).closest('.block'));
+	});
+	e.stopPropagation();
+	e.preventDefault();
+}
+
+function fillUserLists() {
+	$('.saveList').remove();
+	for(var i = 0; i < userPlaylists.length; i++) {
+		var list = $('<div class="saveList" onmousemove="highlight(event)" onmouseout="unhighlight(event)" data-vids="'+userPlaylists[i].videoids+'"><div class="saveListName">'+userPlaylists[i].name+'</div></div>');
+		$('#userSaveLists').append(list);
+	}
+}
+function highlight(e) {
+	$(e.target).closest('.saveList').css('background-color','#444');
+}
+function unhighlight(e) {
+	$(e.target).closest('.saveList').css('background-color','#000');
+}
+
+function saveSong(e, song) {
+	$(e.target).closest('.saveList').toggleClass('on');
+	setTimeout(function() {
+		$(e.target).closest('.saveList').toggleClass('on');
+	},100);
+	setTimeout(function() {
+		$('#userSaveLists').css('left','-20%');
+	},200);
+	$.ajax({
+		url: "/saveSong",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({list: $(e.target).closest('.saveList').find('.saveListName').text(), vid: song.attr('data-vid'), song: song.find('.name').text(), artist: song.find('.artist').text()}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        }
+    });
+}
+
+function removeSaveList() {
+	$('#saveLists').animate({
+		height: '0px'
+	}, 100, function() {
+		$('#saveLists').remove();
+	});
+}
+
+function blockClick(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	var block = $(e.target).closest('.block');
+	var count = 0;
+	var $e = e;
+	$('body').on("mousemove",function(e) {
+		
+		if(count == 0) {
+			var $drag = $('<div id="blockDragger"></div>');
+			var vid = block.attr('data-vid');
+			$('.saveList').each(function(index, element) {
+				var vids = $(this).attr('data-vids');
+				if(vids.search(vid) >= 0) {
+					$(this).addClass('included');
+				}
+			});
+        	$drag.css('left',e.pageX).css('top',e.pageY).css('width','0px').css('height','0px').css('opacity','1').css('border-radius','10px');
+			$('body').append($drag);
+			$('#userSaveLists').css('left','0px');
+		} else {
+			$('#blockDragger').css('left',e.pageX-15).css('top',e.pageY-15).css('border-width','15px').css('border-radius','15px');
+		}
+		count++;
+	}).on("mouseup",function(e) {
+		if($(e.target).closest('.saveList').length > 0) {
+			saveSong(e, block);
+		} else {
+			$('#userSaveLists').css('left','-20%');
+			$('.included').removeClass('included');
+		}
+		console.log('up');
+		$('#blockDragger').remove();
+		$('body').off("mousemove").off("mouseup");
+		if(count == 0) {
+			playSong($e);
+		}
+	});
+}
+
+function blockDrag(e) {
+	console.log('dragging');
+	e.stopPropagation();
+	e.preventDefault();
+	var $drag = $('<div id="blockDragger"></div>');
+	var block = $(e.target).closest('.block');
+	var pos_y = block.position().top + $('#content').scrollTop(),
+        pos_x = block.position().left;
+    var height = block.height();
+    var width = block.width();
+    block.css('top',pos_y).css('left',pos_x).css('width',width).css('height',height);
+}
+
+function showUserLists() {
+	if($('#myListsToggle').hasClass('active')) {
+		$('#myListsToggle').removeClass('active');
+		$('#userSaveLists').css('left','-20%');
+	} else {
+		$('#myListsToggle').addClass('active');
+		$('#userSaveLists').css('left','0%');
+	}
+}
+function promptListDelete(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	var block = $(e.target).closest('.block');
+	var overlay = $('<div class="promptOverlay"><div class="promptDelete" data-listid="'+ $(e.target).closest('.block').attr('data-id') +'"><div id="promptDeleteText">Are you sure you would like to delete the playlist?</div><div id="promptDeleteYes">YES</div><div id="promptDeleteNo">NO</div></div></div>');
+	$('body').append(overlay);
+	$('.promptDelete').animate({
+		top: '50%'
+	}, 200);
+	$('.promptOverlay').click(function(event) {
+		console.log($(event.target).closest('.promptDelete'));
+		if($(event.target).closest('.promptDelete').length == 0) {
+			$('.promptOverlay').remove();
+		}
+	});
+	$('#promptDeleteNo').click(function() {
+		$('.promptOverlay').animate({
+			opacity: '0'
+		}, 200, function() {
+			$('.promptOverlay').remove();
+		});
+	});
+	$('#promptDeleteYes').click(function(event) {
+		console.log($(event.target).closest('.promptDelete').attr('data-listid'));
+		$.ajax({
+			url: "/deleteList",
+		    type: "post",
+		    dataType: "json",
+	        data: JSON.stringify({listid: $(event.target).closest('.promptDelete').attr('data-listid')}),
+	        contentType: "application/json",
+	        cache: false,
+	        timeout: 5000,
+	        success:function(res) {
+	        	$('.promptOverlay').animate({
+					opacity: '0'
+				}, 200, function() {
+					$('.promptOverlay').remove();
+					block.remove();
+	        	});
+	        }
+	    });
+	});
+}
+
+function enableEdit() {
+	if($('#listEdit').text() == 'EDIT') {
+		var nameEdit = $('<input type="text" id="listNameEdit">');
+		$('#listEdit').text('SAVE');
+		var name = $('#listTitle .listName').text();
+		$('#listTitle .listName').remove();
+		console.log(nameEdit);
+		$('#listTitle').append(nameEdit);
+		nameEdit.val(name);
+		$(document).off('click','#listTitle',playList);
+		$(document).off('click','.song',playList);
+		$(document).off('click','#overlay',hideList);
+	} else {
+		listEditSave();
+		$('#listEdit').text('EDIT');
+	}
+}
+
+function listEditSave() {
+	var listName = $('#listNameEdit').val();
+	var artists = '';
+	var vids = '';
+	var names = '';
+	$('#songList .song').each(function(index) {
+		names += $(this).find('span').first().text() + ',';
+		artists += $(this).find('span').last().text() + ',';
+		vids += $(this).attr('data-id') + ',';
+	});
+	names = names.slice(0,-1);
+	artists = artists.slice(0,-1);
+	vids = vids.slice(0,-1);
+	console.log(listName);
+	console.log(artists);
+	console.log(vids);
+	console.log(names);
+	$.ajax({
+			url: "/updateList",
+		    type: "post",
+		    dataType: "json",
+	        data: JSON.stringify({listid: $('#listDetails').attr('data-listid'), listName: listName, artists: artists, vids:vids, names:names}),
+	        contentType: "application/json",
+	        cache: false,
+	        timeout: 5000,
+	        success:function(res) {
+	        	console.log(res);
+	        	$('#listNameEdit').remove();
+	        	$('<span class="listName">'+ listName +'</span>').appendTo($('#listTitle'));
+	        	$('#s'+$('#listDetails').attr('data-listid')).find('.name').text(listName);
+	        	$(document).on('click','#listTitle',playList);
+				$(document).on('click','.song',playList);
+				$(document).on('click','#overlay',hideList);
+	        }
 	});
 }
