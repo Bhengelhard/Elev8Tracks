@@ -1,0 +1,11 @@
+  <div id="listBanner"><div id="listName"></div><div id="listEdit"></div></div>
+  <% for(var i = 0; i < songs.length; i++) { %>
+  <div class="block inactive" data-vid="<%=songs[i][1] %>" onmousedown="blockClick(event)">
+    <img src="http://img.youtube.com/vi/<%=songs[i][1] %>/0.jpg" class="list song"/>
+    <div class="description">
+      <span class="name"><%=songs[i][0] %></span>
+      <span class="artist"><%=songs[i][2] %></span>
+      <span class="glyphicon glyphicon-play"></span>
+    </div>
+  </div>
+  <% }); %>

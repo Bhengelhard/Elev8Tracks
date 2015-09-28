@@ -42,12 +42,15 @@ app.get('/index2', routes.index2);
 app.get('/playlists', routes.playlists);
 app.get('/songs', routes.songs);
 app.get('/blogs', routes.blogs);
+app.get('/getLoginNav', routes.getLoginNav);
 
 app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 app.get('/userPlaylists', routes.userPlaylists);
 
-app.post('/storeSong/:data', routes.storeSong);
+app.post('/showList', routes.showList);
+app.post('/addToList', routes.addSong);
+app.post('/storeSong', routes.storeSong);
 app.post('/storeBlog', routes.storeBlog);
 app.post('/removeBlock/:data', routes.removeBlock);
 app.post('/videoSearch', routes.videoSearch);
@@ -56,8 +59,9 @@ app.get('/logout', routes.logout);
 app.post('/signUp', routes.signUp);
 app.post('/createList', routes.createList);
 app.post('/deleteList', routes.deleteList);
-app.post('/updateList', routes.updateList);
-app.post('/saveSong', routes.saveSong);
+app.post('/deleteSong', routes.deleteSong);
+app.post('/updateListOrder', routes.updateListOrder);
+app.post('/updateListName', routes.updateListName);
 
 var stateKey = 'spotify_auth_state';
 

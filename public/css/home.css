@@ -310,6 +310,7 @@ body {
 	left: 0%;
 	width: 100%;
 	height: 100%;
+	pointer-events: none;
 }
 #player {
 	position: fixed;
@@ -327,66 +328,63 @@ body {
 } #player.active {
 	top: 0%;
 	pointer-events: all;
-} #player .hidePlayer {
+} #player #playerCollapse {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	width: 70px;
 	height: 70px;
-	font-size: 50px;
+	font-size: 30px;
 	color: #fff;
-	background-color: none;
-	opacity: .2;
-	-webkit-transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -ms-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    transition: all .2s ease;
-} #player .hidePlayer .glyphicon {
-	left: 50%;
-	margin-left: -27px;
-} #player .hidePlayer:hover{
+	text-align: center;
+	opacity: 0;
+} #player #playerCollapse .glyphicon {
+	padding-top: 15px;
+	pointer-events: none;
+} #player #playerCollapse.active{
 	opacity: 1;
-	background-color: #FF4400;
-} #player .hidePlayer.active {
-	opacity: 1;
-	background-color: #FF4400;
+} #player #playerCollapse.active:hover{
+	background-color: rgba(200,200,200,.5);
+} #player #playerCollapse.active:active {
+	background-color: #777CFF;
 } #player #controls {
 	position: absolute;
-	top: -40px;
-	right: 0px;
-	width: 250px;
-	height: 40px;
+	top: -50px;
+	right: 20px;
+	width: 350px;
+	height: 50px;
 	background-color: #000;
-	border-top-left-radius: 4px;
+	border-top: 2px solid #fff;
+	border-left: 2px solid #fff;
+	border-right: 2px solid #fff;
 	pointer-events: all;
 	overflow: hidden;
-	-webkit-box-shadow: 0px 0px 10px 2px rgba(100,100,100,.5); 
-  	-moz-box-shadow:    0px 0px 10px 2px rgba(100,100,100,.5); 
-  	box-shadow:         0px 0px 10px 2px rgba(100,100,100,.5); 
 } #player #controls .glyphicon-menu-up {
 	position: absolute;
 	top: 11px;
-	left: 10px;
-	font-size: 20px;
+	left: 15px;
+	font-size: 30px;
 	color: #fff;
+	pointer-events: none;
 } #player #controls #playToggle {
 	position: absolute;
 	top: 8px;
-	left: 40px;
-	font-size: 20px;
+	right: 45px;
+	font-size: 30px;
 	color: #fff;
 	-webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
+    pointer-events: none;
 } #player #controls #playToggle.play {
 	top: -40px;
 } #player #controls .glyphicon-play {
 	position: absolute;
-	top: 0px;
+	top: 5px;
 	left: 0px;
+	font-size: 20px;
 } #player #controls .glyphicon-pause {
 	position: absolute;
 	top: 50px;
@@ -394,24 +392,30 @@ body {
 } #controls #playingName {
 	position: absolute;
 	top: 10px;
-	left: 70px;
-	height: 20px;
+	left: 60px;
+	height: 30px;
 	color: #fff;
+	font-weight: 100;
+	font-size: 20px;
 	opacity: 1;
 	overflow: hidden;
-} #controlFade {
+	pointer-events: none;
+} #controls #playerExpand {
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 275px;
+    height: 50px;
+} #controls #playerExpand:hover {
+	background-color: #555;
+} #controls #playToggleSelection {
 	position: absolute;
 	top: 0px;
-	right: 15px;
-	width: 10px;
-	height: 100%;
-	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 );
+	left: 275px;
+	right: 0px;
+	height: 50px;
+} #controls #playToggleSelection:hover {
+	background-color: #555;
 }
 
 #navbar {
@@ -424,17 +428,154 @@ body {
 	color: #fff;
 	z-index: 110;
 	min-width:700px;
-	-webkit-box-shadow: 0px 0px 10px 2px rgba(100,100,100,.5); 
+	border-bottom: 2px solid #fff;
+	/*-webkit-box-shadow: 0px 0px 10px 2px rgba(100,100,100,.5); 
   	-moz-box-shadow:    0px 0px 10px 2px rgba(100,100,100,.5); 
-  	box-shadow:         0px 0px 10px 2px rgba(100,100,100,.5); 
+  	box-shadow:         0px 0px 10px 2px rgba(100,100,100,.5); */
 } #navbar #title {
 	font-family: "Neou-Thin";
-	font-size: 45px;
-	text-align: center;
-	position: absolute;
-	width: 100%;
-	pointer-events: none;
+	font-size: 30px;
+	text-align: left;
+	height: 100%;
+	position: relative;
+	padding:0px 20px 0px 20px;
+	display: inline-block;
+	line-height: 2;
+	background-color: transparent;
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #title:hover {
+	/*background-color: #444;*/
+} #navbar #title.selected {
+	/*color: #5E63FF;*/
+} .navSelection {
+	background-color: #fff;
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  top: -20px;
+  left: 0px;
+  -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #navbar.blog {
+	background-color: rgba(0,0,0,0.5);
+    border: none;
+} #navbar.home {
+	background-color: transparent;
+    border: none;
+} #navbar.home #videoSearcherWrapper {
+	display: none;
+} .selected .navSelection {
+	top: -14px;
+} #vsort {
+	position: relative;
+	overflow:hidden;
+	  float: right;
+  height: 100%;
+  font-weight: 100;
+  background-color: #000;
+  top: -100%;
+  -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #vsort:hover {
+	height: auto;
+  padding-bottom: 15px;
+} #vsort:hover .vItem {
+	width: auto;
+}  #vsort:hover .vtitle {
+	padding-bottom: 15px;
+}#vfilter {
+	position: relative;
+	overflow:hidden;
+	 float: right;
+  height: 100%;
+  font-weight: 100;
+  background-color: #000;
+  top: -100%;
+  -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+  } #vfilter:hover {
+	height: auto;
+  padding-bottom: 15px;
+} #vfilter:hover .vItem {
+	width: auto;
+}  #vfilter:hover .vtitle {
+	padding-bottom: 15px;
+}#vsearch {
+  	position: relative;
+  	overflow:hidden;
+  	 float: right;
+  height: 100%;
+  font-weight: 100;
+  background-color: #000;
+  top: -100%;
+  -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    -o-transition: all .4s ease;
+    transition: all .4s ease;
+  } #vsearch:hover {
+	height: auto;
+  padding-bottom: 15px;
+} #vsearch:hover .vItem {
+	width: auto;
+} #vsearch:hover .vtitle {
+	padding-bottom: 15px;
 }
+ .selected #vsort, .selected #vfilter, .selected #vsearch {
+ 	top: 0%;
+} #searchCriteria #vsort, #searchCriteria #vfilter ,#searchCriteria #vsearch {
+	height: auto;
+}
+.criteriaType {
+	position: relative;
+	float:left;
+	width: 130px;
+}
+
+
+#userListsNav {
+	position: absolute;
+  	overflow:hidden;
+  	right:0px;
+  	top:0px;
+    height: 100%;
+    width: 150px;
+    font-weight: 100;
+    background-color: #000;
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    -o-transition: all .4s ease;
+    transition: all .4s ease;
+} #userListsNav.active {
+	height: auto;
+    padding-bottom: 15px;
+    background-color: #000;
+} #userListsNav.blog {
+	background-color: transparent;
+}
+#backgroundImg {
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-image: url("images/sky.jpg");
+}
+
 @font-face {
 	font-family: "Neou-Thin";
 	src: url("../Neou-Thin.otf");
@@ -448,7 +589,6 @@ body {
 }
 #videos {
 	line-height: 0px;
-	margin-top: 50px;
 }
 .block {
 	box-sizing:border-box;
@@ -463,6 +603,7 @@ body {
 	height: 14vw;
 	min-height: 126px;
 	position: relative;
+	left:0px;
 	display: inline-block;
 	overflow: hidden;
 	opacity: 1;
@@ -471,9 +612,21 @@ body {
 	background-color: #222;
 	overflow: hidden;
 }
-.block.hidden {
+.block.inactive {
+	opacity: 0;
+	left: 50px;
+	display: none;
+} .block.leave {
+	opacity: 0;
+	left: -50px;
+}
+#blogs.leave {
+	opacity: 0;
+	left: -50px;
+} #blogs.inactive {
 	opacity: 0;
 }
+
 .block img{
 	display: inline-block;
 	position: absolute;
@@ -520,7 +673,8 @@ body {
 	display: block;
 	position: relative;
 	width: 100%;
-	left: -100%;
+	left: 0%;
+	opacity: 0;
 	font-size: 14px;
 	padding: 5px 15px 0px 15px;
 	line-height: 1.25;
@@ -536,7 +690,7 @@ body {
   	box-shadow:         none; 
   	background-color: rgba(0,0,0,0);
 } .block .description:hover .artist {
-	left: 0%;
+	opacity: 1;
 } .block .description:hover .saveToList {
 	opacity: 1;
 } .block .description .glyphicon {
@@ -547,56 +701,89 @@ body {
 	margin-left: -30px;
 	font-size: 60px;
 	color: rgba(255,255,255,0);
-} .block .description.playing {
+} .block .description.active {
 	background-color: rgba(0,0,0,0.7);
-} .block .description.playing .glyphicon {
-	color: rgba(255,255,255,1);
-} .block .description.playing:hover .glyphicon {
+} .block .description.active .glyphicon {
 	color: rgba(255,68,0,1);
-} .block .description.playing .name {
+} .block .description.active:hover .glyphicon {
+	color: rgba(255,68,0,1);
+} .block .description.active .name {
 	color: rgba(255,255,255,1);
 } .block.thin {
 	width: 0px;
 	border: none;
+} .block.dragging .description, .block.dragging .description:hover {
+	background-color: rgba(255,68,0,.4);
+} .block.dragging .name {
+	-webkit-box-shadow: none;
+  	-moz-box-shadow:    none; 
+  	box-shadow:         none; 
+  	background-color: transparent;
 }
 
 #content {
 	position: fixed;
-	top: 50px;
-	background-color: #000;
+	padding-top:50px;
+	top: 0px;
 	min-width: 700px;
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
 	overflow: scroll;
+	padding-bottom:10%;
+	background-color: #000;
 }
-
-.nav {
-	position: relative;
-	padding-top: 15px;
-	height: 100%;
-	font-family: "Neou-Thin";
-	width: 15%;
+.vtitle {
+	padding: 15px;
 	text-align: center;
-	background-color: none;
-	z-index: 100;
+} .vItem {
+	width: auto;
+	overflow: hidden;
+	position:relative;
+	padding: 10px 10px 10px 10px;
+    background-color: transparent;
+    cursor: default;
+} .vItem:hover, .vItem.active {
+	background-color: rgba(255,255,255,.5);
+} .vItem.searched .checkItem {
+	background-color: #fff;
+} .checkItem {
+	width: 1.5vw;
+	height: 1.5vw;
+	border: 1px solid #fff;
+	display: inline-block;
 	-webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
-} .nav.active {
-	font-family: "Neou-Bold";
-} #blog {
+} .checkItemChecked {
+	display: inline-block;
+} .itemName {
+	display: inline-block;
+	font-size: 1.25vw;
+}
+
+#blog {
 	float: right;
 } #songs {
 	float: right;
 } #lists {
 	float: left;
 } #myLists {
-	float: left;
-}
-#selector {
+	width: 100%;
+	cursor: default;
+	position: relative;
+	padding: 15px;
+	height: 100%;
+	font-family: "Neou-Thin";
+	text-align: center;
+	background-color: transparent;
+} #myLists:hover {
+	background-color: #444;
+} #myLists.selected {
+	/*color: #5E63FF;*/
+} #selector {
 	position: absolute;
 	top: 10px;
 	width: 10%;
@@ -636,25 +823,102 @@ body {
 }
 
 #blogs {
-	background-color: #ddd;
+	background-color: #000;
 	position: fixed;
-	top: 50px;
+	top: 0px;
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
 	overflow: scroll;
-}
-.post {
+} #blogs #songOfTheDay {
 	position: relative;
-	width: 60%;
-	min-width: 420px;
-	background-color: #fff;
-	margin-top: 20px;
-	margin-left: auto;
-	margin-right: auto;
-	-webkit-box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
-	-moz-box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
-	box-shadow: 0px 8px 4px -5px rgba(170,170,170,1);
+	top: 0%;
+	left: 0%;
+	width: 100%;
+} #sotdImg {
+	position: relative;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 40vw;
+    overflow: hidden;
+} #sotdImg iframe {
+	position: absolute;
+    width: 110%;
+    height: 150%;
+    left: -5%;
+    top: -15%;
+} #sotdBlogText {
+	padding: 15px 6% 15px 6%;
+    background-color: #000;
+    color: #bbb;
+    font-weight: 100;
+    font-size: 16px;
+} #sotdCover {
+	position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+} #sotdName {
+	position: absolute;
+    left: 50%;
+    width: 500px;
+    margin-left: -250px;
+    color: #fff;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 100;
+    top: 50%;
+    margin-top: -50px;
+} #sotdArtist {
+	position: absolute;
+    left: 50%;
+    width: 500px;
+    margin-left: -250px;
+    color: #fff;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+    top: 50%;
+    margin-top: 10px;
+} #sotdPlay {
+	position: absolute;
+    left: 50%;
+    width: 500px;
+    margin-left: -250px;
+    color: #fff;
+    text-align: center;
+    font-size: 40px;
+    top: 50%;
+    margin-top: 50px;
+} #staffPicksBanner {
+	position: relative;
+    width: 100%;
+    height: 75px;
+    text-align: center;
+    color: #fff;
+    padding-top: 10px;
+    background-color: #ff4400;
+    font-size: 30px;
+    font-weight: 100;
+} #staffPicks {
+    position: relative;
+    top: 0px;
+    background-color: #fff;
+    margin-top: -20px;
+    padding-top: 10px;
+} .post {
+	position: relative;
+    width: 65%;
+    min-width: 420px;
+    background-color: #fff;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0px 10px 0px 10px;
+    border-bottom:2px solid #aaa;
 }
 .post .block {
 	position: relative;
@@ -689,9 +953,9 @@ body {
     -ms-transition: opacity .2s ease;
     -o-transition: opacity .2s ease;
     transition: opacity .2s ease;
-} .post .block:hover .glyphicon{
+} /*.post .block:hover .glyphicon{
 	opacity: 1;
-} .post .block:active .glyphicon {
+} */.post .block:active .glyphicon {
 	color: #FF4400;
 }
 .post .blogName {
@@ -760,9 +1024,37 @@ body {
 	width: 200px;
 	height: 30px;
 	margin-left: -100px;
+} #inputDirector {
+	position: absolute;
+    top: 250px;
+    left: 50%;
+    width: 200px;
+    height: 30px;
+    margin-left: -100px;
+} #inputGenre1 {
+	position: absolute;
+    top: 300px;
+    left: 50%;
+    width: 100px;
+    height: 30px;
+    margin-left: -200px;
+} #inputGenre2 {
+	position: absolute;
+    top: 300px;
+    left: 50%;
+    width: 100px;
+    height: 30px;
+    margin-left: -50px;
+} #inputGenre3 {
+	position: absolute;
+    top: 300px;
+    left: 50%;
+    width: 100px;
+    height: 30px;
+    margin-left: 100px;
 } #inputSubmit {
 	position: absolute;
-	top: 250px;
+	top: 350px;
 	left: 50%;
 	width: 100px;
 	margin-left: -50px;
@@ -860,9 +1152,19 @@ body {
 }
 
 #account {
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
 	position: relative;
+	top: 100px;
 	width: 100%;
 	text-align: center;
+} #account.inactive {
+	opacity: 0;
+	left: 50px;
+}
 } #account #spotifyLogin {
 	position: relative;
 	width: 100%;
@@ -883,35 +1185,57 @@ body {
 	font-size: 14px;
 	font-weight: 100;
 } #account input {
-	background-color: #000;
-  	border: none;
-  	border-top: 1px solid #555;
-  	border-bottom: 1px solid #555;
-  	font-size: 20px;
-  	text-align: center;
-  	display: block;
-  	margin-left: auto;
-  	margin-right: auto;
-  	margin-top: 10px;
-  	font-weight: 100;
-  	color: #fff;
+	background-color: transparent;
+    border: none;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    font-size: 26px;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    font-weight: 100;
+    color: #fff;
+    width: 250px;
+    position: relative;
+    left: 50%;
+    margin-left: -125px;
+    margin-top: 20px;
+} #account #email {
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #account #email.inactive {
+	opacity: 0;
+} #account #accountTitle {
+	color: #fff;
+    font-weight: 100;
+    font-size: 50px;
 } #account #accountLogin, #account #accountSignUp {
 	padding: 3px;
-	width: 100px;
+	width: 250px;
 	left: 50%;
 	margin-left: -50px;
-	background-color: #FF4400;
-	border-radius: 3px;
-	font-size: 14px;
+	background-color: transparent;
+	font-size: 20px;
 	font-weight: 100;
 	color: #fff;
 	display: block;
   	margin-left: auto;
   	margin-right: auto;
   	margin-top: 10px;
-}
-#account .hidden {
-	display: none;
+  	margin-top: 20px;
+} #account #accountLogin:hover, #account #accountSignUp:hover {
+	color: #FF4400;
+} #account #accountLogin.active, #account #accountSignUp.active {
+	background-color: #FF4400;
+} #account #accountLogin.active:hover, #account #accountSignUp.active:hover {
+	background-color: #C33400;
+	color: #fff;
+} 
+#account #accountSignUp {
+	margin-bottom: 40px;
 }
 #logout {
 	background-color: #0080FF;
@@ -924,6 +1248,9 @@ body {
 	width:75px;
 	color: #fff;
 	padding: 5px;
+	margin-bottom: 20px;
+} #logout:hover {
+	background-color: #015CB6;
 }
 #createListTitle {
 	display: inline-block;
@@ -966,6 +1293,7 @@ body {
 }
 #userLists {
 	overflow: auto;
+	font-size: 18px;
 }
 .saveToList {
 	-webkit-transition: opacity .2s ease;
@@ -1071,6 +1399,13 @@ body {
 	border-color: #ff4400;
 	border-width: 2px;
 	pointer-events: none;
+} #songOrder {
+	position:absolute;
+	left:0px;
+	width:8px;
+	height: 100%;
+	background-color: #ff4400;
+	z-index:200;
 }
 #userSaveLists {
 	-webkit-transition: all .1s ease;
@@ -1109,13 +1444,17 @@ body {
 }
 .listDelete {
 	position: absolute;
-    bottom: 15%;
-    right: 5%;
+    bottom: 0%;
+    right: 0%;
     font-size: 40px;
     font-weight: 100;
     color: #fff;
     opacity: 0;
     cursor: default;
+    height: 20%;
+    text-align: center;
+    padding: 10px;
+    line-height: 0px;
 } .description:hover .listDelete {
 	opacity: 1;
 } .listDelete:hover {
@@ -1162,4 +1501,329 @@ body {
 	opacity: 1;
 } #listDetails.hidden {
 	opacity: 0;
+}
+#videoSearcherWrapper {
+position: absolute;
+  display: inline-block;
+  height: 100%;
+  right: 150px;
+  left: 275px;
+}
+#videoSearcher {
+	position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 100;
+} #videoSearcher:focus {
+	outline: none;
+}
+
+#nextSong {
+	-webkit-transition: right .2s ease;
+    -moz-transition: right .2s ease;
+    -ms-transition: right .2s ease;
+    -o-transition: right .2s ease;
+    transition: right .2s ease;
+	font-size: 7vw;
+  position: absolute;
+  padding: 30px 30px 15px 30px;
+  top: 40%;
+  right: -150px;
+  color: #fff;
+} #nextSong.active {
+	right: 10px;
+} #nextSong:hover {
+	background-color: rgba(200,200,200,.5);
+} #nextSong:active {
+	background-color: #777CFF;
+}
+#previousSong {
+	-webkit-transition: left .2s ease;
+    -moz-transition: left .2s ease;
+    -ms-transition: left .2s ease;
+    -o-transition: left .2s ease;
+    transition: left .2s ease;
+	font-size: 7vw;
+	padding: 30px 30px 15px 30px;
+  position: absolute;
+  top: 40%;
+  left: -150px;
+  color: #fff;
+} #previousSong.active {
+	left: 10px;
+} #previousSong:hover {
+	background-color: rgba(200,200,200,.5);;
+} #previousSong:active {
+	background-color: #777CFF;
+}
+
+#songPlaylist {
+	position: absolute;
+    width: 100px;
+    left: 150px;
+    top: 355px;
+    font-size: 14px;
+    font-weight: 100;
+    text-align: center;
+    color: #fff;
+    pointer-events: all;
+    cursor: default;
+    border-radius:7px;
+} #songPlaylist:hover {
+	background-color: #fff;
+	color: #000;
+	font-weight: 200;
+} #songTitle {
+	-webkit-transition: left .2s ease;
+    -moz-transition: left .2s ease;
+    -ms-transition: left .2s ease;
+    -o-transition: left .2s ease;
+    transition: left .2s ease;
+	position: absolute;
+    width: 390px;
+    height: 60px;
+    left: 5px;
+    top: 150px;
+    font-size: 40px;
+    font-weight: 100;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+} #songArtist {
+	position: absolute;
+    width: 200px;
+    left: 100px;
+    top: 215px;
+    font-size: 20px;
+    font-weight: 100;
+    text-align: center;
+    color: #fff;
+    pointer-events: all;
+    cursor: default;
+} #songArtist:hover {
+	background-color: #fff;
+	color: #000;
+	font-weight: 200;
+} #shuffle {
+	position: absolute;
+    left: 50%;
+    margin-left: -50px;
+    top: 50%;
+    margin-top: 100px;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    padding-top: 8px;
+    pointer-events: all;
+} #shuffle:hover, #shuffle.active {
+	background-color: #fff;
+	color: #000;
+} #shuffle > span {
+	pointer-events: none;
+} #repeat {
+	position: absolute;
+    left: 50%;
+    margin-left: 10px;
+    top: 50%;
+    margin-top: 100px;
+    font-size: 20px;
+    text-align: center;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    padding-top: 8px;
+    pointer-events: all;
+} #repeat:hover, #repeat.active {
+	background-color: #fff;
+	color: #000;
+} 
+
+#player.home {
+	display: none;
+}
+#player #playercover {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 400px;
+	height: 400px;
+	margin-left: -200px;
+	margin-top: -200px;
+	border-radius: 200px;
+	background-color: #000;
+	pointer-events: none;
+	opacity: 0;
+	background-color: rgba(0,0,0,0);
+} #player #playercover.active {
+	opacity: 1;
+	background-color: rgba(0,0,0,0.5);
+}
+#videos #loadMore {
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    width: 225px;
+    height: 40px;
+    padding-top: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #fff;
+    font-weight: 100;
+    margin-left: -112.5px;
+    margin-top: 40px;
+    border: 2px solid #fff;
+} #videos #loadMore:hover {
+	color: #ff4400;
+	border: 2px solid #ff4400;
+}
+
+#nextPage, #previousPage {
+	position: absolute;
+    color: #fff;
+    font-size: 40px;
+    left: 50%;
+    margin-top: 40px;
+    padding: 10px;
+} #nextPage:hover, #previousPage:hover {
+	background-color: #aaa;
+} #nextPage:active, #previousPage:active {
+	background-color: #ff4400;
+} #nextPage .glyphicon, #previousPage .glyphicon {
+	pointer-events: none;
+} #nextPage {
+	margin-left: 50px;
+} #previousPage {
+	margin-left: -110px;
+}
+#pageSelection {
+	position: relative;
+    display: inline-block;
+    width: 100%;
+}
+#pageNumber {
+	position: absolute;
+    left: 50%;
+    color: #fff;
+    width: 20px;
+    text-align: center;
+    margin-top: 70px;
+    margin-left: -10px;
+    font-size: 20px;
+}
+
+#listBanner {
+	position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #ff4400;
+} #listName {
+	position: absolute;
+    left: 40px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 100;
+    padding: 25px;
+    width: 50%;
+    top: 0%;
+} #listNameInput {
+	position: absolute;
+    left: 50px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 100;
+    width: 50%;
+    top: 0%;
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+} #listNameInput:focus {
+	background-color: rgba(255,255,255,.3);
+	outline: none;
+} #listEdit {
+	position: absolute;
+	right: 0%;
+	top: 0%;
+	color: #fff;
+    font-size: 20px;
+    font-weight: 100;
+    padding: 25px;
+    width: 100px;
+    text-align: center;
+} #listEdit:hover {
+	background-color: rgba(255,255,255,.5);
+} #backToLists {
+	position: absolute;
+    width: 50px;
+    height: 100%;
+    font-size: 25px;
+    color: #fff;
+    text-align: center;
+    padding-top: 11px;
+} #backToLists:hover {
+	background-color: rgba(255,255,255,.5);
+}
+
+#vidPlayer {
+	position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+} #vidPlayer iframe {
+	position: absolute;
+    left: -10%;
+    width: 120%;
+    height: 130%;
+    top: -10%;
+} #vidPlayerCover {
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: .7;
+} 
+
+#searchCriteria {
+	position: absolute;
+    width: 520px;
+    left: 50%;
+    margin-left: -260px;
+    text-align: center;
+    color: #fff;
+    top: 40%;
+    padding-bottom:100px;
+    text-align: left;
+} #findVideos {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	position: absolute;
+    left: 50%;
+    margin-left: -80px;
+    font-size: 20px;
+    font-weight: 100;
+    width: 160px;
+    background-color: #ff4400;
+    text-align: center;
+    padding: 10px 10px 10px 10px;
+    color: #fff;
+    top: 40%;
+    margin-top: -100px;
+    cursor: default;
+} #findVideos:hover {
+	background-color: #b33000;
+} #findVideos:active {
+	border-radius: 50px;
 }

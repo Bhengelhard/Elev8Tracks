@@ -2,11 +2,17 @@ var Playlist = require('../models/playlist');
 var Song = require('../models/song');
 var Blog = require('../models/blog');
 var User = require('../models/user');
+var Knex = require('knex');
 
 exports.index = function(req, res) {
-	Playlist.collection().fetch()
-		.then(function(m) {
-			res.render('index', {lists: m, session: req.session});
+	Blog.collection().fetch()
+		.then(function(blogs) {
+			Playlist.collection().query(function(search) {
+				search.where('userid', '=', req.session.userid);
+			}).fetch()
+			.then(function(lists) {
+				res.render('index', {blogs: blogs, user: req.session.user, lists: lists});
+			})
 		});
 };
 exports.index2 = function(req, res) {
@@ -14,7 +20,6 @@ exports.index2 = function(req, res) {
 };
 
 exports.playlists = function(req, res) {
-	console.log(req.session);
 	Playlist.collection().fetch()
 		.then(function(m) {
 			res.render('lists', {lists: m, session: req.session});
@@ -28,7 +33,6 @@ exports.playlistmodel = function(req, res) {
 }
 
 exports.songs = function(req, res) {
-	console.log(req.session);
 	Song.collection().fetch()
 		.then(function(m) {
 			res.render('songs', {songs: m, session: req.session});
@@ -42,7 +46,6 @@ exports.blogs = function(req, res) {
 		});
 }
 exports.myLists = function(req, res) {
-	console.log('test');
 	if(req.session.user) {
 		Playlist.collection().query(function(search) {
 			search.where('userid', '=', req.session.userid);
@@ -58,22 +61,22 @@ exports.myLists = function(req, res) {
 }
 
 exports.storeSong = function(req, res) {
-	var id = req.params.data.split('&')[0];
-	var name = req.params.data.split('&')[1];
-	var artist = req.params.data.split('&')[2];
-	new Song({vid: id}).fetch({require: true})
+	// var id = req.params.data.split('&')[0];
+	// var name = req.params.data.split('&')[1];
+	// var artist = req.params.data.split('&')[2];
+	//var time = Date.now();
+	var time = new Date().toISOString().substr(0, 19).replace('T', ' ');
+	new Song({vid: req.body.vid}).fetch({require: true})
 		.then(function(m) {
-			m.save({vid: id, name: name, artist: artist},{patch: true});
-			console.log(m);
+			m.save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, director: req.body.director},{patch: true});
 			res.send(200, {});
 		}).catch(function(e) {
-			new Song().save({vid: id, name: name, artist: artist},{patch: true});
+			new Song().save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, created_at: time},{patch: true});
 			res.send(200,{});
 		})
 }
 
 exports.storeBlog = function(req, res) {
-	console.log(req.body.name);
 	// var id = req.params.data.split(']&[')[0];
 	// var name = req.params.data.split(']&[')[1];
 	// var artist = req.params.data.split(']&[')[2];
@@ -91,7 +94,6 @@ exports.storeBlog = function(req, res) {
 	new Blog({vid: req.body.id}).fetch({require: true})
 		.then(function(m) {
 			m.save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
-			console.log(m);
 			res.send(200, {});
 		}).catch(function(e) {
 			new Blog().save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
@@ -103,32 +105,76 @@ exports.removeBlock = function(req, res) {
 	var id = req.params.data;
 	new Song({vid: id}).fetch({require: true})
 		.then(function(m) {
-			console.log(m);
 			m.destroy();
 			res.send(200, {});
 		});
 }
 
-exports.videoSearch = function(req, res) {
-	if(req.body.sval == '') {
-		Song.collection().fetch()
-		.then(function(m) {
-			res.render('songs', {songs: m, session: req.session}, function(err, model) {
-				res.send({html: model});
-			});
-		});
-	} else {
-		var ss = '% ' + req.body.sval + '%';
-		var ss2 = req.body.sval + '%';
+exports.showList = function(req, res) {
+	if(req.session.user) {
+		var sql = "(lists LIKE '%" + req.body.lid + ",%')";
 		Song.collection().query(function(search) {
-			search.where('name', 'LIKE', ss).orWhere('name','LIKE', ss2).orWhere('artist', 'LIKE', ss).orWhere('artist', 'LIKE', ss2).limit(25);
+			search.where(search.knex.raw(sql));
 		}).fetch()
-			.then(function(m) {
-				res.render('songs', {songs: m, session: req.session}, function(err, model) {
-					res.send({html: model});
-				});
-			});
+		.then(function(m) {
+			new Playlist({id: req.body.lid}).fetch({require: true})
+			.then(function(list) {
+				res.send({list: list, m: m});
+			})
+		}).catch(function(e) {
+			res.send(400,{});
+		});
 	}
+}
+
+exports.videoSearch = function(req, res) {
+	var sql = '(';
+	var sql2 = '(';
+	var search = req.body.searchParams.split(',');
+	for(var i = 0; i < search.length; i++) {
+		sql += ' ' + search[i] + " LIKE '" + req.body.sval + "%' OR";
+		sql2 += ' ' + search[i] + " LIKE '% " + req.body.sval + "%' OR";
+	}
+	sql = sql.substring(0, sql.length - 3) + ')';
+	sql2 = sql2.substring(0, sql2.length - 3) + ')';
+	var filter = req.body.filterParams.split(',');
+	console.log(filter);
+	if(filter[0].length > 0) {
+		for(var j = 0; j < filter.length; j++) {
+			sql += ' AND ' + filter[j] + "=1";
+			sql2 += ' AND ' + filter[j] + "=1";
+		}
+	}
+	console.log(req.body.offset);
+	console.log(req.body.limit);
+	Song.collection().query(function(search) {
+		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'desc');
+	}).fetch()
+	.then(function(m) {
+		//res.send(m);
+		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+			res.send({html: model});
+		});
+	});
+	// if(req.body.sval == '') {
+	// 	Song.collection().fetch()
+	// 	.then(function(m) {
+	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 			res.send({html: model});
+	// 		});
+	// 	});
+	// } else {
+	// 	var ss = '% ' + req.body.sval + '%';
+	// 	var ss2 = req.body.sval + '%';
+	// 	Song.collection().query(function(search) {
+	// 		search.where('name', 'LIKE', ss).orWhere('name','LIKE', ss2).orWhere('artist', 'LIKE', ss).orWhere('artist', 'LIKE', ss2).limit(25);
+	// 	}).fetch()
+	// 		.then(function(m) {
+	// 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 				res.send({html: model});
+	// 			});
+	// 		});
+	// }
 }
 
 exports.login = function(req, res) {
@@ -137,12 +183,10 @@ exports.login = function(req, res) {
 		req.session.user = req.body.user;
 		req.session.userid = model.attributes.id;
 		req.session.admin = model.attributes.admin;
-		console.log(req.session);
 		Playlist.collection().query(function(search) {
 			search.where('userid', '=', req.session.userid);
 		}).fetch()
 		.then(function(m1) {
-			console.log(m1);
 			res.render('myLists', {session: req.session, lists: m1}, function(err, m) {
 				res.send({html: m});
 			});
@@ -152,6 +196,33 @@ exports.login = function(req, res) {
 	}).catch(function(e) {
     	res.send(400, {});
     });
+}
+
+exports.getLoginNav = function(req, res) {
+	Playlist.collection().query(function(search) {
+		search.where('userid', '=', req.session.userid);
+	}).fetch()
+	.then(function(lists) {
+		res.render('myListsNav', {user: req.session.user, lists: lists}, function(err, m) {
+			res.send({html: m});
+		});
+	});
+}
+
+exports.deleteSong = function(req, res) {
+	new Song({vid: req.body.vid}).fetch({require: true})
+	.then(function(song) {
+		console.log(song.attributes.lists);
+		console.log(String(req.body.lid + ','));
+		var lists = song.attributes.lists.replace(String(req.body.lid + ','), '');
+		console.log(lists);
+		song.save({lists: lists}, {patch: true});
+		new Playlist({id: req.body.lid}).fetch({require: true})
+		.then(function(list) {
+			list.save({order: req.body.order}, {patch: true});
+			res.send(200, {});
+		});
+	})
 }
 
 exports.logout = function(req, res) {
@@ -165,10 +236,8 @@ exports.logout = function(req, res) {
 exports.signUp = function(req, res) {
 	new User({username: req.body.user, password: req.body.password}).fetch({require: true})
 	.then(function(model) {
-		console.log('found');
 		res.send(400, {});
 	}).catch(function(e) {
-		console.log(req.body.user);
     	new User().save({username: req.body.user, password: req.body.password, email: req.body.email}, {patch: true})
 		.then(function(model) {
 			req.session.user = req.body.user;
@@ -186,12 +255,10 @@ exports.signUp = function(req, res) {
 exports.createList = function(req, res) {
 	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
 	.then(function(model) {
-		console.log('found');
 		res.send(400, {});
 	}).catch(function(e) {
 		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
 		.then(function(m) {
-			console.log(m);
 			res.send(m);
 		}).catch(function(e) {
 	    	res.send(400, {});
@@ -200,10 +267,8 @@ exports.createList = function(req, res) {
 }
 
 exports.deleteList = function(req, res) {
-	console.log(req.body.listid);
 	new Playlist({id: req.body.listid}).fetch({require: true})
 	.then(function(model) {
-		console.log(model);
 		model.destroy();
 		res.send(200, {});
 	}).catch(function(e) {
@@ -222,28 +287,53 @@ exports.userPlaylists = function(req, res) {
 	});
 }
 
-exports.saveSong = function(req, res) {
-	new Playlist({name: req.body.list, userid: req.session.userid}).fetch({require: true})
+exports.updateListName = function(req, res) {
+	console.log('hello?');
+	new Playlist({id: req.body.lid}).fetch({require: true})
 	.then(function(m) {
-		console.log(m.attributes.videoids);
-		var thumbnail = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids.split(',')[0]);
-		var songs = (m.attributes.vnames == null ? req.body.song : m.attributes.vnames + ',' + req.body.song);
-		var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
-		var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
-		console.log(songs);
-		m.save({vnames: songs, videoids: vids, artists: artists, thumbnail: thumbnail}, {patch: true});
-		console.log(m);
-		res.send(200, {});
+		var name = req.body.name;
+		m.save({name: name}, {patch: true});
+		res.send(200,{});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
-exports.updateList = function(req, res) {
-	new Playlist({id: req.body.listid}).fetch({require: true})
+// exports.showList = function(req, res) {
+// 	if(req.session.user) {
+// 		new Playlist({id: req.body.lid}).fetch({require: true})
+// 		.then(function(m) {
+// 			res.send({m: m});
+// 		}).catch(function(e) {
+// 			res.send(400,{});
+// 		});
+// 	}
+// }
+
+exports.addSong = function(req, res) {
+	new Playlist({id: req.body.lid, userid: req.session.userid}).fetch({require: true})
 	.then(function(m) {
-		var thumbnail = req.body.vids.split(',')[0];
-		m.save({name: req.body.listName, vnames: req.body.names, videoids: req.body.vids, thumbnail: thumbnail, artists: req.body.artists},{patch: true});
+		var thumbnail = (m.attributes.order == null ? req.body.vid : m.attributes.order.split(',')[0]);
+		var order = m.attributes.order + req.body.vid + ',';
+		//var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
+		//var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
+		m.save({thumbnail: thumbnail, order: order}, {patch: true});
+		new Song({vid: req.body.vid}).fetch({require: true})
+			.then(function(song) {
+				var lists = song.attributes.lists + req.body.lid + ',';
+				song.save({lists: lists}, {patch: true});
+				res.send(200, {});
+			});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.updateListOrder = function(req, res) {
+	new Playlist({id: req.body.lid}).fetch({require: true})
+	.then(function(m) {
+		var thumbnail = req.body.order.split(',')[0];
+		m.save({thumbnail: thumbnail, order: req.body.order},{patch: true});
 		res.send(200, {});
 	}).catch(function(e) {
 		res.send(400,{});

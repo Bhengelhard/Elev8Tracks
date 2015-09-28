@@ -1,12 +1,8 @@
-<div id="account">
-	<div id="spotifyLogin"><div>Login with Spotify</div></div>
-	<div id="facebookLogin"><div>Login with Facebook</div></div>
+<div id="account" class="inactive">
+	<div id="accountTitle">E L E V A T E M E</div>
+	<div id="accountLogin" class="active" onclick="accountLogin(event)">Login</div>
+	<div id="accountSignUp" onclick="accountSignUp(event)">Create Account</div>
 	<input type="text" id="user" placeholder="Username">
 	<input type="password" id="password" placeholder="Password">
-	<div id="accountLogin" onclick="accountLogin()">LOGIN</div>
-	<input type="text" id="newAccountUser" class="signUp hidden" placeholder="Username">
-	<input type="password" id="newAccountPassword" class="signUp hidden" placeholder="Password">
-	<input type="text" id="newAccountEmail" class="signUp hidden" placeholder="Email">
-	<div id="accountSignUp" onclick="accountSignUp(event)">CREATE ACCOUNT</div>
-	<div id="spotifyLogin"><div>Sync Spotify</div></div>
+	<input type="text" id="email" class="signUp inactive" placeholder="Email">
 </div>

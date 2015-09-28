@@ -1,16 +1,14 @@
-<div id="videos">
   <% songs.forEach(function(song) { %>
-  <div id="s<%= song.attributes.id %>" class="block" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
+  <div id="s<%= song.attributes.id %>" class="block inactive" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
     <img src="http://img.youtube.com/vi/<%=song.attributes.vid %>/0.jpg" class="list song"/>
     <div class="description">
       <span class="name"><%=song.attributes.name %></span>
       <span class="artist"><%=song.attributes.artist %></span>
-      <span class="glyphicon glyphicon-play-circle"></span>
+      <span class="glyphicon glyphicon-play"></span>
       <% if(session.admin == 1) { %>
-      <div class="remove" data-click="0">-</div>
+      <div class="remove" data-click="0" onclick="removeBlock(event)">-</div>
       <% } %>
-
     </div>
   </div>
   <% }); %>
-</div>
+  <div id="pageSelection"><div id="pageNumber">1</div></div>

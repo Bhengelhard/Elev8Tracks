@@ -1,32 +1,79 @@
 <!doctype html>
 <html>
   <head>
-  	<link rel="stylesheet" href="/css/home.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/jquery-ui.min.css" rel="stylesheet">
   	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src='/js/spotify.js'></script>
+    <script src='/js/transitions.js'></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src='/js/google.js'></script>
     <script src='/js/jquery.easing.compatibility.js'></script>
+    <script src='/js/videoPlayer.js'></script>
+    <script src='/js/search.js'></script>
+    <script src='/js/admin.js'></script>
     <script src='/js/home.js'></script>
     <title>Home</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css" rel="stylesheet">
   </head>
   <script></script>
   <body>
     <div id="navbar">
-      <div id="selector"></div>
-      <div id="myListsToggle"><span class="glyphicon glyphicon-menu-right"></span></div>
-      <div id="myLists" class="nav">MY LISTS</div>
-      <div id="lists" class="nav">LISTS</div>
-      <div id="title">E  L  E  V  A  T  E</div>
-      <div id="songs" class="nav">Search</div>
-      <div id="blog" class="nav">BLOG</div>
+      <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
+      <div id="title" class="nav selected active"><div class="navSelection"></div>E L E V A T E</div>
+      <div id="videoSearcherWrapper">
+        <input type="text" id="videoSearcher" placeholder="S e a r c h">
+        <div id="vsort">
+          <div class="vtitle">SORT</div>
+          <div id="vitemRelevant" class="vItem query" data-search="relevance">
+            <div class="checkItem"></div>
+            <div class="itemName">Relevance</div>
+          </div>
+          <div id="vitemPopular" class="vItem searched query" data-search="likes">
+            <div class="checkItem"></div>
+            <div class="itemName">Popularity</div>
+          </div>
+          <div id="vitemNewest" class="vItem query" data-search="created_at">
+            <div class="checkItem"></div>
+            <div class="itemName">Newest</div>
+          </div>
+        </div>
+        <div id="vfilter">
+          <div class="vtitle">FILTER</div>
+          <div id="vitemMyArtists" class="vItem query" data-search="myArtists">
+            <div class="checkItem"></div>
+            <div class="itemName">My Artists</div>
+          </div>
+          <div id="vitemStaff" class="vItem query" data-search="staff">
+            <div class="checkItem"></div>
+            <div class="itemName">Staff Picks</div>
+          </div>
+        </div>
+        <div id="vsearch">
+          <div class="vtitle">SEARCH</div>
+          <div id="vitemSongs" class="vItem searched query" data-search="name">
+            <div class="checkItem"></div>
+            <div class="itemName">Songs</div>
+          </div>
+          <div id="vitemArtists" class="vItem searched query" data-search="artist">
+            <div class="checkItem"></div>
+            <div class="itemName">Artists</div>
+          </div>
+          <div id="vitemTags" class="vItem query" data-search="tags">
+            <div class="checkItem"></div>
+            <div class="itemName">Tags</div>
+          </div>
+        </div>
+        <div class="navSelection"></div>
+      </div>
+      <% include myListsNav %>
+      <!-- <div id="songs" class="nav">Search</div>
+      <div id="blog" class="nav">BLOG</div> -->
     </div>
     <div id="content">
-      <% include lists %>
+      <% include home %>
     </div>
     <div id="listDetails" class="hidden">
       <div id="listTitle"></div>
@@ -38,22 +85,33 @@
         <div id='buffer'></div>
       </div>
     </div>
-    <div id="player" data-vid="-"><div id="videoPlayer"></div>
-      <div class="hidePlayer"><span class="glyphicon glyphicon-menu-down"></span></div>
+    <div id="player" data-vid="-" data-vidno="-" data-lid=""><div id="videoPlayer"></div>
       <div id="controls">
-        <span class="glyphicon glyphicon-menu-up"></span>
+        <div id="playerExpand">
+          <span class="glyphicon glyphicon-menu-up"></span>
+          <div id="playingName"></div>
+        </div>
+        <div id="playToggleSelection"></div>
         <div id="playToggle">
           <span class="glyphicon glyphicon-pause"></span>
           <span class="glyphicon glyphicon-play"></span>
         </div>
-        <div id="playingName"></div>
-        <div id="controlFade"></div>
       </div>
+      <div id="playercover" class="playerOptions">
+        <div id="songPlaylist">Show Playlist</div>
+        <div id="songTitle"></div>
+        <div id="songArtist"></div>
+        <div id="shuffle"><span class="glyphicon glyphicon-random"></span></div>
+        <div id="repeat" class="active"><span class="glyphicon glyphicon-repeat"></span></div>
+      </div>
+      <div id="playerCollapse" class="playerOptions"><span class="glyphicon glyphicon-menu-down"></span></div>
+      <div id="nextSong" class="playerOptions"><span class="glyphicon glyphicon-menu-right"></span></div>
+      <div id="previousSong" class="playerOptions"><span class="glyphicon glyphicon-menu-left"></span></div>
     </div>
     <div id="userSaveLists"></div>
-    <div id="constructionBlock">
+    <!-- <div id="constructionBlock">
       <span class="glyphicon glyphicon-wrench"></span>
       <div id="constructionTitle">The Site is under Construction. Login to Help.</div>
       <input type="password" id="inputPassword" placeholder="Password">
-    </div>
+    </div> -->
 </html>
