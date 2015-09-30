@@ -314,7 +314,7 @@ function showList(el) {
         success:function(res) {
         	var song;
         	var songs = [];
-        	var order = res.list.order.split(',');
+        	var order = res.list.the_order.split(',');
         	for(var i = 0; i < order.length; i++) {
         		console.log(order[i]);
         		res.m.forEach(function(video) {

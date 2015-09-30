@@ -145,8 +145,6 @@ exports.videoSearch = function(req, res) {
 			sql2 += ' AND ' + filter[j] + "=1";
 		}
 	}
-	console.log(req.body.offset);
-	console.log(req.body.limit);
 	Song.collection().query(function(search) {
 		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'desc');
 	}).fetch()
@@ -219,7 +217,7 @@ exports.deleteSong = function(req, res) {
 		song.save({lists: lists}, {patch: true});
 		new Playlist({id: req.body.lid}).fetch({require: true})
 		.then(function(list) {
-			list.save({order: req.body.order}, {patch: true});
+			list.save({the_order: req.body.order}, {patch: true});
 			res.send(200, {});
 		});
 	})
@@ -317,7 +315,7 @@ exports.addSong = function(req, res) {
 		var order = m.attributes.order + req.body.vid + ',';
 		//var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
 		//var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
-		m.save({thumbnail: thumbnail, order: order}, {patch: true});
+		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
 		new Song({vid: req.body.vid}).fetch({require: true})
 			.then(function(song) {
 				var lists = song.attributes.lists + req.body.lid + ',';
@@ -333,7 +331,7 @@ exports.updateListOrder = function(req, res) {
 	new Playlist({id: req.body.lid}).fetch({require: true})
 	.then(function(m) {
 		var thumbnail = req.body.order.split(',')[0];
-		m.save({thumbnail: thumbnail, order: req.body.order},{patch: true});
+		m.save({thumbnail: thumbnail, the_order: req.body.order},{patch: true});
 		res.send(200, {});
 	}).catch(function(e) {
 		res.send(400,{});
