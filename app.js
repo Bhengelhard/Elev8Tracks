@@ -4,6 +4,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
 var bodyParser = require('body-parser');
+var session = require('express-session')
 
 var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
 var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
@@ -15,7 +16,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'))
 app.use(cookieParser());
-app.use(expressSession({secret: '1234567890QWERTY'}));
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 // app.use(express.json());
