@@ -20,7 +20,7 @@
   </head>
   <script></script>
   <body>
-    <div id="navbar">
+    <div id="navbar" class="home">
       <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
       <div id="title" class="nav selected active"><div class="navSelection"></div>E L E V A T E</div>
       <div id="videoSearcherWrapper">
@@ -28,41 +28,33 @@
         <div id="vsort">
           <div class="vtitle">SORT</div>
           <div id="vitemRelevant" class="vItem query" data-search="relevance">
-            <div class="checkItem"></div>
             <div class="itemName">Relevance</div>
           </div>
           <div id="vitemPopular" class="vItem searched query" data-search="likes">
-            <div class="checkItem"></div>
             <div class="itemName">Popularity</div>
           </div>
           <div id="vitemNewest" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
             <div class="itemName">Newest</div>
           </div>
         </div>
         <div id="vfilter">
           <div class="vtitle">FILTER</div>
           <div id="vitemMyArtists" class="vItem query" data-search="myArtists">
-            <div class="checkItem"></div>
             <div class="itemName">My Artists</div>
           </div>
           <div id="vitemStaff" class="vItem query" data-search="staff">
-            <div class="checkItem"></div>
             <div class="itemName">Staff Picks</div>
           </div>
         </div>
         <div id="vsearch">
           <div class="vtitle">SEARCH</div>
           <div id="vitemSongs" class="vItem searched query" data-search="name">
-            <div class="checkItem"></div>
             <div class="itemName">Songs</div>
           </div>
           <div id="vitemArtists" class="vItem searched query" data-search="artist">
-            <div class="checkItem"></div>
             <div class="itemName">Artists</div>
           </div>
           <div id="vitemTags" class="vItem query" data-search="tags">
-            <div class="checkItem"></div>
             <div class="itemName">Tags</div>
           </div>
         </div>
@@ -85,7 +77,7 @@
         <div id='buffer'></div>
       </div>
     </div>
-    <div id="player" data-vid="-" data-vidno="-" data-lid=""><div id="videoPlayer"></div>
+    <div id="player" data-vid="-" data-vidno="-" data-lid="" class="home"><div id="videoPlayer"></div>
       <div id="controls">
         <div id="playerExpand">
           <span class="glyphicon glyphicon-menu-up"></span>

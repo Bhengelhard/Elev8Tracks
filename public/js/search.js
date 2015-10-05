@@ -98,38 +98,29 @@ function buildSongs(m, name, lid) {
 	return $html;
 }
 
-// function loadMoreAppend(res) {
-// 	console.log($('#loadMore'));
-// 	$('#loadMore').remove();
-// 	var n = 0;
-// 	var time = 0;
-// 	$('#videos').append(res);
-// 	$('.block').css('display','block');
-// 	$('.block.inactive').each(function(event) {
-// 		time = (n%5)*50 + Math.floor(n/5)*50;
-// 		var $block = $(this);
-// 		setTimeout(function() {
-// 			$block.removeClass('inactive');
-// 		},time);
-// 		n++;
-// 	});
-// 	currentlyPlaying($('#player').attr('data-vid'));
-// 	if($('.block').length%50 == 0) {
-// 		$('#videos').append($('<div id="loadMore" onclick="loadMoreVideos()">L o a d M o r e</div>'));
-// 	}
-// }
-
-// function searchDBappend(params) {
-// 	$.ajax({
-// 		url: "/videoSearch",
-//         type: "post",
-//         dataType: "json",
-//         data: JSON.stringify({sval: params[3], searchParams: params[0], filterParams: params[1], sortParams: params[2], offset: params[4][0], limit:params[4][1]}),
-//         contentType: "application/json",
-//         cache: false,
-//         timeout: 5000,
-//         success:function(res) {
-//         	loadMoreAppend(res.html);
-//         }
-//     });
-// }
+function homeSearchParams() {
+	params = [];
+	var searchParams = '';
+	$('#searchDrop').find('.searched').each(function() {
+		searchParams += $(this).attr('data-search') + ',';
+	});
+	searchParams = searchParams.substring(0,searchParams.length-1);
+	params.push(searchParams);
+	var filterParams = '';
+	$('#filterDrop').find('.searched').each(function() {
+		filterParams += $(this).attr('data-search') + ',';
+	});
+	filterParams = filterParams.substring(0,filterParams.length-1);
+	params.push(filterParams);
+	var sortParams = '';
+	$('#sortDrop').find('.searched').each(function() {
+		sortParams += $(this).attr('data-search') + ',';
+	});
+	sortParams = sortParams.substring(0,sortParams.length-1);
+	params.push(sortParams);
+	var sval = $('#findVideosText').val();
+	params.push(sval);
+	var limits = [0,75];
+	params.push(limits);
+	return params;
+}

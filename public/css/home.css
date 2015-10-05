@@ -467,8 +467,7 @@ body {
 	background-color: rgba(0,0,0,0.5);
     border: none;
 } #navbar.home {
-	background-color: transparent;
-    border: none;
+	display: none;
 } #navbar.home #videoSearcherWrapper {
 	display: none;
 } .selected .navSelection {
@@ -541,8 +540,9 @@ body {
 }
 .criteriaType {
 	position: relative;
-	float:left;
-	width: 130px;
+	background-color:transparent;
+	margin-bottom: 10px;
+	display: inline-block;
 }
 
 
@@ -734,19 +734,20 @@ body {
 	background-color: #000;
 }
 .vtitle {
-	padding: 15px;
+	padding: 10px;
 	text-align: center;
+	display:inline-block;
 } .vItem {
 	width: auto;
-	overflow: hidden;
 	position:relative;
 	padding: 10px 10px 10px 10px;
     background-color: transparent;
     cursor: default;
+    display: inline-block;
 } .vItem:hover, .vItem.active {
 	background-color: rgba(255,255,255,.5);
-} .vItem.searched .checkItem {
-	background-color: #fff;
+} .vItem.searched {
+	background-color: #ff4400;
 } .checkItem {
 	width: 1.5vw;
 	height: 1.5vw;
@@ -1773,16 +1774,16 @@ position: absolute;
 
 #vidPlayer {
 	position: fixed;
-    top: 0px;
+    top: -25%;
     left: 0px;
     width: 100%;
-    height: 100%;
-} #vidPlayer iframe {
+    height: 150%;
+} #vidPlayer img {
 	position: absolute;
-    left: -10%;
-    width: 120%;
-    height: 130%;
-    top: -10%;
+    left: 0%;
+    min-width:100%;
+    min-height:100%;
+    top: 0%;
 } #vidPlayerCover {
 	position: absolute;
     top: 0px;
@@ -1790,40 +1791,80 @@ position: absolute;
     width: 100%;
     height: 100%;
     background-color: #000;
-    opacity: .7;
+    opacity: .6;
 } 
 
 #searchCriteria {
 	position: absolute;
-    width: 520px;
-    left: 50%;
-    margin-left: -260px;
+    left: 5%;
     text-align: center;
     color: #fff;
     top: 40%;
     padding-bottom:100px;
     text-align: left;
+    margin-top: 80px;
 } #findVideos {
 	-webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
     -ms-transition: all .1s ease;
     -o-transition: all .1s ease;
     transition: all .1s ease;
-	position: absolute;
-    left: 50%;
-    margin-left: -80px;
-    font-size: 20px;
+    position: absolute;
+    left: 5%;
+    font-size: 60px;
     font-weight: 100;
-    width: 160px;
-    background-color: #ff4400;
+    background-color: transparent;
     text-align: center;
     padding: 10px 10px 10px 10px;
     color: #fff;
     top: 40%;
-    margin-top: -100px;
+    margin-top: -130px;
     cursor: default;
 } #findVideos:hover {
 	background-color: #b33000;
 } #findVideos:active {
 	border-radius: 50px;
+} #searchVideos {
+	padding: 10px;
+    display: inline-block;
+    border: 2px solid #fff;
+    cursor: default;
+    margin:10px;
+} #searchVideos:hover {
+	background-color: rgba(255,255,255,.5);
+} #searchVideos:active {
+	background-color: #ff4400
+} #findVideosText {
+	position: absolute;
+    top: 40%;
+    margin-top: -25px;
+    margin-left: 10px;
+    left: 5%;
+    width: 500px;
+    height: 40px;
+    background-color: transparent;
+    border: 2px solid #fff;
+    padding-left:10px;
+    color: #fff;
+} #findVideosText::-webkit-input-placeholder {
+   color: #fff;
+}
+
+#findVideosText:-moz-placeholder { /* Firefox 18- */
+   color: #fff;  
+}
+
+#findVideosText::-moz-placeholder {  /* Firefox 19+ */
+   color: #fff;  
+}
+
+#findVideosText:-ms-input-placeholder {  
+   color: #fff;  
+} #findVideosOr {
+	position: absolute;
+    color: #fff;
+    top: 40%;
+    margin-top: 40px;
+    margin-left: 40px;
+    left: 5%;
 }

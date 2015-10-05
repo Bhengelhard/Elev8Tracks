@@ -7,6 +7,8 @@ var prevHTML;
 
 $(document).ready(function() {
 
+	$('#vidBackground').prop('volume',0);
+
 	spotify();
 	$(document).on("click","#spotifyLogin div", function() {
         window.location.href = '/login';
@@ -87,6 +89,21 @@ $(document).ready(function() {
     	var params = searchParams();
 		searchDB(params);
     });
+    $('.vItem').click(function() {
+    	var criteria = $(this).closest('.criteriaType').attr('id');
+    	console.log(criteria)
+    	switch(criteria) {
+    		case 'genreDrop':
+    		case 'filterDrop':
+    		case 'searchDrop':
+    			$(this).toggleClass('searched');
+    			break;
+    		default:
+    			$(this).closest('.criteriaType').children().removeClass('searched');
+    			$(this).toggleClass('searched');
+    			break;
+    	}
+    });
 
     $(window).scroll(function() {
 	   if($('#content').scrollTop() == $('#content').height()) {
@@ -145,6 +162,13 @@ $(document).ready(function() {
         	videoEnter($html, time);
 		currentlyPlaying($('#player').attr('data-vid'));
 	});
+
+	$('#searchVideos').click(function() {
+		$('#navbar').removeClass('home');
+		$('#player').removeClass('home');
+		var params = homeSearchParams();
+		searchDB(params);
+	})
 });
 
 function nav(e) {

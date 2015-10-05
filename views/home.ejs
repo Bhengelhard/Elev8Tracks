@@ -1,85 +1,73 @@
+<div id="finder">
 <div id="vidPlayer">
-  <iframe
-  src="http://www.youtube.com/embed/oLpswbCMtKU?autoplay=1">
-  </iframe>
-  <div id="vidPlayerCover"></div>
+    <img src="images/muramasa.gif">
+  /*<div id="vidPlayerCover"></div>*/
 </div>
-<div id="findVideos">FIND VIDEOS</div>
+<div id="findVideos">E L E V A T E</div>
+<input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>
+<div id="findVideosOr">- OR BROWSE -</div>
 <div id="searchCriteria">
         <div id="genreDrop" class="criteriaType">
-          <div class="vtitle">GENRE</div>
-          <div id="vDance" class="vItem query" data-search="relevance">
-            <div class="checkItem"></div>
+        <div class="vtitle">GENRE:</div>
+          <div id="vDance" class="vItem" data-search="relevance">
             <div class="itemName">Dance</div>
           </div>
-          <div id="vDubstep" class="vItem searched query" data-search="likes">
-            <div class="checkItem"></div>
+          <div id="vDubstep" class="vItem searched" data-search="likes">
             <div class="itemName">Dubstep</div>
           </div>
-          <div id="vElectronic" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vElectronic" class="vItem" data-search="created_at">
             <div class="itemName">Electronic</div>
           </div>
-          <div id="vExperimental" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vExperimental" class="vItem" data-search="created_at">
             <div class="itemName">Experimental</div>
           </div>
-          <div id="vChill" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vChill" class="vItem" data-search="created_at">
             <div class="itemName">Chill</div>
           </div>
-          <div id="vRap" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vRap" class="vItem" data-search="created_at">
             <div class="itemName">Hip-Hop/Rap</div>
           </div>
-          <div id="vComedy" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vComedy" class="vItem" data-search="created_at">
             <div class="itemName">Comedy</div>
           </div>
-          <div id="vAlternative" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vAlternative" class="vItem" data-search="created_at">
             <div class="itemName">Alternative</div>
           </div>
         </div>
+        <br>
   <div id="sortDrop" class="criteriaType">
-          <div class="vtitle">SORT</div>
-          <div id="vitemRelevant" class="vItem query" data-search="relevance">
-            <div class="checkItem"></div>
+          <div class="vtitle">SORT BY:</div>
+          <div id="vitemRelevant" class="vItem" data-search="relevance">
             <div class="itemName">Relevance</div>
           </div>
-          <div id="vitemPopular" class="vItem searched query" data-search="likes">
-            <div class="checkItem"></div>
+          <div id="vitemPopular" class="vItem searched" data-search="likes">
             <div class="itemName">Popularity</div>
           </div>
-          <div id="vitemNewest" class="vItem query" data-search="created_at">
-            <div class="checkItem"></div>
+          <div id="vitemNewest" class="vItem" data-search="created_at">
             <div class="itemName">Newest</div>
           </div>
         </div>
+        <br>
         <div id="filterDrop" class="criteriaType">
-          <div class="vtitle">FILTER</div>
-          <div id="vitemMyArtists" class="vItem query" data-search="myArtists">
-            <div class="checkItem"></div>
-            <div class="itemName">My Artists</div>
-          </div>
-          <div id="vitemStaff" class="vItem query" data-search="staff">
-            <div class="checkItem"></div>
+          <div class="vtitle">FILTER:</div>
+          <div id="vitemStaff" class="vItem" data-search="staff">
             <div class="itemName">Staff Picks</div>
           </div>
         </div>
+        <br>
         <div id="searchDrop" class="criteriaType">
-          <div class="vtitle">SEARCH</div>
-          <div id="vitemSongs" class="vItem searched query" data-search="name">
-            <div class="checkItem"></div>
+          <div class="vtitle">SEARCH:</div>
+          <div id="vitemSongs" class="vItem searched" data-search="name">
             <div class="itemName">Songs</div>
           </div>
-          <div id="vitemArtists" class="vItem searched query" data-search="artist">
-            <div class="checkItem"></div>
+          <div id="vitemArtists" class="vItem searched" data-search="artist">
             <div class="itemName">Artists</div>
           </div>
-          <div id="vitemTags" class="vItem query" data-search="tags">
-            <div class="checkItem"></div>
-            <div class="itemName">Tags</div>
+          <div id="vitemTags" class="vItem" data-search="tags">
+            <div class="itemName">Playlists</div>
           </div>
         </div>
+        <br>
+        <div id="searchVideos">Search Videos</div>
+</div>
 </div>
