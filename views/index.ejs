@@ -18,43 +18,65 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/home.css" rel="stylesheet">
   </head>
-  <script></script>
+  <script>
+ (function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = 'http://assets.gfycat.com/js/gfyajax-0.517d.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+</script>
   <body>
     <div id="navbar" class="home">
       <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
       <div id="title" class="nav selected active"><div class="navSelection"></div>E L E V A T E</div>
       <div id="videoSearcherWrapper">
         <input type="text" id="videoSearcher" placeholder="S e a r c h">
-        <div id="vsort">
-          <div class="vtitle">SORT</div>
-          <div id="vitemRelevant" class="vItem query" data-search="relevance">
+        <div id="vgenre" class="criteriaType">
+          <div class="dtitle">GENRE</div>
+          <div id="vRap" class="dItem query" data-search="relevance">
+            <div class="itemName">Hip-Hop/Rap</div>
+          </div>
+          <div id="vAlternative" class="dItem searched query" data-search="likes">
+            <div class="itemName">Alternative</div>
+          </div>
+          <div id="vJazz" class="dItem query" data-search="created_at">
+            <div class="itemName">Jazz</div>
+          </div>
+          <div id="vElectronic" class="dItem query" data-search="created_at">
+            <div class="itemName">Electronic</div>
+          </div>
+        </div>
+        <div id="vsort" class="criteriaType">
+          <div class="dtitle">SORT</div>
+          <div id="vitemRelevant" class="dItem query" data-search="relevance">
             <div class="itemName">Relevance</div>
           </div>
-          <div id="vitemPopular" class="vItem searched query" data-search="likes">
+          <div id="vitemPopular" class="dItem searched query" data-search="likes">
             <div class="itemName">Popularity</div>
           </div>
-          <div id="vitemNewest" class="vItem query" data-search="created_at">
+          <div id="vitemNewest" class="dItem query" data-search="created_at">
             <div class="itemName">Newest</div>
           </div>
         </div>
-        <div id="vfilter">
-          <div class="vtitle">FILTER</div>
-          <div id="vitemMyArtists" class="vItem query" data-search="myArtists">
+        <div id="vfilter" class="criteriaType">
+          <div class="dtitle">FILTER</div>
+          <div id="vitemMyArtists" class="dItem query" data-search="myArtists">
             <div class="itemName">My Artists</div>
           </div>
-          <div id="vitemStaff" class="vItem query" data-search="staff">
+          <div id="vitemStaff" class="dItem query" data-search="staff">
             <div class="itemName">Staff Picks</div>
           </div>
         </div>
-        <div id="vsearch">
-          <div class="vtitle">SEARCH</div>
-          <div id="vitemSongs" class="vItem searched query" data-search="name">
+        <div id="vsearch" class="criteriaType">
+          <div class="dtitle">SEARCH</div>
+          <div id="vitemSongs" class="dItem searched query" data-search="name">
             <div class="itemName">Songs</div>
           </div>
-          <div id="vitemArtists" class="vItem searched query" data-search="artist">
+          <div id="vitemArtists" class="dItem searched query" data-search="artist">
             <div class="itemName">Artists</div>
           </div>
-          <div id="vitemTags" class="vItem query" data-search="tags">
+          <div id="vitemTags" class="dItem query" data-search="tags">
             <div class="itemName">Tags</div>
           </div>
         </div>

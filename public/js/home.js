@@ -78,31 +78,24 @@ $(document).ready(function() {
     	$('.selected').removeClass('selected');
     	$('#videoSearcherWrapper').addClass('selected');
     });
-    $('.query').click(function(e) {
-    	if($(e.target).closest('#vsort').length > 0) {
-    		console.log('vsort');
-    		$('#vsort').find('.searched').removeClass('searched');
-    		$(e.target).closest('.query').addClass('searched');
-    	} else {
-    		$(e.target).closest('.query').toggleClass('searched');
-    	}
-    	var params = searchParams();
-		searchDB(params);
-    });
-    $('.vItem').click(function() {
+    $('.vItem').add('.dItem').click(function() {
     	var criteria = $(this).closest('.criteriaType').attr('id');
-    	console.log(criteria)
+    	console.log(criteria);
     	switch(criteria) {
-    		case 'genreDrop':
-    		case 'filterDrop':
-    		case 'searchDrop':
-    			$(this).toggleClass('searched');
-    			break;
-    		default:
+    		case 'sortDrop':
+    		case 'vsort':
     			$(this).closest('.criteriaType').children().removeClass('searched');
     			$(this).toggleClass('searched');
     			break;
+    		default:
+    			console.log($(this));
+    			$(this).toggleClass('searched');
+    			break;
     	}
+    });
+    $('.query').click(function(e) {
+    	var params = searchParams();
+		searchDB(params);
     });
 
     $(window).scroll(function() {
