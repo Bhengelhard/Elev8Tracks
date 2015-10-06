@@ -1845,10 +1845,6 @@ position: absolute;
     top: 40%;
     margin-top: -130px;
     cursor: default;
-} #findVideos:hover {
-	background-color: #b33000;
-} #findVideos:active {
-	border-radius: 50px;
 } #searchVideos {
 	padding: 10px;
     display: inline-block;
