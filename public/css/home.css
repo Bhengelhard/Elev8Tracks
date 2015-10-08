@@ -1147,22 +1147,24 @@ body {
 	position: absolute;
 	left: 50%;
 	margin-left: -25px;
-	top: 20%;
+	top: 50%;
+} #constructionBlock video {
+	position: absolute;
+	top:-40%;
+} #constructionBlock #vidPlayerCover {
+	opacity: .8;
 } #inputPassword {
 	position: absolute;
 	left: 50%;
 	width: 200px;
-	top: 20%;
+	top: 50%;
 	margin-left: -100px;
 	margin-top: 100px;
 	text-align: center;
-	background-color: #000;
-	border-top: 2px solid #303030;
-	border-bottom: 2px solid #303030;
+	background-color: transparent;
+	border: 2px solid #fff;
 	color: #fff;
 	font-size: 18px;
-	border-left: none;
-	border-right: none;
 	font-family: "Neou-Thin";
 	padding-top: 5px;
 } #constructionBlock #constructionTitle {
@@ -1170,11 +1172,22 @@ body {
 	left: 50%;
 	width: 500px;
 	text-align: center;
-	top: 20%;
+	top: 50%;
 	margin-top:70px;
 	margin-left: -250px;
 	color: #fff;
 	font-family: "Neou-Thin";
+} #constructionBlock #constructionBlockTitle {
+	position: absolute;
+    color: #fff;
+    font-size: 150px;
+    font-weight: 100;
+    width: 1000px;
+    text-align: center;
+    left: 50%;
+    margin-left: -500px;
+    top: 50%;
+    margin-top: -200px;
 }
 
 #account {
