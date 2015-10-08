@@ -1,6 +1,7 @@
 var listParams = [];
 
 function searchDB(params) {
+	console.log(params);
 	$('#navbar').removeClass('home');
 	$('#userListsNav').removeClass('home');
 	$('#player').removeClass('home');
@@ -8,7 +9,7 @@ function searchDB(params) {
 		url: "/videoSearch",
         type: "post",
         dataType: "json",
-        data: JSON.stringify({sval: params[3], searchParams: params[0], filterParams: params[1], sortParams: params[2], offset: params[4][0], limit:params[4][1]}),
+        data: JSON.stringify({sval: params[4], searchParams: params[0], filterParams: params[1], sortParams: params[2], genreParams: params[3], offset: params[5][0], limit:params[5][1]}),
         contentType: "application/json",
         cache: false,
         timeout: 5000,
@@ -52,10 +53,17 @@ function searchParams() {
 	});
 	sortParams = sortParams.substring(0,sortParams.length-1);
 	params.push(sortParams);
+	var genreParams = '';
+	$('#vgenre').find('.searched').each(function() {
+		genreParams += $(this).attr('data-search') + ',';
+	});
+	genreParams = genreParams.substring(0,sortParams.length-1);
+	params.push(genreParams);
 	var sval = $('#videoSearcher').val();
 	params.push(sval);
 	var limits = [0,75];
 	params.push(limits);
+	console.log(params);
 	return params;
 }
 
@@ -118,6 +126,12 @@ function homeSearchParams() {
 	});
 	sortParams = sortParams.substring(0,sortParams.length-1);
 	params.push(sortParams);
+	var genreParams = '';
+	$('#genreDrop').find('.searched').each(function() {
+		genreParams += $(this).attr('data-search') + ',';
+	});
+	genreParams = genreParams.substring(0,sortParams.length-1);
+	params.push(genreParams);
 	var sval = $('#findVideosText').val();
 	params.push(sval);
 	var limits = [0,75];

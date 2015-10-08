@@ -1837,10 +1837,10 @@ position: absolute;
     left: 5%;
     text-align: center;
     color: #fff;
-    top: 40%;
-    padding-bottom:100px;
+    top: 0%;
+    padding-bottom: 100px;
     text-align: left;
-    margin-top: 80px;
+    margin-top: 190px;
 } #findVideos {
 	-webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
@@ -1855,8 +1855,7 @@ position: absolute;
     text-align: center;
     padding: 10px 10px 10px 10px;
     color: #fff;
-    top: 40%;
-    margin-top: -130px;
+    top: 0%
     cursor: default;
 } #searchVideos {
 	padding: 10px;
@@ -1870,8 +1869,8 @@ position: absolute;
 	background-color: #ff4400
 } #findVideosText {
 	position: absolute;
-    top: 40%;
-    margin-top: -25px;
+    top: 0%;
+    margin-top: 100px;
     margin-left: 10px;
     left: 5%;
     width: 500px;
@@ -1882,6 +1881,13 @@ position: absolute;
     color: #fff;
 } #findVideosText::-webkit-input-placeholder {
    color: #fff;
+} #finder {
+	position: absolute;
+    top: 50%;
+    left: 5%;
+    width: 1000px;
+    height: 500px;
+    margin-top: -250px;
 }
 
 #findVideosText:-moz-placeholder { /* Firefox 18- */
@@ -1897,8 +1903,8 @@ position: absolute;
 } #findVideosOr {
 	position: absolute;
     color: #fff;
-    top: 40%;
-    margin-top: 40px;
+    top: 0%;
+    margin-top: 160px;
     margin-left: 40px;
     left: 5%;
 }
