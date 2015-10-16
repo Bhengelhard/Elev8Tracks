@@ -18,14 +18,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/home.css" rel="stylesheet">
   </head>
-  <script>
- (function(d, t) {
-    var g = d.createElement(t),
-        s = d.getElementsByTagName(t)[0];
-    g.src = 'http://assets.gfycat.com/js/gfyajax-0.517d.js';
-    s.parentNode.insertBefore(g, s);
-}(document, 'script'));
-</script>
   <body>
     <div id="navbar" class="home">
       <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
@@ -34,16 +26,16 @@
         <input type="text" id="videoSearcher" placeholder="S e a r c h">
         <div id="vgenre" class="criteriaType">
           <div class="dtitle">GENRE</div>
-          <div id="vRap" class="dItem query" data-search="Rap">
+          <div id="vRap" class="dItem query" data-search="relevance">
             <div class="itemName">Hip-Hop/Rap</div>
           </div>
-          <div id="vAlternative" class="dItem searched query" data-search="alternative">
+          <div id="vAlternative" class="dItem searched query" data-search="likes">
             <div class="itemName">Alternative</div>
           </div>
-          <div id="vJazz" class="dItem query" data-search="jazz">
+          <div id="vJazz" class="dItem query" data-search="created_at">
             <div class="itemName">Jazz</div>
           </div>
-          <div id="vElectronic" class="dItem query" data-search="electronic">
+          <div id="vElectronic" class="dItem query" data-search="created_at">
             <div class="itemName">Electronic</div>
           </div>
         </div>
@@ -123,14 +115,9 @@
       <div id="previousSong" class="playerOptions"><span class="glyphicon glyphicon-menu-left"></span></div>
     </div>
     <div id="userSaveLists"></div>
-    <div id="constructionBlock">
-      <video autoplay loop muted>
-        <source src="images/muramasa1.mp4" type="video/mp4">
-      </video>
-      <div id="vidPlayerCover"></div>
-      <div id="constructionBlockTitle">E L E V A T E</div>
+    <!-- <div id="constructionBlock">
       <span class="glyphicon glyphicon-wrench"></span>
       <div id="constructionTitle">The Site is under Construction. Login to Help.</div>
       <input type="password" id="inputPassword" placeholder="Password">
-    </div>
+    </div> -->
 </html>

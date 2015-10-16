@@ -15,7 +15,7 @@ function searchDB(params) {
         timeout: 5000,
         success:function(res) {
         	var time = transition();
-        	videoEnter(res.html, time, params[4][0]);
+        	videoEnter(res.html, time, params[5][0]);
         }
     });
 }

@@ -12,7 +12,7 @@ exports.index = function(req, res) {
 			}).fetch()
 			.then(function(lists) {
 				res.render('index', {blogs: blogs, user: req.session.user, lists: lists});
-			})
+			});
 		});
 };
 exports.index2 = function(req, res) {
@@ -61,10 +61,6 @@ exports.myLists = function(req, res) {
 }
 
 exports.storeSong = function(req, res) {
-	// var id = req.params.data.split('&')[0];
-	// var name = req.params.data.split('&')[1];
-	// var artist = req.params.data.split('&')[2];
-	//var time = Date.now();
 	var time = new Date().toISOString().substr(0, 19).replace('T', ' ');
 	new Song({vid: req.body.vid}).fetch({require: true})
 		.then(function(m) {
@@ -77,20 +73,6 @@ exports.storeSong = function(req, res) {
 }
 
 exports.storeBlog = function(req, res) {
-	// var id = req.params.data.split(']&[')[0];
-	// var name = req.params.data.split(']&[')[1];
-	// var artist = req.params.data.split(']&[')[2];
-	// var director = req.params.data.split(']&[')[3];
-	// var text = req.params.data.split(']&[')[4];
-	// var stamp = req.params.data.split(']&[')[5];
-	// var al = req.params.data.split(']&[')[6];
-	// var dl = req.params.data.split(']&[')[7];
-	// while(al.indexOf('^^') > -1) {
-	// 	al = al.replace('^^','/');
-	// }
-	// while(dl.indexOf('^^') > -1) {
-	// 	dl = dl.replace('^^','/');
-	// }
 	new Blog({vid: req.body.id}).fetch({require: true})
 		.then(function(m) {
 			m.save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
@@ -145,8 +127,9 @@ exports.videoSearch = function(req, res) {
 			sql2 += ' AND ' + filter[j] + "=1";
 		}
 	}
+	//where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit)
 	Song.collection().query(function(search) {
-		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'desc');
+		search.orderBy(req.body.sortParams, 'desc');
 	}).fetch()
 	.then(function(m) {
 		//res.send(m);
@@ -154,25 +137,6 @@ exports.videoSearch = function(req, res) {
 			res.send({html: model});
 		});
 	});
-	// if(req.body.sval == '') {
-	// 	Song.collection().fetch()
-	// 	.then(function(m) {
-	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 			res.send({html: model});
-	// 		});
-	// 	});
-	// } else {
-	// 	var ss = '% ' + req.body.sval + '%';
-	// 	var ss2 = req.body.sval + '%';
-	// 	Song.collection().query(function(search) {
-	// 		search.where('name', 'LIKE', ss).orWhere('name','LIKE', ss2).orWhere('artist', 'LIKE', ss).orWhere('artist', 'LIKE', ss2).limit(25);
-	// 	}).fetch()
-	// 		.then(function(m) {
-	// 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 				res.send({html: model});
-	// 			});
-	// 		});
-	// }
 }
 
 exports.login = function(req, res) {
