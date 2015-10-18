@@ -114,19 +114,19 @@ exports.videoSearch = function(req, res) {
 	var sql2 = '(';
 	var search = req.body.searchParams.split(',');
 	for(var i = 0; i < search.length; i++) {
-		sql += ' ' + search[i] + " LIKE '" + req.body.sval + "%' OR";
-		sql2 += ' ' + search[i] + " LIKE '% " + req.body.sval + "%' OR";
+		sql += ' lower(' + search[i] + ") LIKE '" + req.body.sval + "%' OR";
+		sql2 += ' lower(' + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
 	}
 	sql = sql.substring(0, sql.length - 3) + ')';
 	sql2 = sql2.substring(0, sql2.length - 3) + ')';
 	var filter = req.body.filterParams.split(',');
-	console.log(req.body.sortParams);
-	// if(filter[0].length > 0) {
-	// 	for(var j = 0; j < filter.length; j++) {
-	// 		sql += ' AND ' + filter[j] + "=1";
-	// 		sql2 += ' AND ' + filter[j] + "=1";
-	// 	}
-	// }
+	console.log(sql);
+	if(filter[0].length > 0) {
+		for(var j = 0; j < filter.length; j++) {
+			sql += ' AND ' + filter[j] + "=1";
+			sql2 += ' AND ' + filter[j] + "=1";
+		}
+	}
 	//where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit)
 	Song.collection().query(function(search) {
 		search.where(search.knex.raw(sql)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
