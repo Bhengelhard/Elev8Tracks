@@ -1,5 +1,5 @@
   <% songs.forEach(function(song) { %>
-  <div id="s<%= song.attributes.id %>" class="block inactive" data-test="<%= song.attributes.created_at %>" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
+  <div id="s<%= song.attributes.id %>" class="block inactive" data-test="<%= song.attributes.created_at %>" data-test2="<%= song.attributes.updated_at %>" data-test3="<%= song.attributes.staff %>"data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
     <img src="http://img.youtube.com/vi/<%=song.attributes.vid %>/0.jpg" class="list song"/>
     <div class="description">
       <span class="name"><%=song.attributes.name %></span>
