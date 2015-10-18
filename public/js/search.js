@@ -57,7 +57,7 @@ function searchParams() {
 	$('#vgenre').find('.searched').each(function() {
 		genreParams += $(this).attr('data-search') + ',';
 	});
-	genreParams = genreParams.substring(0,sortParams.length-1);
+	genreParams = genreParams.substring(0, genreParams.length-1);
 	params.push(genreParams);
 	var sval = $('#videoSearcher').val();
 	params.push(sval);
@@ -130,7 +130,7 @@ function homeSearchParams() {
 	$('#genreDrop').find('.searched').each(function() {
 		genreParams += $(this).attr('data-search') + ',';
 	});
-	genreParams = genreParams.substring(0,sortParams.length-1);
+	genreParams = genreParams.substring(0,genreParams.length-1);
 	params.push(genreParams);
 	var sval = $('#findVideosText').val();
 	params.push(sval);

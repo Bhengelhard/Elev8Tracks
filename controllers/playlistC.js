@@ -120,16 +120,21 @@ exports.videoSearch = function(req, res) {
 	sql = sql.substring(0, sql.length - 3) + ')';
 	sql2 = sql2.substring(0, sql2.length - 3) + ')';
 	var filter = req.body.filterParams.split(',');
-	console.log(sql);
 	if(filter[0].length > 0) {
 		for(var j = 0; j < filter.length; j++) {
 			sql += ' AND ' + filter[j] + "=1";
 			sql2 += ' AND ' + filter[j] + "=1";
 		}
 	}
-	//where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit)
+	var genres = req.body.genreParams.split(',');
+	if(genres[0].length > 0) {
+		for(var j = 0; j < genres.length; j++) {
+			sql += " AND genre LIKE '%" + genres[j] + "%'";
+			sql2 += " AND genre LIKE '%" + genres[j] + "%'";
+		}
+	}
 	Song.collection().query(function(search) {
-		search.where(search.knex.raw(sql)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
+		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
 	}).fetch()
 	.then(function(m) {
 		//res.send(m);
