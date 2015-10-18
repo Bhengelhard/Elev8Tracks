@@ -129,7 +129,7 @@ exports.videoSearch = function(req, res) {
 	}
 	//where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit)
 	Song.collection().query(function(search) {
-		search.orderBy('created_at', 'asc');
+		search.offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
 	}).fetch()
 	.then(function(m) {
 		//res.send(m);
