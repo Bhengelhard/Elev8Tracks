@@ -137,7 +137,6 @@ exports.videoSearch = function(req, res) {
 		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
 	}).fetch()
 	.then(function(m) {
-		//res.send(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
 			res.send({html: model});
 		});
@@ -222,13 +221,13 @@ exports.signUp = function(req, res) {
 exports.createList = function(req, res) {
 	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
 	.then(function(model) {
-		res.send(400, {});
+		res.send(400, {error: req.session.userid});
 	}).catch(function(e) {
 		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
 		.then(function(m) {
 			res.send(m);
 		}).catch(function(e) {
-	    	res.send(400, {});
+	    	res.send(400, {error: 'could not make'});
 	    });
 	});
 }
