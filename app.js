@@ -2,9 +2,30 @@ var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-var expressSession = require('express-session');
 var bodyParser = require('body-parser');
-var session = require('express-session')
+
+//var redis = require('redis'); 
+var session = require('express-session'); 
+var RedisStore = require('connect-redis')(session);
+
+if (process.env.REDISTOGO_URL) {
+    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+	var client = require("redis").createClient(rtg.port, rtg.hostname);
+	redis.auth(rtg.auth.split(":")[1]);
+	var sec = process.env.CLIENT_SECRET;
+} else {
+    var client = require("redis").createClient();
+    var sec = 'sshhhh';
+}
+
+// var url = require('url');
+// var redisURL = url.parse(process.env.REDISTOGO_URL); 
+
+// var client = redis.createClient(redisURL.host, redisURL.port); 
+// client.auth(redisURL.auth.split(':')[1]);
+
+// var client = redis.createClient('127.0.0.1', '8888'); 
+// client.auth('scooter2');
 
 var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
 var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
@@ -12,20 +33,25 @@ var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 
 var app = express();
 
+app.use(session({
+    secret: sec,
+    // create new redis store.
+    store: new RedisStore({ client: client}),
+    saveUninitialized: false,
+    resave: false
+}));
+
+// app
+//   .use(cookieParser(config.cookie_secret))
+//   .use(sessions(config.redis_url, config.cookie_secret));
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'))
-app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
+
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
-// app.use(express.json());
-// app.use(express.urlencoded());
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
+
 var generateRandomString = function(length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
