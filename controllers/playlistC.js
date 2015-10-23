@@ -221,14 +221,18 @@ exports.signUp = function(req, res) {
 exports.createList = function(req, res) {
 	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
 	.then(function(model) {
-		res.send(400, {err: req.session.userid});
+		if(model.length == 0) {
+			new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
+			.then(function(m) {
+				res.send(m);
+			}).catch(function(e) {
+		    	res.send(400, {err: 'could not make'});
+		    });
+		} else {
+			res.send(400, {err: model.length});
+		}
 	}).catch(function(e) {
-		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
-		.then(function(m) {
-			res.send(m);
-		}).catch(function(e) {
-	    	res.send(400, {err: 'could not make'});
-	    });
+		res.send(400, {err: 'error'});
 	});
 }
 
