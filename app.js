@@ -12,10 +12,8 @@ if (process.env.REDISTOGO_URL) {
     var rtg   = require("url").parse(process.env.REDISTOGO_URL);
 	var client = require("redis").createClient(rtg.port, rtg.hostname);
 	redis.auth(rtg.auth.split(":")[1]);
-	var sec = process.env.CLIENT_SECRET;
 } else {
     var client = require("redis").createClient();
-    var sec = 'sshhhh';
 }
 
 // var url = require('url');
@@ -34,7 +32,7 @@ var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 var app = express();
 
 app.use(session({
-    secret: sec,
+    secret: 'sshhh',
     // create new redis store.
     store: new RedisStore({ client: client}),
     saveUninitialized: false,
