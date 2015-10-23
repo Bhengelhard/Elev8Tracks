@@ -13,7 +13,6 @@
     "request": "~2.34.0",
     "underscore": "1.6.x",
     "pg": "*",
-    "node_redis": "0.11.x",
     "hiredis": "0.1.x",
     "connect-redis": "2.x"
   }
