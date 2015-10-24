@@ -147,14 +147,14 @@ exports.login = function(req, res) {
 	new User({username: req.body.user, password: req.body.password}).fetch({require: true})
 	.then(function(model) {
 		req.session.user = req.body.user;
-		req.session.userid = model.attributes.id;
-		req.session.admin = model.attributes.admin;
+		req.session.userid = model.id;
+		req.session.admin = model.admin;
 		Playlist.collection().query(function(search) {
 			search.where('userid', '=', req.session.userid);
 		}).fetch()
 		.then(function(m1) {
 			res.render('myLists', {session: req.session, lists: m1}, function(err, m) {
-				res.send({html: m});
+				res.send({html: m, ses: req.session});
 			});
 		}).catch(function(e) {
 			res.send(400,{});
