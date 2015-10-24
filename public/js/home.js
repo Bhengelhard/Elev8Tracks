@@ -591,7 +591,7 @@ function createList() {
 	        	});
 		    },
 		    error: function(res) {
-		    	console.log(res.err);
+		    	console.log(res);
 		    	alert('Could not create the playlist. That name may already be taken.');
 		       	$('#createListName').val('');
 		    }
