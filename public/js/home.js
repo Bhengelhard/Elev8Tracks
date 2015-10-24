@@ -329,11 +329,11 @@ function showList(el) {
 	    cache: false,
 	    timeout: 5000,
         success:function(res) {
+        	console.log(res);
         	var song;
         	var songs = [];
         	var order = res.list.the_order.split(',');
         	for(var i = 0; i < order.length; i++) {
-        		console.log(order[i]);
         		res.m.forEach(function(video) {
         			if(order[i] == video.vid) {
         				song = [];
@@ -344,6 +344,7 @@ function showList(el) {
         			}
         		});
         	}
+        	console.log(songs);
         	prevHTML = $('#content').children();
         	var $html = buildSongs(songs, name, $(el).attr('data-lid'));
 			var time = transition();
@@ -490,7 +491,7 @@ function accountSignUp(e) {
 			        timeout: 5000,
 			        success:function(res) {
 					       	$.get('/myLists', function(res) {
-							console.log(res);
+							loginNav();
 							$('#content').html(res);
 						});
 				    },
@@ -580,7 +581,7 @@ function createList() {
 	        success:function(res) {
 	        	$('#createListName').val('');
 	        	console.log(res);
-	        	var list = $('<div class="block" data-id="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><span class="glyphicon glyphicon-play-circle"></span></div></div>');
+	        	var list = $('<div class="block" data-id="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><div class="listDelete" onclick="promptListDelete(event)">&#215</div></div></div>');
 	        	list.css('width','0px').css('border','none');
 	        	$('#addList').before(list);
 	        	list.animate({

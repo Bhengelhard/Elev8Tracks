@@ -94,7 +94,7 @@ exports.removeBlock = function(req, res) {
 
 exports.showList = function(req, res) {
 	if(req.session.user) {
-		var sql = "(lists LIKE '%" + req.body.lid + ",%')";
+		var sql = "(lists LIKE '%," + req.body.lid + ",%')";
 		Song.collection().query(function(search) {
 			search.where(search.knex.raw(sql));
 		}).fetch()
@@ -148,7 +148,7 @@ exports.login = function(req, res) {
 	.then(function(model) {
 		req.session.user = req.body.user;
 		req.session.userid = model.id;
-		req.session.admin = model.admin;
+		req.session.admin = model.attributes.admin;
 		Playlist.collection().query(function(search) {
 			search.where('userid', '=', req.session.userid);
 		}).fetch()
@@ -227,7 +227,7 @@ exports.createList = function(req, res) {
 		.then(function(m) {
 			res.send(m);
 		}).catch(function(e) {
-			res.send(400, {err: req.body.listName});
+			res.send(400, {err: 'error creating'});
 		});
 	});
 }
@@ -279,14 +279,14 @@ exports.updateListName = function(req, res) {
 exports.addSong = function(req, res) {
 	new Playlist({id: req.body.lid, userid: req.session.userid}).fetch({require: true})
 	.then(function(m) {
-		var thumbnail = (m.attributes.order == null ? req.body.vid : m.attributes.order.split(',')[0]);
-		var order = m.attributes.order + req.body.vid + ',';
-		//var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
-		//var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
+		var thumbnail = (m.attributes.the_order == null ? req.body.vid : m.attributes.the_order.split(',')[0]);
+		var order = (m.attributes.the_order == null ? req.body.vid : m.attributes.the_order + req.body.vid + ',');
+		// var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
+		// var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
 		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
 		new Song({vid: req.body.vid}).fetch({require: true})
 			.then(function(song) {
-				var lists = song.attributes.lists + req.body.lid + ',';
+				var lists = (song.attributes.lists == null ? ',' + req.body.lid + ',' : song.attributes.lists + req.body.lid + ',');
 				song.save({lists: lists}, {patch: true});
 				res.send(200, {});
 			});
