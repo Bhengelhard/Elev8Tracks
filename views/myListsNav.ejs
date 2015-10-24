@@ -2,7 +2,7 @@
 <% if(user) { %>
   <div id="myLists" class="nav"><%=user %></div>
   <% lists.forEach(function(list) { %>
-    <div class="vItem listNav" data-lid="<%=list.attributes.id %>" onclick="showList(this)"><%=list.attributes.name %></div>
+    <div class="dItem listNav" data-lid="<%=list.attributes.id %>" onclick="showList(this)"><%=list.attributes.name %></div>
   <% }); %>
 <% } else { %> 
     <div id="myLists" class="nav">Login</div>

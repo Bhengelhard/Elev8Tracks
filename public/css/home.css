@@ -769,6 +769,8 @@ body {
     background-color: transparent;
     cursor: default;
     margin: 3px;
+} .dItem.listNav {
+	width: 100%;
 } .vItem:hover, .vItem.active, .dItem:hover, .dItem.active {
 	background-color: rgba(255,255,255,.5);
 } .vItem.searched, .dItem.searched {
