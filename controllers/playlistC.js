@@ -233,13 +233,13 @@ exports.createList = function(req, res) {
 		res.send(400, {err: model});
 		}
 	}).catch(function(e) {
-		// new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
-		// .then(function(m) {
-		// 	res.send(m);
-		// }).catch(function(e) {
-		// 	res.send(400, {err: model.id});
-		// });
-		res.send(400, {err: 'error'});
+		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
+		.then(function(m) {
+			res.send(m);
+		}).catch(function(e) {
+			res.send(400, {err: model.id});
+		});
+		// res.send(400, {err: 'error'});
 	});
 }
 
