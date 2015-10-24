@@ -219,7 +219,7 @@ exports.signUp = function(req, res) {
 }
 
 exports.createList = function(req, res) {
-	res.send(400, {err: req.session.userid});
+	res.send(400, {err: req.session});
 	// new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
 	// .then(function(model) {
 	// 	if(model != null) {
