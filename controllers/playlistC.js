@@ -221,7 +221,7 @@ exports.signUp = function(req, res) {
 exports.createList = function(req, res) {
 	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
 	.then(function(model) {
-		if(model.length > 0) {
+		if(model.id > 0) {
 			res.send(400, {err: model.id});
 		} else {
 			new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
