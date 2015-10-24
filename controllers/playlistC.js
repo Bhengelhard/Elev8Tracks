@@ -219,29 +219,17 @@ exports.signUp = function(req, res) {
 }
 
 exports.createList = function(req, res) {
-	res.send(400, {err: req.session});
-	// new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
-	// .then(function(model) {
-	// 	if(model != null) {
-	// 		res.send(400, {err: model});
-	// 	} else {
-	// 		// new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
-	// 		// .then(function(m) {
-	// 		// 	res.send(m);
-	// 		// }).catch(function(e) {
-	// 	 //    	res.send(400, {err: model.id});
-	// 	 //    });
-	// 	res.send(400, {err: model});
-	// 	}
-	// }).catch(function(e) {
-	// 	new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
-	// 	.then(function(m) {
-	// 		res.send(m);
-	// 	}).catch(function(e) {
-	// 		res.send(400, {err: model.id});
-	// 	});
-	// 	// res.send(400, {err: 'error'});
-	// });
+	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
+	.then(function(model) {
+		res.send(400, {});
+	}).catch(function(e) {
+		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
+		.then(function(m) {
+			res.send(m);
+		}).catch(function(e) {
+			res.send(400, {});
+		});
+	});
 }
 
 exports.deleteList = function(req, res) {
