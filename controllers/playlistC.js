@@ -286,7 +286,7 @@ exports.addSong = function(req, res) {
 		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
 		new Song({vid: req.body.vid}).fetch({require: true})
 			.then(function(song) {
-				var lists = (song.attributes.lists == null ? ',' + req.body.lid + ',' : song.attributes.lists + req.body.lid + ',');
+				var lists = (song.attributes.lists.length == 0 ? ',' + req.body.lid + ',' : song.attributes.lists + req.body.lid + ',');
 				song.save({lists: lists}, {patch: true});
 				res.send(200, {});
 			});
