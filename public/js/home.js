@@ -78,7 +78,7 @@ $(document).ready(function() {
     	$('.selected').removeClass('selected');
     	$('#videoSearcherWrapper').addClass('selected');
     });
-    $('.vItem').add('.dItem').click(function() {
+    $('.vItem').add('.dItem').not('.listNav').click(function() {
     	var criteria = $(this).closest('.criteriaType').attr('id');
     	console.log(criteria);
     	switch(criteria) {
@@ -144,7 +144,7 @@ $(document).ready(function() {
 	});
 	$('#songArtist').click(function() {
 		$('#player').removeClass('active');
-		var params = ["artist","","created_at",$('#songArtist').text(),[0,50]];
+		var params = ["artist","","created_at","",$('#songArtist').text(),[0,50]];
 		setParams(params);
 		searchDB(params);
 	});
