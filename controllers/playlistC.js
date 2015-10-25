@@ -279,8 +279,8 @@ exports.updateListName = function(req, res) {
 exports.addSong = function(req, res) {
 	new Playlist({id: req.body.lid, userid: req.session.userid}).fetch({require: true})
 	.then(function(m) {
-		var thumbnail = (m.attributes.the_order == null ? req.body.vid : m.attributes.the_order.split(',')[0]);
-		var order = (m.attributes.the_order == null ? req.body.vid : m.attributes.the_order + req.body.vid + ',');
+		var thumbnail = (m.attributes.the_order.length == 0 ? req.body.vid : m.attributes.the_order.split(',')[0]);
+		var order = (m.attributes.the_order.length == 0 ? req.body.vid : m.attributes.the_order + ',' + req.body.vid);
 		// var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
 		// var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
 		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
