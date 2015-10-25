@@ -223,7 +223,7 @@ exports.createList = function(req, res) {
 	.then(function(model) {
 		res.send(400, {err: 'found model'});
 	}).catch(function(e) {
-		new Playlist().save({name: req.body.listName, userid: req.session.userid}, {patch: true})
+		new Playlist().save({name: req.body.listName, userid: req.session.userid, the_order: ""}, {patch: true})
 		.then(function(m) {
 			res.send(m);
 		}).catch(function(e) {
