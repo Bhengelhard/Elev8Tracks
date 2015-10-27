@@ -87,6 +87,11 @@ app.post('/deleteList', routes.deleteList);
 app.post('/deleteSong', routes.deleteSong);
 app.post('/updateListOrder', routes.updateListOrder);
 app.post('/updateListName', routes.updateListName);
+app.post('/likeSong', routes.likeSong);
+app.post('/updateListName', routes.updateListName);
+app.post('/unlikeSong', routes.unlikeSong);
+app.post('/staffAdd', routes.staffAdd);
+app.post('/staffRemove', routes.staffRemove);
 
 var stateKey = 'spotify_auth_state';
 

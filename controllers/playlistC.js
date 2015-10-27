@@ -134,7 +134,7 @@ exports.videoSearch = function(req, res) {
 		}
 	}
 	Song.collection().query(function(search) {
-		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc');
+		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'desc');
 	}).fetch()
 	.then(function(m) {
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
@@ -300,6 +300,50 @@ exports.updateListOrder = function(req, res) {
 	.then(function(m) {
 		var thumbnail = req.body.order.split(',')[0];
 		m.save({thumbnail: thumbnail, the_order: req.body.order},{patch: true});
+		res.send(200, {});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.likeSong = function(req, res) {
+	new Song({vid: req.body.vid}).fetch({require: true})
+	.then(function(model) {
+		var likes = parseInt(model.attributes.likes) + 1;
+		model.save({likes: likes},{patch: true});
+		res.send(200, {});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.unlikeSong = function(req, res) {
+	new Song({vid: req.body.vid}).fetch({require: true})
+	.then(function(model) {
+		var likes = parseInt(model.attributes.likes) - 1;
+		model.save({likes: likes},{patch: true});
+		res.send(200, {});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.staffAdd = function(req, res) {
+	new Song({vid: req.body.vid}).fetch({require: true})
+	.then(function(model) {
+		var staff = 1;
+		model.save({staff: staff},{patch: true});
+		res.send(200, {});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.staffRemove = function(req, res) {
+	new Song({vid: req.body.vid}).fetch({require: true})
+	.then(function(model) {
+		var staff = 0;
+		model.save({staff: staff},{patch: true});
 		res.send(200, {});
 	}).catch(function(e) {
 		res.send(400,{});

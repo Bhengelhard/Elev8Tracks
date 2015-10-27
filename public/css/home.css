@@ -1910,3 +1910,15 @@ position: absolute;
     margin-left: 40px;
     left: 5%;
 }
+
+.staffRemove, .staffAdd {
+	position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: #FF4400;
+    text-align: center;
+    padding-top: 10px;
+    pointer-events: all;
+}

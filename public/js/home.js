@@ -705,6 +705,7 @@ function handleDrop(e, block) {
 		updateListOrder();
 	} else if($(e.target).closest('.listNav').length > 0) {
 		addToPlaylist(block.attr('data-vid'), $(e.target).closest('.listNav').attr('data-lid'));
+		likeSong(block.attr('data-vid'));
 	}
 }
 
@@ -876,6 +877,7 @@ function deleteSong(e) {
 	var lid = $('#listBanner').attr('data-lid');
 	console.log(lid);
 	var order = songOrderer();
+	unlikeSong(vid);
 	$.ajax({
 		url: "/deleteSong",
 	    type: "post",
@@ -927,5 +929,65 @@ function currentlyPlaying(vid) {
 			console.log(vid);
 			$(this).find('.description').addClass('active');
 		}
+	});
+}
+
+function likeSong(vid) {
+	$.ajax({
+		url: "/likeSong",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({vid: vid}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        }
+	});
+}
+
+function unlikeSong(vid) {
+	$.ajax({
+		url: "/unlikeSong",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({vid: vid}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        }
+	});
+}
+
+function staffAdd(e) {
+	$.ajax({
+		url: "/staffAdd",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({vid: $(e.target).closest('.block').attr('data-vid')}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        }
+	});
+}
+
+function staffRemove(e) {
+	$.ajax({
+		url: "/staffRemove",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({vid: $(e.target).closest('.block').attr('data-vid')}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        }
 	});
 }
