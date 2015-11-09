@@ -22,7 +22,6 @@ function videoExit() {
 			var $block = $(this);
 			setTimeout(function() {
 				$block.addClass('leave');
-				//$block.css('opacity','0');
 			},time);
 			n++;
 		});

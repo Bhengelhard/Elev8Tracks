@@ -1,13 +1,13 @@
   <% songs.forEach(function(song) { %>
-  <div id="s<%= song.attributes.id %>" class="block inactive" data-test="<%= song.attributes.name %>" data-id="<%=song.attributes.id %>" data-vid="<%=song.attributes.vid %>">
-    <img src="http://img.youtube.com/vi/<%=song.attributes.vid %>/0.jpg" class="list song"/>
+  <div id="s<%= song.id %>" class="block inactive" data-test="<%= song.name %>" data-id="<%=song.id %>" data-vid="<%=song.vid %>">
+    <img src="http://img.youtube.com/vi/<%=song.vid %>/0.jpg" class="list song"/>
     <div class="description">
-      <span class="name"><%=song.attributes.name %></span>
-      <span class="artist"><%=song.attributes.artist %></span>
+      <span class="name"><%=song.name %></span>
+      <span class="artist"><%=song.artist %></span>
       <span class="glyphicon glyphicon-play"></span>
       <% if(session.admin == 1) { %>
       <div class="remove" data-click="0" onclick="removeBlock(event)">-</div>
-      <% if(parseInt(song.attributes.staff) == 1) { %>
+      <% if(parseInt(song.staff) == 1) { %>
         <div class="staffRemove" onclick="staffRemove(event)">-</div>
       <% } else { %>
         <div class="staffAdd" onclick="staffAdd(event)">+</div>

@@ -39,8 +39,7 @@ app.use(session({
     resave: false
 }));
 
-// app
-//   .use(cookieParser(config.cookie_secret))
+app.use(cookieParser())
 //   .use(sessions(config.redis_url, config.cookie_secret));
 
 app.set('views', __dirname + '/views');
@@ -61,6 +60,7 @@ var generateRandomString = function(length) {
 };
 
 var routes = require('./controllers/playlistC.js');
+var spotify = require('./controllers/spotifyC.js');
 
 app.get('/', routes.index);
 app.get('/index2', routes.index2);
@@ -97,7 +97,9 @@ var stateKey = 'spotify_auth_state';
 
 var spotify = require('./controllers/spotifyC.js');
 
-app.get('/login', spotify.login);
+app.get('/spotifyCheck', spotify.check);
+app.get('/spotifyLogin', spotify.login);
+app.get('/spotifyAuthorize', spotify.authorize);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 

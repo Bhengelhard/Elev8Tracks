@@ -68,6 +68,11 @@
           <div id="vitemStaff" class="dItem query" data-search="staff">
             <div class="itemName">Staff Picks</div>
           </div>
+          <% if(spotify) { %>
+            <div id="ditemSpotifyArtists" class="dItem spotify query" data-search="spotifyArtists">
+              <div class="itemName">Spotify Artists</div>
+            </div>
+          <% } %>
         </div>
         <div id="vsearch" class="criteriaType">
           <div class="dtitle">SEARCH</div>

@@ -2,7 +2,7 @@ var Playlist = require('../models/playlist');
 var Song = require('../models/song');
 var Blog = require('../models/blog');
 var User = require('../models/user');
-var Knex = require('knex');
+var Knex = require('../init/knex');
 
 exports.index = function(req, res) {
 	Blog.collection().fetch()
@@ -11,7 +11,7 @@ exports.index = function(req, res) {
 				search.where('userid', '=', req.session.userid);
 			}).fetch()
 			.then(function(lists) {
-				res.render('index', {blogs: blogs, user: req.session.user, lists: lists});
+				res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists});
 			});
 		});
 };
@@ -114,33 +114,59 @@ exports.videoSearch = function(req, res) {
 	var sql2 = '(';
 	var search = req.body.searchParams.split(',');
 	for(var i = 0; i < search.length; i++) {
-		sql += ' lower(' + search[i] + ") LIKE '" + req.body.sval + "%' OR";
-		sql2 += ' lower(' + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
+		sql += " lower(songs." + search[i] + ") LIKE '" + req.body.sval + "%' OR";
+		sql2 += " lower(songs." + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
 	}
 	sql = sql.substring(0, sql.length - 3) + ')';
 	sql2 = sql2.substring(0, sql2.length - 3) + ')';
 	var filter = req.body.filterParams.split(',');
+	var spotifyArtistFilter = 0;
 	if(filter[0].length > 0) {
 		for(var j = 0; j < filter.length; j++) {
-			sql += ' AND ' + filter[j] + "=1";
-			sql2 += ' AND ' + filter[j] + "=1";
+			if(filter[j] == 'spotifyArtists') {
+				var spotifyArtistFilter = 1;
+			} else {
+				sql += ' AND songs.' + filter[j] + "=1";
+				sql2 += ' AND songs.' + filter[j] + "=1";
+			}
 		}
 	}
 	var genres = req.body.genreParams.split(',');
 	if(genres[0].length > 0) {
 		for(var j = 0; j < genres.length; j++) {
-			sql += " AND genre LIKE '%" + genres[j] + "%'";
-			sql2 += " AND genre LIKE '%" + genres[j] + "%'";
+			sql += " AND songs.genre LIKE '%" + genres[j] + "%'";
+			sql2 += " AND songs.genre LIKE '%" + genres[j] + "%'";
 		}
 	}
-	Song.collection().query(function(search) {
-		search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'desc');
-	}).fetch()
-	.then(function(m) {
-		res.render('songs', {songs: m, session: req.session}, function(err, model) {
-			res.send({html: model});
+	var order = (req.body.sortParams == 'likes' ? 'asc' : 'desc');
+	if(spotifyArtistFilter == 1) {
+		sql += " AND spotify_artists.spotify_id = " + req.session.spotifyID;
+		Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
+		.then(function(m) {
+			console.log(m);
+			res.render('songs', {songs: m, session: req.session}, function(err, model) {
+				console.log(err);
+				res.send({html: model});
+			});
 		});
-	});
+	} else {
+		Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
+		.then(function(m) {
+			console.log(m);
+			res.render('songs', {songs: m, session: req.session}, function(err, model) {
+				console.log(err);
+				res.send({html: model});
+			});
+		});
+	}
+	// Song.collection().query(function(search) {
+	// 	search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order);
+	// }).fetch()
+	// .then(function(m) {
+	// 	res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 		res.send({html: model});
+	// 	});
+	// });
 }
 
 exports.login = function(req, res) {

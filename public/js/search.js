@@ -14,6 +14,7 @@ function searchDB(params) {
         cache: false,
         timeout: 5000,
         success:function(res) {
+        	console.log(res);
         	var time = transition();
         	videoEnter(res.html, time, params[5][0]);
         }

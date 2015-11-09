@@ -6,50 +6,13 @@ var spotifyArtists = [];
 
 function spotify() {
 
-
-        /**
-         * Obtains parameters from the hash of the URL
-         * @return Object
-         */
-
-        // var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-        //     userProfileTemplate = Handlebars.compile(userProfileSource),
-        //     userProfilePlaceholder = document.getElementById('user-profile');
-
-        // var oauthSource = document.getElementById('oauth-template').innerHTML,
-        //     oauthTemplate = Handlebars.compile(oauthSource),
-        //     oauthPlaceholder = document.getElementById('oauth');
-
-        var params = getHashParams();
-
-        access_token = params.access_token;
-        var refresh_token = params.refresh_token,
-            error = params.error;
-
-        if (error) {
-          alert('There was an error during the authentication');
-        } else {
-          if (access_token) {
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me',
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                  console.log(response);
-                  userid = response.id;
-                  getPlaylists();
-                }
-            });
+        $.get('/spotifyCheck', function(res) {
+          if(res.check == 'Y') {
+            console.log('logged in');
           } else {
-              // // render initial screen
-              // $('#login').show();
-              // $('#loggedin').hide();
-              // $('#loggedin .name').html('');
+            console.log('logged out');
           }
-
-        }
-
+        });
 }
 
 function getHashParams() {
@@ -88,4 +51,15 @@ function getPlaylists() {
       }
     }
   });
+}
+
+function spotifyHTML() {
+  $html = $('#vitemStaff.vItem').clone().attr('id', 'vitemArtists').addClass('spotify');
+  $html.find('.itemName').html('Spotify Artists');
+  $('#filterDrop').append($html);
+  $('#finder').append($('<div id="spotifyLogin">Change Spotify</div>'));
+}
+
+function removeSpotify() {
+  $('#ditemSpotifyArtists').remove();
 }

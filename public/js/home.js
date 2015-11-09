@@ -10,8 +10,11 @@ $(document).ready(function() {
 	$('#vidBackground').prop('volume',0);
 
 	spotify();
-	$(document).on("click","#spotifyLogin div", function() {
-        window.location.href = '/login';
+	$(document).on("click","#spotifyLogin", function() {
+        window.location.href = '/spotifyLogin';
+        // $.get("/spotifyAuthorize", function(data) {
+        // 	console.log(data);
+        // })
     });
 
 	$.getScript("https://www.youtube.com/iframe_api", function() {});
@@ -93,6 +96,10 @@ $(document).ready(function() {
     			break;
     	}
     });
+    // $(document).on('click','.spotify', function() {
+    // 	$(this).toggleClass('searched');
+    // });
+    
     $('.query').click(function(e) {
     	var params = searchParams();
 		searchDB(params);

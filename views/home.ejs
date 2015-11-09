@@ -7,6 +7,11 @@
 <div id="finder">
 <div id="findVideos">E L E V A T E</div>
 <input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>
+<% if(spotify) { %>
+  <div id="spotifyLogin">Change Spotify</div>
+<% } else { %>
+  <div id="spotifyLogin">Sync Spotify</div>
+<% } %>
 <div id="findVideosOr">- OR BROWSE -</div>
 <div id="searchCriteria">
         <div id="genreDrop" class="criteriaType">
@@ -55,6 +60,11 @@
           <div id="vitemStaff" class="vItem" data-search="staff">
             <div class="itemName">Staff Picks</div>
           </div>
+          <% if(spotify) { %>
+            <div id="vitemSpotifyArtists" class="vItem spotify" data-search="spotifyArtists">
+              <div class="itemName">Spotify Artists</div>
+            </div>
+          <% } %>
         </div>
         <br>
         <div id="searchDrop" class="criteriaType">
