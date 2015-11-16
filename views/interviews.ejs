@@ -1,0 +1,9 @@
+<% blogs.forEach(function(blog) { %>
+  <div class="blogEntry">
+    <img src="/images/<%= blog.attributes.image %>">
+    <div class="blogEntryBody">
+      <div class="blogEntryName"><%= blog.attributes.name %></div>
+      <div class="blogEntryText"><%= blog.attributes.text %></div>
+    </div>
+  </div>
+<% }); %>

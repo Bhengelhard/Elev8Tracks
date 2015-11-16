@@ -91,7 +91,7 @@ function buildSongs(m, name, lid) {
 		$html.append($('<div id="listBanner" data-lid="'+lid+'"><div id="backToLists" onclick="backToLists()"><span class="glyphicon glyphicon-menu-left"></span></div><input type="text" id="listNameInput" value="'+name+'"/></div>'));
 	}
 	for(var i = 0; i < m.length; i++) {
-		var $block = $('<div id="s'+i+'" class="block inactive" data-id="'+i+'" data-vid="'+m[i][2]+'"></div>');
+		var $block = $('<div id="s'+i+'" class="block inactive playSong" data-id="'+i+'" data-vid="'+m[i][2]+'" data-name="' +m[i][0] + '" data-artist="' +m[i][1] + '"></div>');
 		$block.append($('<img src="http://img.youtube.com/vi/'+m[i][2]+'/0.jpg" class="list song"/>'));
 		var $description = $('<div class="description"></div>');
 		$description.append($('<span class="name">'+m[i][0]+'</span>'));

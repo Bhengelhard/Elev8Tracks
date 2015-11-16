@@ -353,12 +353,17 @@ body {
 	right: 20px;
 	width: 350px;
 	height: 50px;
-	background-color: #000;
-	border-top: 2px solid #fff;
-	border-left: 2px solid #fff;
-	border-right: 2px solid #fff;
+	background-color: #222;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
 	pointer-events: all;
 	overflow: hidden;
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
 } #player #controls .glyphicon-menu-up {
 	position: absolute;
 	top: 11px;
@@ -424,14 +429,16 @@ body {
 	left: 0px;
 	width: 100%;
 	height: 50px;
-	background-color: #000;
+	background-color: #222;
 	color: #fff;
 	z-index: 110;
 	min-width:700px;
-	border-bottom: 2px solid #fff;
-	/*-webkit-box-shadow: 0px 0px 10px 2px rgba(100,100,100,.5); 
-  	-moz-box-shadow:    0px 0px 10px 2px rgba(100,100,100,.5); 
-  	box-shadow:         0px 0px 10px 2px rgba(100,100,100,.5); */
+	border-bottom: 2px solid #000;
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
 } #navbar #title {
 	font-family: "Neou-Thin";
 	font-size: 30px;
@@ -467,7 +474,7 @@ body {
 	background-color: rgba(0,0,0,0.5);
     border: none;
 } #navbar.home {
-	display: none;
+	top: -50px;
 } #navbar.home #videoSearcherWrapper {
 	display: none;
 } .selected .navSelection {
@@ -478,7 +485,7 @@ body {
 	  float: right;
   height: 100%;
   font-weight: 100;
-  background-color: #000;
+  background-color: #222;
   -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
@@ -497,7 +504,7 @@ body {
     float: right;
     height: 100%;
     font-weight: 100;
-    background-color: #000;
+    background-color: #222;
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
@@ -516,7 +523,7 @@ body {
 	 float: right;
   height: 100%;
   font-weight: 100;
-  background-color: #000;
+  background-color: #222;
   -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -535,7 +542,7 @@ body {
   	 float: right;
   height: 100%;
   font-weight: 100;
-  background-color: #000;
+  background-color: #222;
   -webkit-transition: all .4s ease;
     -moz-transition: all .4s ease;
     -ms-transition: all .4s ease;
@@ -568,7 +575,7 @@ body {
     height: 100%;
     width: 150px;
     font-weight: 100;
-    background-color: #000;
+    background-color: #222;
     -webkit-transition: all .4s ease;
     -moz-transition: all .4s ease;
     -ms-transition: all .4s ease;
@@ -577,7 +584,6 @@ body {
 } #userListsNav.active {
 	height: auto;
     padding-bottom: 15px;
-    background-color: #000;
 } #userListsNav.blog {
 	background-color: transparent;
 }
@@ -737,15 +743,14 @@ body {
 
 #content {
 	position: fixed;
-	padding-top:50px;
-	top: 0px;
-	min-width: 700px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-	overflow: scroll;
-	padding-bottom:10%;
-	background-color: #000;
+    top: 0px;
+    min-width: 700px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    overflow: scroll;
+    background-color: #000;
+    padding-top:50px;
 }
 .vtitle {
 	padding: 10px;
@@ -1687,8 +1692,8 @@ position: absolute;
 	color: #000;
 } 
 
-#player.home {
-	display: none;
+#player #controls.home {
+	top: 0px;
 }
 #player #playercover {
 	position: absolute;
@@ -1835,29 +1840,26 @@ position: absolute;
 } 
 
 #searchCriteria {
-	position: absolute;
-    left: 5%;
+	position: relative;
+    left: 0%;
     text-align: center;
     color: #fff;
     top: 0%;
     padding-bottom: 100px;
     text-align: left;
-    margin-top: 190px;
 } #findVideos {
 	-webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
     -ms-transition: all .1s ease;
     -o-transition: all .1s ease;
     transition: all .1s ease;
-    position: absolute;
-    left: 5%;
-    font-size: 60px;
+    position: relative;
+    left: 0%;
+    font-size: 100px;
     font-weight: 100;
     background-color: transparent;
-    text-align: center;
     padding: 10px 10px 10px 10px;
     color: #fff;
-    top: 0%
     cursor: default;
 } #searchVideos {
 	padding: 10px;
@@ -1870,26 +1872,29 @@ position: absolute;
 } #searchVideos:active {
 	background-color: #ff4400
 } #findVideosText {
-	position: absolute;
+	position: relative;
+    display: inline-block;
     top: 0%;
-    margin-top: 100px;
     margin-left: 10px;
-    left: 5%;
+    left: 0%;
     width: 500px;
     height: 40px;
     background-color: transparent;
     border: 2px solid #fff;
-    padding-left:10px;
+    padding-left: 10px;
     color: #fff;
 } #findVideosText::-webkit-input-placeholder {
    color: #fff;
 } #finder {
-	position: absolute;
-    top: 50%;
-    left: 5%;
-    width: 1000px;
-    height: 500px;
-    margin-top: -250px;
+	position: relative;
+    display: inline-block;
+    top: -50px;
+    left: 0%;
+    width: 90%;
+    height: 100%;
+    margin-top: ;
+    margin-left: 10%;
+    overflow: hidden;
 }
 
 #findVideosText:-moz-placeholder { /* Firefox 18- */
@@ -1903,12 +1908,12 @@ position: absolute;
 #findVideosText:-ms-input-placeholder {  
    color: #fff;  
 } #findVideosOr {
-	position: absolute;
+	position: relative;
     color: #fff;
     top: 0%;
-    margin-top: 160px;
     margin-left: 40px;
-    left: 5%;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .staffRemove, .staffAdd {
@@ -1924,12 +1929,13 @@ position: absolute;
 }
 
 #spotifyLogin {
-	position: absolute;
+	position: relative;
+    display: inline-block;
+    text-align: center;
     top: 0%;
-    margin-top: 100px;
-    margin-left: 550px;
-    left: 5%;
     height: 40px;
+    width: 125px;
+    margin-left: 20px;
     background-color: transparent;
     border: 2px solid #fff;
     padding-left: 10px;
@@ -1938,4 +1944,168 @@ position: absolute;
     cursor: default;
 } #spotifyLogin:hover {
 	background-color: #81b71a;
+}
+
+#import {
+	width: 100%;
+    text-align: center;
+    font-size: 60px;
+    color: #81b71a;
+    pointer-events: none;
+} #importText {
+	color: #81b71a;
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 100;
+    margin-top: 20px;
+    pointer-events: none;
+} #importSpotify:hover {
+	background-color: #444;
+}
+
+#blogMenuUp {
+	position: relative;
+    display: inline-block;
+    top: -80px;
+    left: 45%;
+    width: 50px;
+    margin-left: -25px;
+    height: 50px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+#homePage {
+	position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+}
+#blogsContent {
+	position: relative;
+	width:100%;
+	background-color: #fff;
+	padding-bottom: 60px;
+} #blogsTitleInterviews {
+	position: relative;
+    display: inline-block;
+    width: 250px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 100;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #blogsTitleInterviews.active {
+	font-size: 30px;
+	color: #ff4400;
+} #blogsTitleInterviews:hover {
+	color: #ff4400;
+}
+.blogEntry {
+	position: relative;
+	height:350px;
+	width:100%;
+	border-bottom:1px solid #000;
+} .blogEntry .glyphicon {
+	position: relative;
+    font-size: 50px;
+    color: #fff;
+    left: 150px;
+    top: -200px;
+    opacity: 0;
+} .blogEntry .imgWrapper:hover .glyphicon {
+	opacity: 1;
+} .blogEntry .imgWrapper:active .glyphicon {
+	color: #ff4400;
+} .imgWrapper {
+	width: 350px;
+    height: 350px;
+}
+.blogEntry img {
+	height:100%;
+}
+.blogEntryBody {
+	position: absolute;
+    display: inline-block;
+    top: 0%;
+    left: 350px;
+    right: 0px;
+    padding-left: 20px;
+    height: 100%;
+    background-color: #fff;
+}.blogEntryName {
+	position: relative;
+    display: inline-block;
+    font-size: 40px;
+    padding: 10px;
+} .blogEntryText {
+ 	position: relative;
+    display: inline-block;
+    overflow: hidden;
+    padding-right:50px;
+} .blogEntryArtist {
+	position: relative;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 100;
+    top: -5px;
+
+}
+.controls-menu-up {
+	width: 20px;
+    height: 20px;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    position: relative;
+    left: 20px;
+    top: 20px;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+#blogsTitleVideos {
+	position: relative;
+    display: inline-block;
+    width: 220px;
+    left: -40px;
+    text-align: center;
+    font-weight: 100;
+    font-size: 18px;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #blogsTitleVideos.active {
+	font-size: 30px;
+	color: #ff4400;
+} #blogsTitleVideos:hover {
+	color: #ff4400;
+} #blogsTitleContainer {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height:85px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #000;
+}
+#blogsTitleMove {
+	position: relative;
+    left: 50%;
+    width: 480px;
+    margin-left: -125px;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #blogsTitleMove.active {
+	margin-left: -320px;
 }

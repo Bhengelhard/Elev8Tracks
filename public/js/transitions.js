@@ -48,7 +48,7 @@ function videoEnter(res, time, page) {
 			},t);
 			n++;
 		});
-		$('.block').on("mousedown", blockClick);
+		$('.playSong').on("mousedown", blockClick);
 		currentlyPlaying($('#player').attr('data-vid'));
 		page = parseInt(page/75)+1;
 		$('#pageNumber').html(page);

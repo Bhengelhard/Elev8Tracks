@@ -9,6 +9,8 @@ $(document).ready(function() {
 
 	$('#vidBackground').prop('volume',0);
 
+	$(document).on("mousedown", ".playSong", blockClick);
+
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
         window.location.href = '/spotifyLogin';
@@ -16,18 +18,22 @@ $(document).ready(function() {
         // 	console.log(data);
         // })
     });
+    $('#content').scroll(function() {
+    	if($('#homePage').length > 0) {
+		    if ($('#content').scrollTop() > 350) {
+		    	console.log('scroll');
+		      $('#navbar').removeClass('home');
+		      $('#controls').removeClass('home');
+		    }
+		    if ($('#content').scrollTop() <= 350) {
+		    	console.log('unscroll');
+		      $('#navbar').addClass('home');
+		    }
+		}
+	});
 
 	$.getScript("https://www.youtube.com/iframe_api", function() {});
  	$.getScript("https://apis.google.com/js/client.js?onload=googleApiClientReady", function() {});
-    // $(document).on('mouseover','#overlay',function() {
-	// 	$('#songList #songSelector').css('height','0px');
-	// });
-	// $(document).on('click','#overlay',hideList);
-	// $(document).on('click','.song',playList);
-	// $(document).on('mouseover','.song',function(e) {
-	// 	moveSelector(e);
-	// });
-	//$(document).on('click','#listTitle',playList);
 
 	$('body').on('click','.nav', function(e) {
 		nav(e);
@@ -96,10 +102,7 @@ $(document).ready(function() {
     			break;
     	}
     });
-    // $(document).on('click','.spotify', function() {
-    // 	$(this).toggleClass('searched');
-    // });
-    
+
     $('.query').click(function(e) {
     	var params = searchParams();
 		searchDB(params);
@@ -111,16 +114,18 @@ $(document).ready(function() {
 	   }
 	});
 	var playerControls = function() {
-		if(!$('#nextSong').hasClass('active')) {
-			$('.playerOptions').addClass('active');
-			$('#videoPlayer').css('pointer-events','all');
-		} else {
-			clearTimeout(controlTimeout);
+		if($('#player').hasClass('active')) {
+			if(!$('#nextSong').hasClass('active')) {
+				$('.playerOptions').addClass('active');
+				$('#videoPlayer').css('pointer-events','all');
+			} else {
+				clearTimeout(controlTimeout);
+			}
+			controlTimeout = setTimeout(function() {
+				$('.playerOptions').removeClass('active');
+				$('#videoPlayer').css('pointer-events','none');
+			}, 2000);
 		}
-		controlTimeout = setTimeout(function() {
-			$('.playerOptions').removeClass('active');
-			$('#videoPlayer').css('pointer-events','none');
-		}, 2000);
 	};
 	$('#player').on('mousemove',playerControls);
 
@@ -223,6 +228,7 @@ function nav(e) {
 		case 'title':
 			$.get('/blogs', function(res) {
 				var time = transition();
+				$('#navbar').addClass('home');
         		pageEnter(res, time);
 			});
 			break;
@@ -996,5 +1002,32 @@ function staffRemove(e) {
         success:function(res) {
         	console.log(res);
         }
+	});
+}
+
+function blogsInterviews() {
+	$('#blogsTitleInterviews').addClass('active');
+	$('#blogsTitleVideos').removeClass('active');
+	$('#blogsTitleMove').removeClass('active');
+	blogInterviewshtml();
+}
+function blogsVideos() {
+	$('#blogsTitleVideos').addClass('active');
+	$('#blogsTitleInterviews').removeClass('active');
+	$('#blogsTitleMove').addClass('active');
+	blogVideoshtml();
+}
+
+function blogVideoshtml() {
+	$.get('/blogVideos', function(res) {
+		console.log(res);
+		$('#blogsType').html(res.html);
+	});
+}
+
+function blogInterviewshtml() {
+	$.get('/blogInterviews', function(res) {
+		console.log(res);
+		$('#blogsType').html(res.html);
 	});
 }

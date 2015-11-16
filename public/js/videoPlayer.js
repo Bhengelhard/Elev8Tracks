@@ -57,12 +57,12 @@ function onPrevPlayerStateChange(e) {
 function playSong(e) {
 
 	//get video id
-	var vid = $(e.target).closest('.block').attr('data-vid');
+	var vid = $(e.target).closest('.playSong').attr('data-vid');
 
 	//return to video if the selected song is playing, otherwise load a different video
-	if($(e.target).closest('.block').find('.description').hasClass('active')) {
-		player.playVideo();
-	} else {
+	// if($(e.target).closest('.playSong').find('.description').hasClass('active')) {
+	// 	player.playVideo();
+	// } else {
 		//build a new playlist to play from
 		var index = buildCurrentList(vid);
 		console.log(currentList);
@@ -72,7 +72,7 @@ function playSong(e) {
 		currentlyPlaying(vid);
 		//load video
 		player.loadVideoById(vid,0,"large");
-	}
+	//}
 	$('#player').addClass('active');
 }
 
@@ -132,10 +132,10 @@ function buildCurrentList(vid) {
 	currentList =[];
 	var n = 0,
 		num = 0;
-	$('.block').not('.inactive').each(function() {
+	$('.playSong').not('.inactive').each(function() {
 		var info = [];
-		info.push($(this).find('.name').text());
-		info.push($(this).find('.artist').text());
+		info.push($(this).attr('data-name'));
+		info.push($(this).attr('data-artist'));
 		info.push($(this).attr('data-vid'));
 		currentList.push(info);
 		if(vid == $(this).attr('data-vid')) {

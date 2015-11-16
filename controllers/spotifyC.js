@@ -1,5 +1,6 @@
 var Playlist = require('../models/playlist');
 var Artist = require('../models/spotify_artist');
+var sSong = require('../models/spotify_song');
 
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
@@ -29,6 +30,7 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 exports.login = function(req, res) {
+  console.log('----------------HEllo--');
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
   console.log(state);
@@ -101,7 +103,6 @@ exports.callback = function(req, res) {
             json: true
           };
           var spotifyArtists = [];
-          var spotifySongs = [];
           var spotifyTable = [];
           var n = 0;
           request.get(playlists, function(error, data, body) {
@@ -115,8 +116,8 @@ exports.callback = function(req, res) {
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
+                var listTracks = [];
                 for(var j = 0; j < tracks.body.items.length; j++) {
-                  spotifySongs.push(tracks.body.items[j].track.name);
                   for(var k = 0; k < tracks.body.items[j].track.artists.length; k++) {
                     var artist = tracks.body.items[j].track.artists[k].name.replace(new RegExp('"', 'g'), "'");
                     if(spotifyArtists.indexOf(artist) < 0) {
@@ -140,17 +141,6 @@ exports.callback = function(req, res) {
           });
           res.redirect('/');
         });
-        // we can also pass the token to the browser to make requests from there
-      //   res.redirect('/#' +
-      //     querystring.stringify({
-      //       access_token: access_token,
-      //       refresh_token: refresh_token
-      //     }));
-      // } else {
-      //   res.redirect('/#' +
-      //     querystring.stringify({
-      //       error: 'invalid_token'
-      //     }));
       }
     });
   }
@@ -211,5 +201,68 @@ exports.check = function(req, res) {
     res.send(200,{check: 'Y'});
   } else {
     res.send(200,{check: 'N'});
+  }
+}
+
+// exports.getNewToken = function(req, res) {
+//   var authOptions = {
+//     url: 'https://accounts.spotify.com/api/token',
+//     form: {
+//       code: code,
+//       redirect_uri: redirect_uri,
+//       grant_type: 'authorization_code'
+//     },
+//     headers: {
+//       'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+//     },
+//     json: true
+//   };
+//   request.post(authOptions, function(error, response, body) {
+//       if (!error && response.statusCode === 200) {
+//         var access_token = body.access_token,
+//             refresh_token = body.refresh_token;
+//       }
+//   });
+// }
+
+exports.importSpotify = function(req, res) {
+  if(req.session.spotifyID) {
+    var playlists = {
+      url: 'https://api.spotify.com/v1/users/' + req.session.spotifyID + '/playlists',
+      headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+      json: true
+    };
+    var listObj = {};
+    var n = 0;
+    request.get(playlists, function(error, data, body) {
+      if (!error && data.statusCode === 200) {
+        Knex('spotify_songs').where({spotify_id: req.session.spotifyID}).del()
+        .then(function(model) {
+          for(var i = 0; i < data.body.items.length; i++) {
+            var spotifyPlaylist = {
+              url: data.body.items[i].tracks.href,
+              headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+              json: true
+            };
+            listObj[String(data.body.items[i].tracks.href).split('playlists/')[1].replace('/tracks','')] = data.body.items[i].name;
+            new Playlist({name: data.body.items[i].name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id}).save();
+            request.get(spotifyPlaylist, function(error, tracks, body) {
+              if(n == 0) {
+                Knex('spotify_songs').where({spotify_id: req.session.spotifyID}).del();
+                n++;
+              }
+              for(var j = 0; j < tracks.body.items.length; j++) {
+                var listName = listObj[String(tracks.body.href).split('playlists/')[1].split('/tracks')[0]];
+                new sSong({name: tracks.body.items[j].track.name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id}).save();
+              }
+            });
+          } 
+        });
+      } else {
+        res.send(200,{error: 'login'});
+      }
+    });
+  } else {
+    res.send(200,{error: 'login'});
   }
 }

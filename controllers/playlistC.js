@@ -2,10 +2,11 @@ var Playlist = require('../models/playlist');
 var Song = require('../models/song');
 var Blog = require('../models/blog');
 var User = require('../models/user');
+var blogInterview = require('../models/interview');
 var Knex = require('../init/knex');
 
 exports.index = function(req, res) {
-	Blog.collection().fetch()
+	blogInterview.collection().fetch()
 		.then(function(blogs) {
 			Playlist.collection().query(function(search) {
 				search.where('userid', '=', req.session.userid);
@@ -40,9 +41,9 @@ exports.songs = function(req, res) {
 }
 
 exports.blogs = function(req, res) {
-	Blog.collection().fetch()
+	blogInterview.collection().fetch()
 		.then(function(m) {
-			res.render('blogs', {blogs: m});
+			res.render('home', {spotify: req.session.spotifyID, blogs: m});
 		});
 }
 exports.myLists = function(req, res) {
@@ -141,7 +142,7 @@ exports.videoSearch = function(req, res) {
 	var order = (req.body.sortParams == 'likes' ? 'asc' : 'desc');
 	if(spotifyArtistFilter == 1) {
 		sql += " AND spotify_artists.spotify_id = " + req.session.spotifyID;
-		Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
+		Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc')
 		.then(function(m) {
 			console.log(m);
 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
@@ -159,14 +160,6 @@ exports.videoSearch = function(req, res) {
 			});
 		});
 	}
-	// Song.collection().query(function(search) {
-	// 	search.where(search.knex.raw(sql)).orWhere(search.knex.raw(sql2)).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order);
-	// }).fetch()
-	// .then(function(m) {
-	// 	res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 		res.send({html: model});
-	// 	});
-	// });
 }
 
 exports.login = function(req, res) {
@@ -374,4 +367,22 @@ exports.staffRemove = function(req, res) {
 	}).catch(function(e) {
 		res.send(400,{});
 	});
+}
+
+exports.blogVideos = function(req, res) {
+	Blog.collection().fetch()
+		.then(function(blogs) {
+			res.render('featuredVideos', {blogs: blogs}, function(err, m) {
+				res.send(200,{html: m});
+			});
+		});
+}
+
+exports.blogInterviews = function(req, res) {
+	blogInterview.collection().fetch()
+		.then(function(blogs) {
+			res.render('interviews', {blogs: blogs}, function(err, m) {
+				res.send(200,{html: m});
+			});
+		});
 }

@@ -1,0 +1,14 @@
+<% blogs.forEach(function(blog) { %>
+  <div class="blogEntry">
+    <div class="imgWrapper playSong" data-name="<%=blog.attributes.name%>" data-artist="<%=blog.attributes.artist%>" data-vid="<%=blog.attributes.vid%>">
+      <img src="/images/<%=blog.attributes.vid%>.jpg"/>
+      <span class="glyphicon glyphicon-play"></span>
+    </div>
+    <div class="blogEntryBody">
+      <div class="blogEntryName"><%= blog.attributes.name %></div>
+      <div class="blogEntryArtist"><%= blog.attributes.artist %></div>
+      <br>
+      <div class="blogEntryText"><%= blog.attributes.text %></div>
+    </div>
+  </div>
+<% }); %>

@@ -93,6 +93,9 @@ app.post('/unlikeSong', routes.unlikeSong);
 app.post('/staffAdd', routes.staffAdd);
 app.post('/staffRemove', routes.staffRemove);
 
+app.get('/blogInterviews', routes.blogInterviews);
+app.get('/blogVideos', routes.blogVideos);
+
 var stateKey = 'spotify_auth_state';
 
 var spotify = require('./controllers/spotifyC.js');
@@ -100,6 +103,7 @@ var spotify = require('./controllers/spotifyC.js');
 app.get('/spotifyCheck', spotify.check);
 app.get('/spotifyLogin', spotify.login);
 app.get('/spotifyAuthorize', spotify.authorize);
+app.get('/importSpotify', spotify.importSpotify);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 

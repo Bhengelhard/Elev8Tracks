@@ -1,3 +1,4 @@
+<div id="homePage">
 <div id="vidPlayer">
     <video autoplay loop muted>
       <source src="images/muramasa1.mp4" type="video/mp4">
@@ -81,5 +82,26 @@
         </div>
         <br>
         <div id="searchVideos">Search Videos</div>
+</div>
+<div id="blogMenuUp"></div>
+</div>
+<div id="blogsContent">
+  <div id="blogsTitleContainer">
+    <div id="blogsTitleMove">
+      <div id="blogsTitleInterviews" class="active" onclick="blogsInterviews()">Exclusive Interviews</div>
+      <div id="blogsTitleVideos" onclick="blogsVideos()">Featured Videos</div>
+    </div>
+  </div>
+  <div id="blogsType">
+    <% blogs.forEach(function(blog) { %>
+      <div class="blogEntry">
+        <img src="/images/<%= blog.attributes.image %>">
+        <div class="blogEntryBody">
+          <div class="blogEntryName"><%= blog.attributes.name %></div>
+          <div class="blogEntryText"><%= blog.attributes.text %></div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
 </div>
 </div>

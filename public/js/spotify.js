@@ -63,3 +63,13 @@ function spotifyHTML() {
 function removeSpotify() {
   $('#ditemSpotifyArtists').remove();
 }
+
+function importSpotify() {
+  $.get("/importSpotify", function(res) {
+    if(res.error = 'login') {
+      window.location.href = '/spotifyLogin';
+    } else {
+      console.log(res);
+    }
+  });
+}
