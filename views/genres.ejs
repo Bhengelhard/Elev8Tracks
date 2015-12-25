@@ -1,0 +1,15 @@
+<% genres.forEach(function(genre) { 
+    if(count == 0) { %>
+      <div id="d<%= genre.genre_1 %>" class="gItem query criteria" data-search="<%= genre.genre_1 %>" data-id="<%= genre.genre_1_ID %>">
+        <div class="itemName"><%= genre.genre_1 %></div>
+      </div>
+    <% } else if(count == 1) { %>
+      <div id="d<%= genre.genre_2 %>" class="gItem query criteria" data-search="<%= genre.genre_2 %>" data-id="<%= genre.genre_2_ID %>">
+        <div class="itemName"><%= genre.genre_2 %></div>
+      </div>
+    <% } else if(count == 2) { %>
+      <div id="d<%= genre.genre_3 %>" class="gItem query criteria" data-search="<%= genre.genre_3 %>">
+        <div class="itemName"><%= genre.genre_3 %></div>
+      </div>
+    <% } %>
+<% }); %>

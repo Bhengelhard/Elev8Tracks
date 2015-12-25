@@ -13,10 +13,7 @@ $(document).ready(function() {
 
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
-        window.location.href = '/spotifyLogin';
-        // $.get("/spotifyAuthorize", function(data) {
-        // 	console.log(data);
-        // })
+        spotifyLogin();
     });
     $('#content').scroll(function() {
     	if($('#homePage').length > 0) {
@@ -30,6 +27,40 @@ $(document).ready(function() {
 		      $('#navbar').addClass('home');
 		    }
 		}
+	});
+
+	$('#vgenre').mouseenter(function() {
+		if(!$('#genreBar').hasClass('active')) {
+			$('#genreBar').toggleClass('active');
+			$('#content').toggleClass('genre');
+		}
+	});
+	$('#navbar').mouseleave(function() {
+		if($('#genreBar').hasClass('active')) {
+			$('#genreBar').toggleClass('active');
+			$('#content').toggleClass('genre');
+		}
+	});
+	$('#vgenre').click(function() {
+		$(this).toggleClass('pinned');
+		$('#genreBar').toggleClass('pinned');
+		$('#content').toggleClass('genrePinned');
+	});
+
+	$('#vfilter .dtitle').click(function() {
+		if($('#vfilter').hasClass('filtered')) {
+			$('#vfilter .searched').removeClass('searched');
+			$('#vfilter').removeClass('filtered');
+			var params = searchParams();
+			searchDB(params);
+		}
+	});
+
+	$('#fullScreenWrapper').click(function() {
+		// $.get('/checkViews', function(res) {
+		// 	console.log(res);
+		// });
+		toggleFullScreen(document.body);
 	});
 
 	$.getScript("https://www.youtube.com/iframe_api", function() {});
@@ -83,27 +114,18 @@ $(document).ready(function() {
     	updateListName(name, lid);
     });
 
-    $('#videoSearcher').click(function() {
-    	$('.selected').removeClass('selected');
-    	$('#videoSearcherWrapper').addClass('selected');
+
+    $(document).on("click",".vItem", function(event) {
+    	searchCriteriaToggle(event);
     });
-    $('.vItem').add('.dItem').not('.listNav').click(function() {
-    	var criteria = $(this).closest('.criteriaType').attr('id');
-    	console.log(criteria);
-    	switch(criteria) {
-    		case 'sortDrop':
-    		case 'vsort':
-    			$(this).closest('.criteriaType').children().removeClass('searched');
-    			$(this).toggleClass('searched');
-    			break;
-    		default:
-    			console.log($(this));
-    			$(this).toggleClass('searched');
-    			break;
-    	}
+    $(document).on("click",".dItem", function(event) {
+    	searchCriteriaToggle(event);
+    });
+    $(document).on("click",".gItem", function(event) {
+    	searchCriteriaToggle(event);
     });
 
-    $('.query').click(function(e) {
+    $(document).on("click",".query", function(e) {
     	var params = searchParams();
 		searchDB(params);
     });
@@ -168,12 +190,12 @@ $(document).ready(function() {
 		currentlyPlaying($('#player').attr('data-vid'));
 	});
 
-	$('#searchVideos').click(function() {
+	$(document).on("click","#searchVideos", function() {
 		$('#navbar').removeClass('home');
-		$('#player').removeClass('home');
+		$('#controls').removeClass('home');
 		var params = homeSearchParams();
 		searchDB(params);
-	})
+	});
 });
 
 function nav(e) {
@@ -186,7 +208,7 @@ function nav(e) {
 	$(e.target).closest('.nav').addClass('active');
 	$('#navbar').removeClass('home');
 	$('#userListsNav').removeClass('home');
-	$('#player').removeClass('home');
+	$('#controls').removeClass('home');
 	setTimeout(function() {
 		switch(nav) {
 		case 'songs':
@@ -211,6 +233,8 @@ function nav(e) {
 			break;
 		case 'blog':
 			$.get('/blogs', function(res) {
+				$('#genreBar .searched').removeClass('searched');
+				refreshGenres($('#genreBar .gItem:first'));
 				var time = transition();
         		pageEnter(res, time);
 			});
@@ -229,6 +253,8 @@ function nav(e) {
 			$.get('/blogs', function(res) {
 				var time = transition();
 				$('#navbar').addClass('home');
+				$('#genreBar .searched').removeClass('searched');
+				refreshGenres($('#genreBar .gItem:first'));
         		pageEnter(res, time);
 			});
 			break;
@@ -342,26 +368,8 @@ function showList(el) {
 	    cache: false,
 	    timeout: 5000,
         success:function(res) {
-        	console.log(res);
-        	var song;
-        	var songs = [];
-        	var order = res.list.the_order.split(',');
-        	for(var i = 0; i < order.length; i++) {
-        		res.m.forEach(function(video) {
-        			if(order[i] == video.vid) {
-        				song = [];
-        				song.push(video.name);
-        				song.push(video.artist);
-        				song.push(video.vid);
-        				songs.push(song);
-        			}
-        		});
-        	}
-        	console.log(songs);
-        	prevHTML = $('#content').children();
-        	var $html = buildSongs(songs, name, $(el).attr('data-lid'));
 			var time = transition();
-			videoEnter($html, time);
+			videoEnter(res.html, time);
 	    }
 	});
 }
@@ -564,7 +572,7 @@ function loginNav() {
         success:function(res) {
         	$('#userListsNav').remove();
         	console.log(res);
-        	$('#navbar').append(res.html);
+        	$('#mainBar').append(res.html);
 
         }
     });
@@ -593,8 +601,7 @@ function createList() {
 	        timeout: 5000,
 	        success:function(res) {
 	        	$('#createListName').val('');
-	        	console.log(res);
-	        	var list = $('<div class="block" data-id="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><div class="listDelete" onclick="promptListDelete(event)">&#215</div></div></div>');
+	        	var list = $('<div class="block" data-lid="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><div class="listDelete" onclick="promptListDelete(event)">&#215</div></div></div>');
 	        	list.css('width','0px').css('border','none');
 	        	$('#addList').before(list);
 	        	list.animate({
@@ -717,17 +724,21 @@ function handleDrop(e, block) {
 		$('#songOrder').closest('.block').before(block);
 		updateListOrder();
 	} else if($(e.target).closest('.listNav').length > 0) {
-		addToPlaylist(block.attr('data-vid'), $(e.target).closest('.listNav').attr('data-lid'));
+		console.log($(e.target).closest('.listNav').attr('data-lid'));
+		addToPlaylist(block.attr('data-vid'), block.attr('id').replace('s',''), $(e.target).closest('.listNav').attr('data-lid'));
 		likeSong(block.attr('data-vid'));
 	}
 }
 
-function addToPlaylist(vid, lid) {
+function addToPlaylist(vid, song_ID, lid) {
+	console.log(vid);
+	console.log(song_ID);
+	console.log(lid);
 	$.ajax({
 		url: "/addToList",
 	    type: "post",
 	    dataType: "json",
-	    data: JSON.stringify({vid: vid, lid: lid}),
+	    data: JSON.stringify({vid: vid, song_ID: song_ID, lid: lid}),
         contentType: "application/json",
         cache: false,
         timeout: 5000,
@@ -908,7 +919,7 @@ function deleteSong(e) {
 function songOrderer() {
 	var order = '';
 	$('.block').each(function() {
-		order += $(this).attr('data-vid') + ',';
+		order += $(this).attr('id').replace('s','') + ',';
 	});
 	return order;
 }
@@ -1030,4 +1041,73 @@ function blogInterviewshtml() {
 		console.log(res);
 		$('#blogsType').html(res.html);
 	});
+}
+
+function searchCriteriaToggle(e) {
+	var criteria = $(e.target).closest('.criteriaType').attr('id');
+    switch(criteria) {
+    	case 'sortDrop':
+    	case 'vsort':
+    		$(e.target).closest('.criteriaType').children().removeClass('searched');
+    		$(e.target).closest('.criteria').toggleClass('searched');
+    		break;
+    	case 'genreBar':
+    		if($(e.target).closest('.criteria').hasClass('searched')) {
+    			$(e.target).closest('.criteria').removeClass('searched');
+    			$(e.target).closest('.criteria').nextAll().removeClass('searched');
+    		} else {
+    			$(e.target).closest('.criteria').addClass('searched');
+    		}
+    		refreshGenres($(e.target).closest('.gItem'));
+    		break;
+    	default:
+    		$(e.target).closest('.criteria').toggleClass('searched');
+    		if($('#vfilter').find('.searched').length) {
+    			if(!$('#vfilter').hasClass('filtered')) {
+    				$('#vfilter').addClass('filtered');
+    			}
+    		} else {
+    			$('#vfilter').removeClass('filtered');
+    		}
+    		break;
+    }
+}
+
+function refreshGenres($el) {
+	var genre = $('#genreBar').find('.searched:last');
+	if(genre.length) {
+		genre = genre.attr('data-search');
+	} else {
+		genre = '*';
+	}
+	var count = $('#genreBar').find('.searched').length;
+	if($('.gItem:not(.searched)').length > 0) {
+		$.ajax({
+			url: "/refreshGenres",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({genre: genre, count: count}),
+		    contentType: "application/json",
+		    cache: false,
+	        timeout: 5000,
+	        success:function(res) {
+	        	$el.nextAll('.genreCarrot').remove();
+	        	$('.gItem:not(.searched)').remove();
+	        	$('#genreBar').append(res.html);
+	        	if($el.nextAll().length > 0) 
+	        		$('#genreBar').find('.searched:last').after('<div class="genreCarrot">></div>');
+		    }
+		});
+	}
+}
+
+function genreUpdate() {
+	console.log('in');
+	$.get("/genreUpdate", function(data) {
+      	alert('updated');
+    });
+}
+
+function spotifyLogin() {
+	window.location.href = '/spotifyLogin';
 }

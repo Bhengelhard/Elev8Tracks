@@ -1,10 +1,10 @@
 var listParams = [];
 
 function searchDB(params) {
-	console.log(params);
 	$('#navbar').removeClass('home');
 	$('#userListsNav').removeClass('home');
 	$('#player').removeClass('home');
+	$('#videoSearcher').val("");
 	$.ajax({
 		url: "/videoSearch",
         type: "post",
@@ -14,7 +14,27 @@ function searchDB(params) {
         cache: false,
         timeout: 5000,
         success:function(res) {
-        	console.log(res);
+        	$('.selected').removeClass('selected');
+    		$('#videoSearcherWrapper').addClass('selected');
+        	var time = transition();
+        	videoEnter(res.html, time, params[5][0]);
+        }
+    });
+}
+
+function textSearchDB(sval) {
+	$.ajax({
+		url: "/textVideoSearch",
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify({sval: sval}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	$('.selected').removeClass('selected');
+    		$('#videoSearcherWrapper').addClass('selected');
+    		clearParams();
         	var time = transition();
         	videoEnter(res.html, time, params[5][0]);
         }
@@ -54,11 +74,11 @@ function searchParams() {
 	});
 	sortParams = sortParams.substring(0,sortParams.length-1);
 	params.push(sortParams);
-	var genreParams = '';
-	$('#vgenre').find('.searched').each(function() {
-		genreParams += $(this).attr('data-search') + ',';
-	});
-	genreParams = genreParams.substring(0, genreParams.length-1);
+	if($('#genreBar').find('.searched:last').length == 0)
+		var genreParams = 0
+	else
+		var genreParams = $('#genreBar').find('.searched:last').attr('data-id');
+	console.log(genreParams[1]);
 	params.push(genreParams);
 	var sval = $('#videoSearcher').val();
 	params.push(sval);
@@ -138,4 +158,11 @@ function homeSearchParams() {
 	var limits = [0,75];
 	params.push(limits);
 	return params;
+}
+
+function clearParams() {
+	$('#navbar .searched').removeClass('searched');
+	$('#navbar #vitemNewest').addClass('searched');
+	refreshGenres($('#genreBar .gItem:first'));
+	$('#vfilter').removeClass('filtered');
 }

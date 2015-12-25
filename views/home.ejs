@@ -7,101 +7,75 @@
 </div>
 <div id="finder">
 <div id="findVideos">E L E V A T E</div>
-<input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>
-<% if(spotify) { %>
+<div id="findVideosBestNewVideos">Hottest New Music Videos</div>
+<div id="findVideosStaffPicks">Recent Staff Picks</div>
+<!--<input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>-->
+<!--<% if(spotify) { %>
   <div id="spotifyLogin">Change Spotify</div>
 <% } else { %>
   <div id="spotifyLogin">Sync Spotify</div>
-<% } %>
-<div id="findVideosOr">- OR BROWSE -</div>
-<div id="searchCriteria">
+<% } %>-->
+<!--<div id="searchCriteria">
         <div id="genreDrop" class="criteriaType">
         <div class="vtitle">GENRE:</div>
-          <div id="vDance" class="vItem" data-search="dance">
-            <div class="itemName">Dance</div>
+        <% genres.forEach(function(genre) { %>
+          <div id="d<%= genre.genre_1 %>" class="vItem criteria" data-search="<%= genre.genre_1 %>" data-id="<%= genre.genre_1_ID %>">
+            <div class="itemName"><%= genre.genre_1 %></div>
           </div>
-          <div id="vDubstep" class="vItem searched" data-search="dubstep">
-            <div class="itemName">Dubstep</div>
-          </div>
-          <div id="vElectronic" class="vItem" data-search="electronic">
-            <div class="itemName">Electronic</div>
-          </div>
-          <div id="vExperimental" class="vItem" data-search="experimental">
-            <div class="itemName">Experimental</div>
-          </div>
-          <div id="vChill" class="vItem" data-search="chill">
-            <div class="itemName">Chill</div>
-          </div>
-          <div id="vRap" class="vItem" data-search="rap">
-            <div class="itemName">Hip-Hop/Rap</div>
-          </div>
-          <div id="vComedy" class="vItem" data-search="comedy">
-            <div class="itemName">Comedy</div>
-          </div>
-          <div id="vAlternative" class="vItem" data-search="alternative">
-            <div class="itemName">Alternative</div>
-          </div>
+        <% }); %>
         </div>
         <br>
   <div id="sortDrop" class="criteriaType">
           <div class="vtitle">SORT BY:</div>
-          <div id="vitemRelevant" class="vItem" data-search="relevance">
-            <div class="itemName">Relevance</div>
-          </div>
-          <div id="vitemPopular" class="vItem searched" data-search="likes">
+          <div id="vitemPopular" class="vItem criteria searched" data-search="likes">
             <div class="itemName">Popularity</div>
           </div>
-          <div id="vitemNewest" class="vItem" data-search="created_at">
+          <div id="vitemNewest" class="vItem criteria" data-search="created_at">
             <div class="itemName">Newest</div>
           </div>
         </div>
-        <br>
         <div id="filterDrop" class="criteriaType">
           <div class="vtitle">FILTER:</div>
-          <div id="vitemStaff" class="vItem" data-search="staff">
+          <div id="vitemStaff" class="vItem criteria" data-search="staff">
             <div class="itemName">Staff Picks</div>
           </div>
           <% if(spotify) { %>
-            <div id="vitemSpotifyArtists" class="vItem spotify" data-search="spotifyArtists">
+            <div id="vitemSpotifyArtists" class="vItem criteria spotify" data-search="spotifyArtists">
               <div class="itemName">Spotify Artists</div>
             </div>
           <% } %>
         </div>
-        <br>
         <div id="searchDrop" class="criteriaType">
           <div class="vtitle">SEARCH:</div>
-          <div id="vitemSongs" class="vItem searched" data-search="name">
+          <div id="vitemSongs" class="vItem criteria searched" data-search="name">
             <div class="itemName">Songs</div>
           </div>
-          <div id="vitemArtists" class="vItem searched" data-search="artist">
+          <div id="vitemArtists" class="vItem criteria" data-search="artist">
             <div class="itemName">Artists</div>
           </div>
-          <div id="vitemTags" class="vItem" data-search="tags">
+          <div id="vitemTags" class="vItem criteria" data-search="tags">
             <div class="itemName">Playlists</div>
           </div>
         </div>
         <br>
         <div id="searchVideos">Search Videos</div>
 </div>
+<div id="blogMenuUpWrapper">
 <div id="blogMenuUp"></div>
+</div>-->
+<div id="sotdWrapper">
+  <div id="sotdTitle" class="playSong" data-name="Girl" data-artist="Mura Masa" data-vid="XEcKhamKyW4">Mura Masa: Girl</div>
+</div>
 </div>
 <div id="blogsContent">
   <div id="blogsTitleContainer">
-    <div id="blogsTitleMove">
-      <div id="blogsTitleInterviews" class="active" onclick="blogsInterviews()">Exclusive Interviews</div>
-      <div id="blogsTitleVideos" onclick="blogsVideos()">Featured Videos</div>
+    <div id="blogsTitleMove" class="active">
+      <div id="blogsTitleInterviews" onclick="blogsInterviews()">Exclusive Interviews</div>
+      <div id="blogsTitleVideos" class="active" onclick="blogsVideos()">Featured Videos</div>
     </div>
   </div>
   <div id="blogsType">
-    <% blogs.forEach(function(blog) { %>
-      <div class="blogEntry">
-        <img src="/images/<%= blog.attributes.image %>">
-        <div class="blogEntryBody">
-          <div class="blogEntryName"><%= blog.attributes.name %></div>
-          <div class="blogEntryText"><%= blog.attributes.text %></div>
-        </div>
-      </div>
-    <% }); %>
+    <% include featuredVideos %>
   </div>
 </div>
 </div>

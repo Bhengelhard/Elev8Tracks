@@ -3,16 +3,22 @@ var Song = require('../models/song');
 var Blog = require('../models/blog');
 var User = require('../models/user');
 var blogInterview = require('../models/interview');
+var Genre = require('../models/genre');
+var songGenre = require('../models/song_genre');
+var songList = require('../models/song_list');
 var Knex = require('../init/knex');
 
 exports.index = function(req, res) {
-	blogInterview.collection().fetch()
+	Blog.collection().fetch()
 		.then(function(blogs) {
 			Playlist.collection().query(function(search) {
 				search.where('userid', '=', req.session.userid);
 			}).fetch()
 			.then(function(lists) {
-				res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists});
+				Knex('genres').groupBy('genre_1')
+				.then(function(genres) {
+					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+				});
 			});
 		});
 };
@@ -41,9 +47,12 @@ exports.songs = function(req, res) {
 }
 
 exports.blogs = function(req, res) {
-	blogInterview.collection().fetch()
+	Blog.collection().fetch()
 		.then(function(m) {
-			res.render('home', {spotify: req.session.spotifyID, blogs: m});
+			Knex('genres').groupBy('genre_1')
+			.then(function(genres) {
+				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres});
+			});
 		});
 }
 exports.myLists = function(req, res) {
@@ -63,14 +72,35 @@ exports.myLists = function(req, res) {
 
 exports.storeSong = function(req, res) {
 	var time = new Date().toISOString().substr(0, 19).replace('T', ' ');
-	new Song({vid: req.body.vid}).fetch({require: true})
+	var genres = req.body.genre.split(',');
+	var sql = '';
+	for(var i = 0; i < genres.length; i++) {
+		sql += "genre_final = '" + genres[i] + "' OR";
+	}
+	sql = sql.substring(0,sql.length-3);
+	Genre.collection().query(function(search) {
+		search.whereRaw(sql);
+	}).fetch().then(function(genres) {
+		var genre1 = '',
+			genre2 = '',
+			genre3 = '';
+		genres.forEach(function(genre) {
+			if(genre.attributes.genre_1.length > 0 && genre1.search(','+genre.attributes.genre_1+',') < 0)
+				genre1 += genre.attributes.genre_1 + ',';
+			if(genre.attributes.genre_2.length > 0 && genre2.search(','+genre.attributes.genre_2+',') < 0)
+				genre2 += genre.attributes.genre_2 + ',';
+			if(genre.attributes.genre_3.length > 0 && genre3.search(','+genre.attributes.genre_3+',') < 0)
+				genre3 += genre.attributes.genre_3 + ',';
+		});
+		new Song({vid: req.body.vid}).fetch({require: true})
 		.then(function(m) {
-			m.save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, director: req.body.director},{patch: true});
+			m.save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, director: req.body.director, genre1: genre1, genre2: genre2, genre3:genre3},{patch: true});
 			res.send(200, {});
 		}).catch(function(e) {
-			new Song().save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, created_at: time},{patch: true});
+			new Song().save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, created_at: time, genre1: genre1, genre2: genre2, genre3:genre3},{patch: true});
 			res.send(200,{});
-		})
+		});
+	});
 }
 
 exports.storeBlog = function(req, res) {
@@ -95,71 +125,111 @@ exports.removeBlock = function(req, res) {
 
 exports.showList = function(req, res) {
 	if(req.session.user) {
-		var sql = "(lists LIKE '%," + req.body.lid + ",%')";
-		Song.collection().query(function(search) {
-			search.where(search.knex.raw(sql));
-		}).fetch()
-		.then(function(m) {
-			new Playlist({id: req.body.lid}).fetch({require: true})
+		Knex('songs').join('songs_playlists', 'songs_playlists.song_ID','=','songs.id').where('songs_playlists.playlist_ID','=',req.body.lid)
+		.then(function(songs) {
+			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
-				res.send({list: list, m: m});
-			})
-		}).catch(function(e) {
-			res.send(400,{});
+				res.render('playlist', {list: songs, name: list[0].name, playlist_ID: req.body.lid, session: req.session, order: list[0].the_order.split(',')}, function(err, model) {
+					res.send({html: model});
+				});
+			});
 		});
 	}
 }
 
 exports.videoSearch = function(req, res) {
-	var sql = '(';
-	var sql2 = '(';
-	var search = req.body.searchParams.split(',');
-	for(var i = 0; i < search.length; i++) {
-		sql += " lower(songs." + search[i] + ") LIKE '" + req.body.sval + "%' OR";
-		sql2 += " lower(songs." + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
-	}
-	sql = sql.substring(0, sql.length - 3) + ')';
-	sql2 = sql2.substring(0, sql2.length - 3) + ')';
+	// var sql = '(';
+	// var sql2 = '(';
+	// var search = req.body.searchParams.split(',');
+	// for(var i = 0; i < search.length; i++) {
+	// 	sql += " lower(songs." + search[i] + ") LIKE '" + req.body.sval + "%' OR";
+	// 	sql += " lower(songs." + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
+	// }
+	// sql = sql.substring(0, sql.length - 3) + ')';
+	// var filter = req.body.filterParams.split(',');
+	// var spotifyArtistFilter = 0;
+	// var genres = req.body.genreParams.split(',');
+	// console.log(genres);
+	// if(genres[0].length > 0) {
+	// 	for(var j = 0; j < genres.length; j++) {
+	// 		var n = j + 1;
+	// 		sql += " AND genre" + n + " LIKE '%," + genres[j] + ",%'";
+	// 		sql += " AND genre" + n + " LIKE '%," + genres[j] + ",%'";
+	// 	}
+	// }
+	var sql = 'SELECT * FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_ID';
+
 	var filter = req.body.filterParams.split(',');
-	var spotifyArtistFilter = 0;
+	var wherestatement = ' WHERE';
 	if(filter[0].length > 0) {
 		for(var j = 0; j < filter.length; j++) {
 			if(filter[j] == 'spotifyArtists') {
-				var spotifyArtistFilter = 1;
-			} else {
-				sql += ' AND songs.' + filter[j] + "=1";
-				sql2 += ' AND songs.' + filter[j] + "=1";
+				sql += ' INNER JOIN spotify_artists ON songs.artist=spotify_artists.artist WHERE spotify_artists.spotify_id=' + req.session.spotifyID;
+				wherestatement = ' AND';
+			} 
+		}
+		for(var j = 0; j < filter.length; j++) {
+			if(filter[j] != 'spotifyArtists') {
+				sql += wherestatement + ' songs.' + filter[j] + "=1";
+				wherestatement = ' AND';
 			}
 		}
 	}
-	var genres = req.body.genreParams.split(',');
-	if(genres[0].length > 0) {
-		for(var j = 0; j < genres.length; j++) {
-			sql += " AND songs.genre LIKE '%" + genres[j] + "%'";
-			sql2 += " AND songs.genre LIKE '%" + genres[j] + "%'";
+
+	if(req.body.genreParams > 0) {
+		if(req.body.genreParams < 200) {
+			sql += wherestatement + ' songs_genres.genre_1_ID = ' + req.body.genreParams;
+		} else if (req.body.genreParams >= 200) {
+			sql += wherestatement + ' songs_genres.genre_2_ID = ' + req.body.genreParams;
 		}
 	}
-	var order = (req.body.sortParams == 'likes' ? 'asc' : 'desc');
-	if(spotifyArtistFilter == 1) {
-		sql += " AND spotify_artists.spotify_id = " + req.session.spotifyID;
-		Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc')
+
+	sql += ' GROUP BY songs.id ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
+	Knex.raw(sql).then(function(m) {
+		res.render('songs', {songs: m[0], session: req.session}, function(err, model) {
+				res.send({html: model});
+			});
+	});
+	// 	var genreSql = (req.body.genreParams[0] == 1 ? 'songs_genres.genre_1_ID = ' + req.body.genreParams[1]: 'songs_genres.genre_2_ID = ' + req.body.genreParams[1]);
+	// Knex('songs').join('songs_genres','songs.id','=','songs_genres.song_ID').whereRaw(genreSql).offset(req.body.offset).limit(req.body.limit).groupBy('songs.id').orderBy(req.body.sortParams, 'asc')
+	// .then(function(m) {
+	// 	res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 			res.send({html: model});
+	// 		});
+	// });
+	// Knex('genres').whereRaw(genresql)
+	// .then(function(genre) {
+	// 	console.log(genre);
+
+	// var order = (req.body.sortParams == 'likes' ? 'asc' : 'desc');
+	// if(spotifyArtistFilter == 1) {
+	// 	sql += " AND spotify_artists.spotify_id = " + req.session.spotifyID;
+	// 	Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc')
+	// 	.then(function(m) {
+	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 			res.send({html: model});
+	// 		});
+	// 	});
+	// } else {
+	// 	Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
+	// 	.then(function(m) {
+	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+	// 			res.send({html: model});
+	// 		});
+	// 	});
+	// }
+
+	// });
+}
+
+exports.textVideoSearch = function(req,res) {
+	var sql = " lower(songs.artist) LIKE '" + req.body.sval + "%' OR lower(songs.artist) LIKE '% " + req.body.sval + "%' OR lower(songs.name) LIKE '" + req.body.sval + "%' OR lower(songs.name) LIKE '% " + req.body.sval + "%'";
+	Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit)
 		.then(function(m) {
-			console.log(m);
 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
-				console.log(err);
 				res.send({html: model});
 			});
 		});
-	} else {
-		Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
-		.then(function(m) {
-			console.log(m);
-			res.render('songs', {songs: m, session: req.session}, function(err, model) {
-				console.log(err);
-				res.send({html: model});
-			});
-		});
-	}
 }
 
 exports.login = function(req, res) {
@@ -197,10 +267,7 @@ exports.getLoginNav = function(req, res) {
 exports.deleteSong = function(req, res) {
 	new Song({vid: req.body.vid}).fetch({require: true})
 	.then(function(song) {
-		console.log(song.attributes.lists);
-		console.log(String(req.body.lid + ','));
 		var lists = song.attributes.lists.replace(String(req.body.lid + ','), '');
-		console.log(lists);
 		song.save({lists: lists}, {patch: true});
 		new Playlist({id: req.body.lid}).fetch({require: true})
 		.then(function(list) {
@@ -255,7 +322,11 @@ exports.deleteList = function(req, res) {
 	new Playlist({id: req.body.listid}).fetch({require: true})
 	.then(function(model) {
 		model.destroy();
-		res.send(200, {});
+		console.log('check');
+		Knex('songs_playlists').where('playlist_ID',req.body.listid).del()
+		.then(function(songs) {
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
@@ -273,7 +344,6 @@ exports.userPlaylists = function(req, res) {
 }
 
 exports.updateListName = function(req, res) {
-	console.log('hello?');
 	new Playlist({id: req.body.lid}).fetch({require: true})
 	.then(function(m) {
 		var name = req.body.name;
@@ -298,10 +368,11 @@ exports.updateListName = function(req, res) {
 exports.addSong = function(req, res) {
 	new Playlist({id: req.body.lid, userid: req.session.userid}).fetch({require: true})
 	.then(function(m) {
-		var thumbnail = (m.attributes.the_order.length == 0 ? req.body.vid : m.attributes.the_order.split(',')[0]);
-		var order = (m.attributes.the_order.length == 0 ? req.body.vid : m.attributes.the_order + ',' + req.body.vid);
-		// var vids = (m.attributes.videoids == null ? req.body.vid : m.attributes.videoids + ',' + req.body.vid);
-		// var artists = (m.attributes.artists == null ? req.body.artist :m.attributes.artists + ',' + req.body.artist);
+		console.log(m.attributes);
+		 var thumbnail = (m.attributes.thumbnail.length == 0 ? req.body.vid : m.attributes.thumbnail);
+		var order = (m.attributes.the_order.length == 0 ? req.body.song_ID : m.attributes.the_order + ',' + req.body.song_ID);
+		console.log(thumbnail);
+		console.log(order);
 		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
 		new Song({vid: req.body.vid}).fetch({require: true})
 			.then(function(song) {
@@ -309,6 +380,7 @@ exports.addSong = function(req, res) {
 				song.save({lists: lists}, {patch: true});
 				res.send(200, {});
 			});
+		new songList().save({song_ID: req.body.song_ID, playlist_ID: req.body.lid});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
@@ -317,9 +389,11 @@ exports.addSong = function(req, res) {
 exports.updateListOrder = function(req, res) {
 	new Playlist({id: req.body.lid}).fetch({require: true})
 	.then(function(m) {
-		var thumbnail = req.body.order.split(',')[0];
-		m.save({thumbnail: thumbnail, the_order: req.body.order},{patch: true});
-		res.send(200, {});
+		Knex('songs').where('id', req.body.order.split(',')[0])
+		.then(function(song) {
+			m.save({thumbnail: song[0].vid, the_order: req.body.order},{patch: true});
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
@@ -385,4 +459,96 @@ exports.blogInterviews = function(req, res) {
 				res.send(200,{html: m});
 			});
 		});
+}
+
+exports.refreshGenres = function(req, res) {
+	var masterGenre = 'genre_' + parseInt(req.body.count);
+	var subGenre = 'genre_' + parseInt(req.body.count+1);
+	if(req.body.genre == '*') {
+		Knex('genres').groupBy('genre_1')
+		.then(function(genres) {
+			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
+				res.send(200,{html: m});
+			});
+		});
+	} else {
+		Knex('genres').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + ' = ""').groupBy(subGenre)
+		.then(function(genres) {
+			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
+				res.send(200,{html: m});
+			});
+		});
+	}
+}
+
+exports.genreUpdate = function(req, res) {
+	Genre.collection().fetch()
+	.then(function(genres) {
+		var genreArray = [];
+		genres.forEach(function(genre) {
+			genreArray.push(genre.attributes);
+		// 	Song.collection().query(function(search) {
+		// 		search.whereRaw("genre LIKE '%, " + genre.attributes.genre_final + ",%'");
+		// 	}).fetch().then(function(songs) {
+		// 		songs.forEach(function(song) {
+		// 			var genre1 = song.attributes.top_genre + genre.attributes.genre1 + ',';
+		// 			console.log(genre1);
+		// 			var genre2 = (genre.attributes.genre2.length > 0 ? genre.attributes.genre2 + ',':'');
+		// 			var genre3 = (genre.attributes.genre3.length > 0 ? genre.attributes.genre3 + ',':'');
+		// 			song.save({top_genre: genre1});
+
+		// 		});
+		// 	});
+		});
+		genreUpdateQuery(genreArray, 0);
+		res.send(200,{});
+	});
+	// Knex('genres').where('genre_final',req.body.genre)
+	// .then(function(genre1) {
+	// 	res.send(200,{});
+	// });
+}
+
+function genreUpdateQuery(genres, n) {
+	if(n < genres.length) {
+		Song.collection().query(function(search) {
+			search.whereRaw("genre LIKE '%, " + genres[n].genre_4 + ",%'");
+		}).fetch().then(function(songs) {
+			songs.forEach(function(song) {
+				if(song.attributes.genre1.search(',' + genres[n].genre_1 + ',') >= 0) {
+					var genre1 = song.attributes.genre1;
+				} else {
+					var genre1 = song.attributes.genre1 + genres[n].genre_1 + ',';
+				}
+				var genre2 = ((genres[n].genre_2.length > 1 && song.attributes.genre2.search(',' + genres[n].genre_2 + ',') < 0) ? genres[n].genre_2 + ',':'');
+				var genre3 = ((genres[n].genre_3.length > 1 && song.attributes.genre3.search(',' + genres[n].genre_3 + ',') < 0) ? genres[n].genre_3 + ',':'');
+				song.save({genre1: genre1, genre2: song.attributes.genre2 + genre2, genre3: song.attributes.genre3 + genre3 })
+				.then(function() {
+					genreUpdateQuery(genres, n++);
+				});
+			});
+		});
+	} else {
+		console.log('done');
+	}
+}
+
+exports.newgenreUpdate = function(req, res) {
+	songGenre.collection().fetch()
+	.then(function(songGenres) {
+		songGenres.destroy();
+		Genre.collection().fetch()
+		.then(function(genres) {
+			genres.forEach(function(genre) {
+				Song.collection().query(function(search) {
+					search.whereRaw("genre LIKE '%, " + genre.attributes.genre_4 + ",%'");
+				}).fetch().then(function(songs) {
+					songs.forEach(function(song) {
+						new songGenre({song_ID: song.attributes.id, genre_1_ID: genre.attributes.genre_1_ID, genre_2_ID: genre.attributes.genre_2_ID}).save();
+					});
+				});
+			});
+			res.send(200,{});
+		});
+	})
 }

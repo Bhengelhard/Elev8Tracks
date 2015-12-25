@@ -61,6 +61,7 @@ var generateRandomString = function(length) {
 
 var routes = require('./controllers/playlistC.js');
 var spotify = require('./controllers/spotifyC.js');
+var youtube = require('./controllers/youtubeC.js');
 
 app.get('/', routes.index);
 app.get('/index2', routes.index2);
@@ -79,6 +80,7 @@ app.post('/storeSong', routes.storeSong);
 app.post('/storeBlog', routes.storeBlog);
 app.post('/removeBlock/:data', routes.removeBlock);
 app.post('/videoSearch', routes.videoSearch);
+app.post('/textVideoSearch', routes.textVideoSearch);
 app.post('/login', routes.login);
 app.get('/logout', routes.logout);
 app.post('/signUp', routes.signUp);
@@ -92,9 +94,11 @@ app.post('/updateListName', routes.updateListName);
 app.post('/unlikeSong', routes.unlikeSong);
 app.post('/staffAdd', routes.staffAdd);
 app.post('/staffRemove', routes.staffRemove);
+app.get('/genreUpdate', routes.newgenreUpdate);
 
 app.get('/blogInterviews', routes.blogInterviews);
 app.get('/blogVideos', routes.blogVideos);
+app.post('/refreshGenres', routes.refreshGenres);
 
 var stateKey = 'spotify_auth_state';
 
@@ -106,6 +110,8 @@ app.get('/spotifyAuthorize', spotify.authorize);
 app.get('/importSpotify', spotify.importSpotify);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
+
+app.get('/checkViews', youtube.checkViews);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

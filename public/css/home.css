@@ -351,7 +351,7 @@ body {
 	position: absolute;
 	top: -50px;
 	right: 20px;
-	width: 350px;
+	width: 380px;
 	height: 50px;
 	background-color: #222;
 	border-top: 2px solid #000;
@@ -373,10 +373,10 @@ body {
 	pointer-events: none;
 } #player #controls #playToggle {
 	position: absolute;
-	top: 8px;
-	right: 45px;
-	font-size: 30px;
-	color: #fff;
+    top: 8px;
+    right: 90px;
+    font-size: 30px;
+    color: #fff;
 	-webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -409,18 +409,29 @@ body {
 	position: absolute;
     top: 0px;
     left: 0px;
-    width: 275px;
+    width: 270px;
     height: 50px;
 } #controls #playerExpand:hover {
 	background-color: #555;
 } #controls #playToggleSelection {
 	position: absolute;
-	top: 0px;
-	left: 275px;
-	right: 0px;
-	height: 50px;
+    top: 0px;
+    right: 50px;
+    height: 50px;
+    width: 60px;
 } #controls #playToggleSelection:hover {
 	background-color: #555;
+} #controls #fullScreenWrapper {
+	position: absolute;
+    right: 0px;
+    font-size: 25px;
+    width: 50px;
+    height: 100%;
+    color: #fff;
+    padding-top: 2.5%;
+    text-align: center;
+} #controls #fullScreenWrapper:hover {
+	background-color: rgba(200,200,200,.5);
 }
 
 #navbar {
@@ -449,13 +460,8 @@ body {
 	display: inline-block;
 	line-height: 2;
 	background-color: transparent;
-	-webkit-transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -ms-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    transition: all .2s ease;
-} #title:hover {
-	/*background-color: #444;*/
+} #navbar #title:hover {
+	background-color: #444;
 } #navbar #title.selected {
 	/*color: #5E63FF;*/
 } .navSelection {
@@ -510,9 +516,15 @@ body {
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
+} #vgenre.pinned {
+	height: auto;
+    padding-bottom: 8px;
+    background-color: #444;
+    color: #ff4400;
 } #vgenre:hover {
 	height: auto;
-  padding-bottom: 15px;
+    padding-bottom: 8px;
+    background-color: #444;
 } #vgenre:hover .vItem {
 	width: auto;
 } #genre:hover .vtitle {
@@ -532,6 +544,9 @@ body {
   } #vfilter:hover {
 	height: auto;
   padding-bottom: 15px;
+} #vfilter.filtered .dtitle {
+	color: #ff4400;
+	font-weight:400;
 } #vfilter:hover .vItem {
 	width: auto;
 }  #vfilter:hover .vtitle {
@@ -744,13 +759,22 @@ body {
 #content {
 	position: fixed;
     top: 0px;
-    min-width: 700px;
+    min-width: 1000px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     overflow: scroll;
     background-color: #000;
     padding-top:50px;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #navbar:not(.home) + #content.genre {
+	top:50px;
+} #navbar:not(.home) + #content.genrePinned {
+	top:50px;
 }
 .vtitle {
 	padding: 10px;
@@ -767,6 +791,9 @@ body {
 	padding: 15px;
 	text-align: center;
 	display:inline-block;
+	width: 100%;
+} .dtitle:hover {
+	background-color:#444;
 } .dItem {
 	width: 100px;
 	position:relative;
@@ -778,8 +805,9 @@ body {
 	width: 100%;
 } .vItem:hover, .vItem.active, .dItem:hover, .dItem.active {
 	background-color: rgba(255,255,255,.5);
-} .vItem.searched, .dItem.searched {
+} .vItem.searched, .dItem.searched, .gItem.searched {
 	background-color: #ff4400;
+	color: #fff;
 } .checkItem {
 	width: 1.5vw;
 	height: 1.5vw;
@@ -795,6 +823,7 @@ body {
 } .itemName {
 	display: inline-block;
 	font-size: 1.25vw;
+	padding: 0px 10px 0px 10px;
 }
 
 #blog {
@@ -1564,8 +1593,12 @@ position: absolute;
   color: #fff;
   font-size: 20px;
   font-weight: 100;
+  padding-left: 10px;
 } #videoSearcher:focus {
+	background-color: #444;
 	outline: none;
+} #videoSearcher:hover {
+	background-color: #444;
 }
 
 #nextSong {
@@ -1842,11 +1875,11 @@ position: absolute;
 #searchCriteria {
 	position: relative;
     left: 0%;
-    text-align: center;
     color: #fff;
     top: 0%;
     padding-bottom: 100px;
-    text-align: left;
+    padding-top:10px;
+    text-align: center;
 } #findVideos {
 	-webkit-transition: all .1s ease;
     -moz-transition: all .1s ease;
@@ -1855,12 +1888,14 @@ position: absolute;
     transition: all .1s ease;
     position: relative;
     left: 0%;
-    font-size: 100px;
+    font-size: 170px;
+    height: 175px;
     font-weight: 100;
+    line-height: 1;
     background-color: transparent;
-    padding: 10px 10px 10px 10px;
     color: #fff;
     cursor: default;
+    overflow: hidden;
 } #searchVideos {
 	padding: 10px;
     display: inline-block;
@@ -1877,7 +1912,7 @@ position: absolute;
     top: 0%;
     margin-left: 10px;
     left: 0%;
-    width: 500px;
+    width: 650px;
     height: 40px;
     background-color: transparent;
     border: 2px solid #fff;
@@ -1888,13 +1923,12 @@ position: absolute;
 } #finder {
 	position: relative;
     display: inline-block;
-    top: -50px;
+    top: 0px;
     left: 0%;
-    width: 90%;
+    width: 100%;
     height: 100%;
-    margin-top: ;
-    margin-left: 10%;
     overflow: hidden;
+    text-align: center;
 }
 
 #findVideosText:-moz-placeholder { /* Firefox 18- */
@@ -1968,7 +2002,7 @@ position: absolute;
 	position: relative;
     display: inline-block;
     top: -80px;
-    left: 45%;
+    left: 0%;
     width: 50px;
     margin-left: -25px;
     height: 50px;
@@ -1989,6 +2023,7 @@ position: absolute;
 	width:100%;
 	background-color: #fff;
 	padding-bottom: 60px;
+	top: -5px;
 } #blogsTitleInterviews {
 	position: relative;
     display: inline-block;
@@ -2009,9 +2044,11 @@ position: absolute;
 }
 .blogEntry {
 	position: relative;
-	height:350px;
-	width:100%;
-	border-bottom:1px solid #000;
+    left: 50%;
+    margin-left: -500px;
+    height: 350px;
+    width: 1000px;
+    border-bottom: 1px solid #000;
 } .blogEntry .glyphicon {
 	position: relative;
     font-size: 50px;
@@ -2108,4 +2145,114 @@ position: absolute;
     transition: all .2s ease;
 } #blogsTitleMove.active {
 	margin-left: -320px;
+}
+
+#playTogglePauseLeft {
+	position: absolute;
+    width: 6px;
+    height: 22px;
+    background-color: #fff;
+    top: 53px;
+    left: 2px;
+}
+#playTogglePauseRight {
+	position: absolute;
+    width: 6px;
+    height: 22px;
+    background-color: #fff;
+    top: 53px;
+    left: 14px;
+}
+#filterDrop {
+	border-left: 1px solid #fff;
+	padding: 0px 5px 0px 5px;
+}
+
+#sotdWrapper {
+	position: absolute;
+    bottom: 25px;
+    left: 25px;
+    padding: 5px;
+    font-weight: 100;
+    font-size: 17px;
+    color: #fff;
+    padding:10px;
+    cursor: default;
+} #sotdWrapper:hover {
+	background-color: #ff4400;
+}
+
+.gItem {
+	position: relative;
+    display: inline-block;
+    padding: 5px;
+    cursor: default;
+}.gItem:hover:not(.searched) {
+	background-color: #ccc;
+}
+#genreBar {
+	position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: #444;
+    color: #fff;
+    font-weight: 100;
+    -moz-box-shadow: inset 1px 4px 9px -6px;
+    -webkit-box-shadow: inset 1px 4px 9px -6px;
+    box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.4);
+    padding: 9px;
+    cursor: default;
+    border-bottom: 2px solid #000;
+    z-index: 100;
+    top: 0px;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+} #navbar:not(.home) #genreBar.active {
+	top: 50px;
+} #navbar:not(.home) #genreBar.pinned {
+	top: 50px;
+}
+#mainBar {
+	position: relative;
+    height: 50px;
+    background-color: #222;
+    z-index: 101;
+} 
+
+.genreCarrot {
+	position: relative;
+    display: inline-block;
+    padding: 0px 5px 0px 10px;
+    color: #ff4400;
+    font-weight: 400;
+}
+#adminGenreUpdate {
+	position: relative;
+    width: 150px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -75px;
+    margin-bottom: 50px;
+}
+
+#findVideosBestNewVideos, #findVideosStaffPicks {
+	color: #fff;
+    font-size: 20px;
+    font-weight: 100;
+    border: 1px solid #fff;
+    width: 250px;
+    padding: 10px 0px 10px 0px;
+    display: inline-block;
+    margin: 20px 30px 50px 30px;
+    cursor: default;
+}
+
+#findVideosBestNewVideos:hover, #findVideosStaffPicks:hover {
+	background-color: rgba(255,255,255,.5);
 }

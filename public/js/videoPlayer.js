@@ -55,7 +55,7 @@ function onPrevPlayerStateChange(e) {
 
 //called when a block (video) is clicked
 function playSong(e) {
-
+	$('#controls').removeClass('home');
 	//get video id
 	var vid = $(e.target).closest('.playSong').attr('data-vid');
 
@@ -203,7 +203,7 @@ function videoHandler(e) {
 	} else if($('#videoSearcher').is(":focus")) {
 		if(key == 13) { 
 			var params = searchParams();
-		    searchDB(params);
+		    textSearchDB($('#videoSearcher').val());
 		}
 	} else {
 		switch(key) {
@@ -253,5 +253,6 @@ function toggleFullScreen(elem) {
             document.msExitFullscreen();
         }
     }
+    $('#fullScreenWrapper .glyphicon').toggleClass('glyphicon-resize-full').toggleClass('glyphicon-resize-small');
 }
 

@@ -32,6 +32,7 @@ function videoExit() {
 
 function videoEnter(res, time, page) {
 	setTimeout(function() {
+		console.log('empty');
 		$('#content').empty();
 		$('#content').scrollTop(0);
 		var $html = $('<div id="videos" data-lid=""></div>');
