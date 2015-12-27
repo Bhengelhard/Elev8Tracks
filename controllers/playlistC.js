@@ -5,7 +5,7 @@ exports.index = function(req, res) {
 		.then(function(blogs) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
-				Knex('genres').groupBy('genre_1','genre_1_id')
+				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
 					console.log(genres);
 					console.log(blogs);
@@ -42,9 +42,9 @@ exports.songs = function(req, res) {
 exports.blogs = function(req, res) {
 	Knex('blogs')
 		.then(function(m) {
-			Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
+			Knex('genres').distinct('genre_1','genre_1_id').select()
 			.then(function(genres) {
-				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres[0]});
+				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres});
 			});
 		});
 }
@@ -393,9 +393,9 @@ exports.refreshGenres = function(req, res) {
 	var masterGenre = 'genre_' + parseInt(req.body.count);
 	var subGenre = 'genre_' + parseInt(req.body.count+1);
 	if(req.body.genre == '*') {
-		Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
+		Knex('genres').distinct('genre_1','genre_1_id').select()
 		.then(function(genres) {
-			res.render('genres', {genres: genres[0], count: req.body.count}, function(err, m) {
+			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
 				res.send(200,{html: m});
 			});
 		});
