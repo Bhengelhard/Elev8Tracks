@@ -121,7 +121,7 @@ exports.callback = function(req, res) {
                   Knex('spotify_artists').where({spotify_id: req.session.spotifyID}).del()
                   .then(function(model) {
                       for(var k = 0; k < spotifyArtists.length; k++) {
-                        Knex('spotify_artists').insert({artist: spotifyArtists[k], spotify_id: req.session.spotifyID, user_ID: req.session.userid});
+                        Knex('spotify_artists').insert({artist: spotifyArtists[k], spotify_id: req.session.spotifyID, user_id: req.session.userid});
                       }
                   });
                 }
@@ -204,7 +204,7 @@ exports.importSpotify = function(req, res) {
     var n = 0;
     request.get(playlists, function(error, data, body) {
       if (!error && data.statusCode === 200) {
-        Knex('spotify_songs').where({user_ID: req.session.userID}).del()
+        Knex('spotify_songs').where({user_id: req.session.userID}).del()
         .then(function(model) {
           for(var i = 0; i < data.body.items.length; i++) {
             var spotifyPlaylist = {

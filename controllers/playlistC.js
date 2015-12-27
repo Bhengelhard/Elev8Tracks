@@ -5,8 +5,11 @@ exports.index = function(req, res) {
 		.then(function(blogs) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
-				Knex.raw("SELECT DISTINCT genre_1, genre_1_ID FROM genres")
+				Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
 				.then(function(genres) {
+					console.log(genres);
+					console.log(blogs);
+					console.log(lists);
 					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres[0], count: 0});
 				});
 			});
@@ -39,7 +42,7 @@ exports.songs = function(req, res) {
 exports.blogs = function(req, res) {
 	Knex('blogs')
 		.then(function(m) {
-			Knex.raw("SELECT DISTINCT genre_1, genre_1_ID FROM genres")
+			Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
 			.then(function(genres) {
 				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres[0]});
 			});
@@ -79,10 +82,10 @@ exports.storeSong = function(req, res) {
 		.then(function(song) {
 			if(song.length != 0) {
 				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time});
-				Knex('songs_genres').where('song_ID',song[0].id).del()
+				Knex('songs_genres').where('song_id',song[0].id).del()
 				.then(function(song_genres) {
 					genres.forEach(function(genre) {
-						Knex('songs_genres').insert({song_ID: song[0].id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID})
+						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
 					});
 					res.send(200,{});
 				})
@@ -90,7 +93,7 @@ exports.storeSong = function(req, res) {
 				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time})
 				.then(function(song) {
 					genres.forEach(function(genre) {
-						Knex('songs_genres').insert({song_ID: song[0].id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID});
+						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id});
 					});
 					res.send(200,{});
 				}).catch(function(e) {
@@ -120,11 +123,11 @@ exports.removeBlock = function(req, res) {
 
 exports.showList = function(req, res) {
 	if(req.session.user) {
-		Knex('songs').join('songs_playlists', 'songs_playlists.song_ID','=','songs.id').where('songs_playlists.playlist_ID','=',req.body.lid)
+		Knex('songs').join('songs_playlists', 'songs_playlists.song_id','=','songs.id').where('songs_playlists.playlist_id','=',req.body.lid)
 		.then(function(songs) {
 			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
-				res.render('playlist', {list: songs, name: list[0].name, playlist_ID: req.body.lid, session: req.session, order: list[0].the_order.split(',')}, function(err, model) {
+				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, order: list[0].the_order.split(',')}, function(err, model) {
 					res.send({html: model});
 				});
 			});
@@ -134,7 +137,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT * FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_ID';
+	var sql = 'SELECT * FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	var filter = req.body.filterParams.split(',');
 	var wherestatement = ' WHERE';
@@ -155,9 +158,9 @@ exports.videoSearch = function(req, res) {
 
 	if(req.body.genreParams > 0) {
 		if(req.body.genreParams < 200) {
-			sql += wherestatement + ' songs_genres.genre_1_ID = ' + req.body.genreParams;
+			sql += wherestatement + ' songs_genres.genre_1_id = ' + req.body.genreParams;
 		} else if (req.body.genreParams >= 200) {
-			sql += wherestatement + ' songs_genres.genre_2_ID = ' + req.body.genreParams;
+			sql += wherestatement + ' songs_genres.genre_2_id = ' + req.body.genreParams;
 		}
 	}
 
@@ -212,7 +215,7 @@ exports.getLoginNav = function(req, res) {
 }
 
 exports.deleteSong = function(req, res) {
-	Knex('songs_playlists').where({song_ID: req.body.song_ID, playlist_ID: req.body.lid}).del()
+	Knex('songs_playlists').where({song_id: req.body.song_ID, playlist_id: req.body.lid}).del()
 	.then(function() {
 		Knex('playlists').where('id', req.body.lid).update('the_order', req.body.order)
 		.then(function() {
@@ -270,7 +273,7 @@ exports.createList = function(req, res) {
 exports.deleteList = function(req, res) {
 	Knex('playlists').where('id',req.body.listid).del()
 	.then(function() {
-		Knex('songs_playlists').where('playlist_ID',req.body.listid).del()
+		Knex('songs_playlists').where('playlist_id',req.body.listid).del()
 		.then(function(songs) {
 			res.send(200, {});
 		});
@@ -291,7 +294,7 @@ exports.addSong = function(req, res) {
 		var order = (m[0].the_order.length == 0 ? req.body.song_ID : m[0].the_order + ',' + req.body.song_ID);
 		Knex('playlists').where('id',req.body.lid).update({thumbnail: thumbnail, the_order: order})
 		.then(function() {
-			Knex('songs_playlists').insert({song_ID: req.body.song_ID, playlist_ID: req.body.lid})
+			Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid})
 			.then(function() {
 				res.send(200,{});
 			});
@@ -387,7 +390,7 @@ exports.refreshGenres = function(req, res) {
 	var masterGenre = 'genre_' + parseInt(req.body.count);
 	var subGenre = 'genre_' + parseInt(req.body.count+1);
 	if(req.body.genre == '*') {
-		Knex.raw("SELECT DISTINCT genre_1, genre_1_ID FROM genres")
+		Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
 		.then(function(genres) {
 			res.render('genres', {genres: genres[0], count: req.body.count}, function(err, m) {
 				res.send(200,{html: m});
@@ -412,7 +415,7 @@ exports.newgenreUpdate = function(req, res) {
 				Knex('songs').whereRaw("genre LIKE '%, " + genre.genre_4 + ",%'")
 				.then(function(songs) {
 					songs.forEach(function(song) {
-						Knex('songs').insert({song_ID: song.id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID});
+						Knex('songs').insert({song_id: song.id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id});
 					});
 				});
 			});
