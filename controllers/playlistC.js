@@ -5,12 +5,12 @@ exports.index = function(req, res) {
 		.then(function(blogs) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
-				Knex.raw("SELECT DISTINCT genre_1, genre_1_id FROM genres")
+				Knex('genres').groupBy('genre_1','genre_1_id')
 				.then(function(genres) {
 					console.log(genres);
 					console.log(blogs);
 					console.log(lists);
-					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres[0], count: 0});
+					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 				});
 			});
 		});
@@ -125,9 +125,12 @@ exports.showList = function(req, res) {
 	if(req.session.user) {
 		Knex('songs').join('songs_playlists', 'songs_playlists.song_id','=','songs.id').where('songs_playlists.playlist_id','=',req.body.lid)
 		.then(function(songs) {
+			console.log(songs);
 			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
+				console.log(list);
 				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, order: list[0].the_order.split(',')}, function(err, model) {
+					console.log(err);
 					res.send({html: model});
 				});
 			});

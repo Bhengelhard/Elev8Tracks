@@ -361,6 +361,7 @@ function showList(el) {
 	    timeout: 5000,
         success:function(res) {
 			var time = transition();
+			console.log(res);
 			videoEnter(res.html, time);
 	    }
 	});
