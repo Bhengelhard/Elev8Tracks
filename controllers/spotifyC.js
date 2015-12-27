@@ -1,7 +1,3 @@
-var Playlist = require('../models/playlist');
-var Artist = require('../models/spotify_artist');
-var sSong = require('../models/spotify_song');
-
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
@@ -32,7 +28,6 @@ var stateKey = 'spotify_auth_state';
 exports.login = function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-  console.log(state);
   // your application requests authorization
   var scope = 'user-read-private user-read-email playlist-read-private';
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -54,7 +49,6 @@ exports.callback = function(req, res) {
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
-  console.log(state);
 
   if (state === null || state !== storedState) {
     console.log('error');
@@ -64,7 +58,6 @@ exports.callback = function(req, res) {
       }));
   } else {
     res.clearCookie(stateKey);
-    console.log('auth');
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -106,9 +99,6 @@ exports.callback = function(req, res) {
           var n = 0;
           request.get(playlists, function(error, data, body) {
             for(var i = 0; i < data.body.items.length; i++) {
-              console.log(data.body.items[i].tracks.href);
-              console.log(data.body.items[i].name);
-              console.log('---' + req.session.spotifyID);
               var spotifyPlaylist = {
                 url: data.body.items[i].tracks.href,
                 headers: { 'Authorization': 'Bearer ' + access_token },
@@ -131,7 +121,7 @@ exports.callback = function(req, res) {
                   Knex('spotify_artists').where({spotify_id: req.session.spotifyID}).del()
                   .then(function(model) {
                       for(var k = 0; k < spotifyArtists.length; k++) {
-                        new Artist({artist: spotifyArtists[k], spotify_id: req.session.spotifyID, user_ID: req.session.userid}).save();
+                        Knex('spotify_artists').insert({artist: spotifyArtists[k], spotify_id: req.session.spotifyID, user_ID: req.session.userid});
                       }
                   });
                 }
@@ -203,27 +193,6 @@ exports.check = function(req, res) {
   }
 }
 
-// exports.getNewToken = function(req, res) {
-//   var authOptions = {
-//     url: 'https://accounts.spotify.com/api/token',
-//     form: {
-//       code: code,
-//       redirect_uri: redirect_uri,
-//       grant_type: 'authorization_code'
-//     },
-//     headers: {
-//       'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-//     },
-//     json: true
-//   };
-//   request.post(authOptions, function(error, response, body) {
-//       if (!error && response.statusCode === 200) {
-//         var access_token = body.access_token,
-//             refresh_token = body.refresh_token;
-//       }
-//   });
-// }
-
 exports.importSpotify = function(req, res) {
   if(req.session.spotifyID) {
     var playlists = {
@@ -244,7 +213,7 @@ exports.importSpotify = function(req, res) {
               json: true
             };
             listObj[String(data.body.items[i].tracks.href).split('playlists/')[1].replace('/tracks','')] = data.body.items[i].name;
-            new Playlist({name: data.body.items[i].name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id}).save();
+            Knex('playlists').insert({name: data.body.items[i].name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id});
             request.get(spotifyPlaylist, function(error, tracks, body) {
               if(n == 0) {
                 Knex('spotify_songs').where({spotify_id: req.session.spotifyID}).del();
@@ -252,7 +221,7 @@ exports.importSpotify = function(req, res) {
               }
               for(var j = 0; j < tracks.body.items.length; j++) {
                 var listName = listObj[String(tracks.body.href).split('playlists/')[1].split('/tracks')[0]];
-                new sSong({name: tracks.body.items[j].track.name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id}).save();
+                Knex('spotify_songs').insert({name: tracks.body.items[j].track.name, spotify_id: req.session.spotifyID, spotify_songid: tracks.body.items[j].track.id});
               }
             });
           } 

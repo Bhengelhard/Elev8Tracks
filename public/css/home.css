@@ -598,7 +598,6 @@ body {
     transition: all .4s ease;
 } #userListsNav.active {
 	height: auto;
-    padding-bottom: 15px;
 } #userListsNav.blog {
 	background-color: transparent;
 }
@@ -1316,14 +1315,11 @@ body {
 	background-color: #0080FF;
 	position: relative;
 	display: block;
-	top: 20px;
-	left: 50%;
-	margin-left: -37.5px;
 	text-align: center;
-	width:75px;
+	width:100%;
 	color: #fff;
-	padding: 5px;
-	margin-bottom: 20px;
+	padding: 10px 5px 10px 5px;
+	cursor: default;
 } #logout:hover {
 	background-color: #015CB6;
 }
@@ -1814,7 +1810,7 @@ position: absolute;
     top: 0%;
 } #listNameInput {
 	position: absolute;
-    left: 50px;
+    left: 0px;
     color: #fff;
     font-size: 30px;
     font-weight: 100;
@@ -1822,7 +1818,7 @@ position: absolute;
     top: 0%;
     background-color: transparent;
     border: none;
-    padding: 8px;
+    padding: 8px 8px 8px 20px;
 } #listNameInput:focus {
 	background-color: rgba(255,255,255,.3);
 	outline: none;

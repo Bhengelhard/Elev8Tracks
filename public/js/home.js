@@ -217,10 +217,6 @@ function nav(e) {
 				$('#content').append($('<input type="text" id="videoSearch">'));
 
 			});
-			$.get('/userPlaylists', function(res) {
-				userPlaylists = res;
-				fillUserLists();
-			});
 			break;
 		case 'lists':
 			$.get('/playlists', function(res) {
@@ -242,11 +238,7 @@ function nav(e) {
 		case 'myLists':
 				$.get('/myLists', function(res) {
 					var time = transition();
-        			pageEnter(res, time);
-					$.get('/userPlaylists', function(res) {
-						playlists = res;
-						$('.block').click(showList);
-					});
+        			pageEnter(res.html, time);
 				});
 			break;
 		case 'title':
@@ -448,7 +440,7 @@ function insertSong() {
 }
 
 function insertBlog() {
-		var id = $("#blogurl").val().split("v=")[1];
+		var vid = $("#blogurl").val().split("v=")[1];
 		if(id.indexOf('&') > -1)
 			id = id.split('&')[0];
 		var dt = new Date($.now());
@@ -462,7 +454,7 @@ function insertBlog() {
 			url: "/storeBlog",
 	        type: "post",
 	        dataType: "json",
-	        data: JSON.stringify({id: id, name: $('#inputBlogName').val(), artist: $('#inputBlogArtist').val(), director: $('#inputBlogDirector').val(), text: $('#inputText').val(), stamp: stamp, al: $('#inputArtistLink').val(), dl: $('#inputDirectorLink').val()}),
+	        data: JSON.stringify({vid: vid, name: $('#inputBlogName').val(), artist: $('#inputBlogArtist').val(), director: $('#inputBlogDirector').val(), text: $('#inputText').val(), stamp: stamp, al: $('#inputArtistLink').val(), dl: $('#inputDirectorLink').val()}),
 	        contentType: "application/json",
 	        cache: false,
 	        timeout: 5000,
@@ -513,7 +505,7 @@ function accountSignUp(e) {
 			        success:function(res) {
 					       	$.get('/myLists', function(res) {
 							loginNav();
-							$('#content').html(res);
+							$('#content').html(res.html);
 						});
 				    },
 				    error: function(res) {
@@ -579,11 +571,10 @@ function loginNav() {
 }
 
 function logout() {
-	console.log('test');
 	$.get('/logout', function() {
 		$.get('/myLists', function(res) {
 			var time = transition();
-        	pageEnter(res, time);
+        	pageEnter(res.html, time);
         	loginNav();
 		});
 	});
@@ -601,7 +592,8 @@ function createList() {
 	        timeout: 5000,
 	        success:function(res) {
 	        	$('#createListName').val('');
-	        	var list = $('<div class="block" data-lid="'+res.id+'"><div class="description"><span class="name">'+res.name+'</span><div class="listDelete" onclick="promptListDelete(event)">&#215</div></div></div>');
+	        	console.log(res);
+	        	var list = $('<div class="block" data-lid="'+res.m.id+'"><div class="description"><span class="name">'+res.m.name+'</span><div class="listDelete" onclick="promptListDelete(event)">&#215</div></div></div>');
 	        	list.css('width','0px').css('border','none');
 	        	$('#addList').before(list);
 	        	list.animate({
@@ -622,13 +614,6 @@ function createList() {
 	}
 }
 
-function fillUserLists() {
-	$('.saveList').remove();
-	for(var i = 0; i < userPlaylists.length; i++) {
-		var list = $('<div class="saveList" onmousemove="highlight(event)" onmouseout="unhighlight(event)" data-vids="'+userPlaylists[i].videoids+'"><div class="saveListName">'+userPlaylists[i].name+'</div></div>');
-		$('#userSaveLists').append(list);
-	}
-}
 function highlight(e) {
 	$(e.target).closest('.saveList').css('background-color','#444');
 }
@@ -896,7 +881,7 @@ function deleteSong(e) {
 	e.stopPropagation();
 	e.preventDefault();
 	e.cancelBubble = true;
-	var vid = $(e.target).closest('.block').attr('data-vid');
+	var song_ID = $(e.target).closest('.block').attr('id').replace('s','');
 	$(e.target).closest('.block').remove();
 	var lid = $('#listBanner').attr('data-lid');
 	console.log(lid);
@@ -906,7 +891,7 @@ function deleteSong(e) {
 		url: "/deleteSong",
 	    type: "post",
 	    dataType: "json",
-        data: JSON.stringify({vid: vid, lid: lid, order: order}),
+        data: JSON.stringify({song_ID: song_ID, lid: lid, order: order}),
         contentType: "application/json",
         cache: false,
         timeout: 5000,

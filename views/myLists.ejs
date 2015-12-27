@@ -1,29 +1,15 @@
 <div id="userLists">
-<% if(lists.attributes) { %>
-	<div class="block list" data-num="0" data-lid="<%=list.attributes.id %>" onclick="showList(this)">
-	  	<% if(lists.attributes.thumbnail) { %>
-	    	<img src="http://img.youtube.com/vi/<%=lists.attributes.thumbnail %>/0.jpg" class="list song"/>
+<% lists.forEach(function(list) { %>
+	  <div class="block list" data-lid="<%=list.id %>" data-order="<%=list.order %>" onclick="showList(this)">
+	  	<% if(list.thumbnail) { %>
+	    	<img src="http://img.youtube.com/vi/<%=list.thumbnail %>/0.jpg" class="list song"/>
 	    <% } %>
 	    <div class="description">
-	      <span class="name"><%=lists.attributes.name %></span>
-	      <div class="listDelete" onclick="promptListDelete(event)">&#215</div>
-	    </div>
-	</div>
-<% } else {
-	var i = 0;
-	lists.forEach(function(list) { %>
-	  <div class="block list" data-lid="<%=list.attributes.id %>" data-order="<%=list.attributes.order %>" onclick="showList(this)">
-	  	<% if(list.attributes.thumbnail) { %>
-	    	<img src="http://img.youtube.com/vi/<%=list.attributes.thumbnail %>/0.jpg" class="list song"/>
-	    <% } %>
-	    <div class="description">
-	      <span class="name"><%=list.attributes.name %></span>
+	      <span class="name"><%=list.name %></span>
 	      <div class="listDelete" onclick="promptListDelete(event)">&#215</div>
 	    </div>
 	  </div>
-	  <% i++; %>
-	  <% });
-	} %>
+	  <% }); %>
 <div id="addList" class="block">
 	<input type="text" id="createListName" placeholder="Playlist Name">
 	<div id="createList" onclick="createList()">+</div>
@@ -33,7 +19,6 @@
   <div id="import" onclick="importSpotify()"><span class="glyphicon glyphicon-arrow-down"></span></div>
 </div>
 </div>
-<div id="logout" onclick="logout()">Logout</div>
 
 <% if(session.admin == 1) { %>
 <div id="songInput">
@@ -42,61 +27,19 @@
 <input type="text" id="inputArtist" placeholder="Artist">
 <input type="text" id="inputDirector" placeholder="Director">
 <select id="inputGenre1">
-  <option value="null">Null</option>
-  <option value="Hip-Hop/Rap">Hip-Hop/Rap</option>
-  <option value="Alternative">Alternative</option>
-  <option value="Jazz">Jazz</option>
-  <option value="Electronic">Electronic</option>
-  <option value="House">House</option>
-  <option value="Dance">Dance</option>
-  <option value="Experimental">Experimental</option>
-  <option value="Acoustic">Acoustic</option>
-  <option value="Comedy">Comedy</option>
-  <option value="Chill">Chill</option>
-  <option value="Indie">Indie</option>
-  <option value="Rock">Rock</option>
-  <option value="Retro">Retro</option>
-  <option value="Pop">Pop</option>
-  <option value="Summer">Summer</option>
-  <option value="Psychedelic">Psychedelic</option>
+  <% genres.forEach(function(genre) { %>
+    <option value="<%= genre.genre_4 %>"><%= genre.genre_4 %></option>
+  <% }); %>
 </select>
 <select id="inputGenre2">
-  <option value="null">Null</option>
-  <option value="Hip-Hop/Rap">Hip-Hop/Rap</option>
-  <option value="Alternative">Alternative</option>
-  <option value="Jazz">Jazz</option>
-  <option value="Electronic">Electronic</option>
-  <option value="House">House</option>
-  <option value="Dance">Dance</option>
-  <option value="Experimental">Experimental</option>
-  <option value="Acoustic">Acoustic</option>
-  <option value="Comedy">Comedy</option>
-  <option value="Chill">Chill</option>
-  <option value="Indie">Indie</option>
-  <option value="Rock">Rock</option>
-  <option value="Retro">Retro</option>
-  <option value="Pop">Pop</option>
-  <option value="Summer">Summer</option>
-  <option value="Psychedelic">Psychedelic</option>
+  <% genres.forEach(function(genre) { %>
+    <option value="<%= genre.genre_4 %>"><%= genre.genre_4 %></option>
+  <% }); %>
 </select>
 <select id="inputGenre3">
-  <option value="null">Null</option>
-  <option value="Hip-Hop/Rap">Hip-Hop/Rap</option>
-  <option value="Alternative">Alternative</option>
-  <option value="Jazz">Jazz</option>
-  <option value="Electronic">Electronic</option>
-  <option value="House">House</option>
-  <option value="Dance">Dance</option>
-  <option value="Experimental">Experimental</option>
-  <option value="Acoustic">Acoustic</option>
-  <option value="Comedy">Comedy</option>
-  <option value="Chill">Chill</option>
-  <option value="Indie">Indie</option>
-  <option value="Rock">Rock</option>
-  <option value="Retro">Retro</option>
-  <option value="Pop">Pop</option>
-  <option value="Summer">Summer</option>
-  <option value="Psychedelic">Psychedelic</option>
+  <% genres.forEach(function(genre) { %>
+    <option value="<%= genre.genre_4 %>"><%= genre.genre_4 %></option>
+  <% }); %>
 </select>
 
 <div id="inputSubmit" onclick="insertSong()">SUBMIT</div>

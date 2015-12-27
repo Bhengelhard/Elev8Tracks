@@ -1,19 +1,9 @@
-var Playlist = require('../models/playlist');
-var Song = require('../models/song');
-var Blog = require('../models/blog');
-var User = require('../models/user');
-var blogInterview = require('../models/interview');
-var Genre = require('../models/genre');
-var songGenre = require('../models/song_genre');
-var songList = require('../models/song_list');
 var Knex = require('../init/knex');
 
 exports.index = function(req, res) {
-	Blog.collection().fetch()
+	Knex('blogs')
 		.then(function(blogs) {
-			Playlist.collection().query(function(search) {
-				search.where('userid', '=', req.session.userid);
-			}).fetch()
+			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
 				Knex.raw("SELECT DISTINCT genre_1, genre_1_ID FROM genres")
 				.then(function(genres) {
@@ -27,27 +17,27 @@ exports.index2 = function(req, res) {
 };
 
 exports.playlists = function(req, res) {
-	Playlist.collection().fetch()
+	Knex('playlists')
 		.then(function(m) {
 			res.render('lists', {lists: m, session: req.session});
 		});
 }
 exports.playlistmodel = function(req, res) {
-	Playlist.collection().fetch()
+	Knex('playlists')
 		.then(function(m) {
 			res.send(m);
 		});
 }
 
 exports.songs = function(req, res) {
-	Song.collection().fetch()
+	Knex('songs')
 		.then(function(m) {
 			res.render('songs', {songs: m, session: req.session});
 		});
 }
 
 exports.blogs = function(req, res) {
-	Blog.collection().fetch()
+	Knex('blogs')
 		.then(function(m) {
 			Knex.raw("SELECT DISTINCT genre_1, genre_1_ID FROM genres")
 			.then(function(genres) {
@@ -57,70 +47,75 @@ exports.blogs = function(req, res) {
 }
 exports.myLists = function(req, res) {
 	if(req.session.user) {
-		Playlist.collection().query(function(search) {
-			search.where('userid', '=', req.session.userid);
-		}).fetch()
-		.then(function(m1) {
-			res.render('myLists', {session: req.session, lists: m1});
+		Knex('playlists').where('userid',req.session.userid)
+		.then(function(lists) {
+			Knex('genres').distinct('genre_4')
+			.then(function(genres) {
+				res.render('myLists', {session: req.session, lists: lists, genres: genres}, function(err, m) {
+					res.send({html: m, ses: req.session});
+				});
+			});
 		}).catch(function(e) {
 			res.send(400,{});
 		});
 	} else {
-		res.render('login', {layout: false});
+		res.render('login', {}, function(err, m) {
+			res.send({html: m});
+		});
 	}
 }
 
 exports.storeSong = function(req, res) {
 	var time = new Date().toISOString().substr(0, 19).replace('T', ' ');
-	var genres = req.body.genre.split(',');
+	var genre_4 = req.body.genre.split(',');
 	var sql = '';
-	for(var i = 0; i < genres.length; i++) {
-		sql += "genre_final = '" + genres[i] + "' OR";
+	for(var i = 0; i < genre_4.length; i++) {
+		sql += "genre_4 = '" + genre_4[i] + "' OR ";
 	}
-	sql = sql.substring(0,sql.length-3);
-	Genre.collection().query(function(search) {
-		search.whereRaw(sql);
-	}).fetch().then(function(genres) {
-		var genre1 = '',
-			genre2 = '',
-			genre3 = '';
-		genres.forEach(function(genre) {
-			if(genre.attributes.genre_1.length > 0 && genre1.search(','+genre.attributes.genre_1+',') < 0)
-				genre1 += genre.attributes.genre_1 + ',';
-			if(genre.attributes.genre_2.length > 0 && genre2.search(','+genre.attributes.genre_2+',') < 0)
-				genre2 += genre.attributes.genre_2 + ',';
-			if(genre.attributes.genre_3.length > 0 && genre3.search(','+genre.attributes.genre_3+',') < 0)
-				genre3 += genre.attributes.genre_3 + ',';
-		});
-		new Song({vid: req.body.vid}).fetch({require: true})
-		.then(function(m) {
-			m.save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, director: req.body.director, genre1: genre1, genre2: genre2, genre3:genre3},{patch: true});
-			res.send(200, {});
-		}).catch(function(e) {
-			new Song().save({vid: req.body.vid, name: req.body.name, artist: req.body.artist, created_at: time, genre1: genre1, genre2: genre2, genre3:genre3},{patch: true});
-			res.send(200,{});
+	sql = sql.substring(0,sql.length-4);
+	Knex('genres').whereRaw(sql)
+	.then(function(genres) {
+		Knex('songs').where('vid', req.body.vid)
+		.then(function(song) {
+			if(song.length != 0) {
+				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time});
+				Knex('songs_genres').where('song_ID',song[0].id).del()
+				.then(function(song_genres) {
+					genres.forEach(function(genre) {
+						Knex('songs_genres').insert({song_ID: song[0].id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID})
+					});
+					res.send(200,{});
+				})
+			} else {
+				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time})
+				.then(function(song) {
+					genres.forEach(function(genre) {
+						Knex('songs_genres').insert({song_ID: song[0].id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID});
+					});
+					res.send(200,{});
+				}).catch(function(e) {
+					res.send(400,{});
+				});
+			}
 		});
 	});
 }
 
 exports.storeBlog = function(req, res) {
-	new Blog({vid: req.body.id}).fetch({require: true})
+	Knex('blogs').where('vid',req.body.vid)
 		.then(function(m) {
-			m.save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
+			if(m.length != 0) {
+				Knex('blogs').where('vid',req.body.vid).update({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl});
+			} else {
+				Knex('blogs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl});
+			}
 			res.send(200, {});
-		}).catch(function(e) {
-			new Blog().save({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl},{patch: true});
-			res.send(200,{});
-		})
+		});
 }
 
 exports.removeBlock = function(req, res) {
-	var id = req.params.data;
-	new Song({vid: id}).fetch({require: true})
-		.then(function(m) {
-			m.destroy();
-			res.send(200, {});
-		});
+	Knex('song').where('vid',req.params.data).del();
+	res.send(200, {});
 }
 
 exports.showList = function(req, res) {
@@ -138,25 +133,7 @@ exports.showList = function(req, res) {
 }
 
 exports.videoSearch = function(req, res) {
-	// var sql = '(';
-	// var sql2 = '(';
-	// var search = req.body.searchParams.split(',');
-	// for(var i = 0; i < search.length; i++) {
-	// 	sql += " lower(songs." + search[i] + ") LIKE '" + req.body.sval + "%' OR";
-	// 	sql += " lower(songs." + search[i] + ") LIKE '% " + req.body.sval + "%' OR";
-	// }
-	// sql = sql.substring(0, sql.length - 3) + ')';
-	// var filter = req.body.filterParams.split(',');
-	// var spotifyArtistFilter = 0;
-	// var genres = req.body.genreParams.split(',');
-	// console.log(genres);
-	// if(genres[0].length > 0) {
-	// 	for(var j = 0; j < genres.length; j++) {
-	// 		var n = j + 1;
-	// 		sql += " AND genre" + n + " LIKE '%," + genres[j] + ",%'";
-	// 		sql += " AND genre" + n + " LIKE '%," + genres[j] + ",%'";
-	// 	}
-	// }
+
 	var sql = 'SELECT * FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_ID';
 
 	var filter = req.body.filterParams.split(',');
@@ -190,88 +167,55 @@ exports.videoSearch = function(req, res) {
 				res.send({html: model});
 			});
 	});
-	// 	var genreSql = (req.body.genreParams[0] == 1 ? 'songs_genres.genre_1_ID = ' + req.body.genreParams[1]: 'songs_genres.genre_2_ID = ' + req.body.genreParams[1]);
-	// Knex('songs').join('songs_genres','songs.id','=','songs_genres.song_ID').whereRaw(genreSql).offset(req.body.offset).limit(req.body.limit).groupBy('songs.id').orderBy(req.body.sortParams, 'asc')
-	// .then(function(m) {
-	// 	res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 			res.send({html: model});
-	// 		});
-	// });
-	// Knex('genres').whereRaw(genresql)
-	// .then(function(genre) {
-	// 	console.log(genre);
-
-	// var order = (req.body.sortParams == 'likes' ? 'asc' : 'desc');
-	// if(spotifyArtistFilter == 1) {
-	// 	sql += " AND spotify_artists.spotify_id = " + req.session.spotifyID;
-	// 	Knex('songs').join('spotify_artists','songs.artist','=','spotify_artists.artist').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, 'asc')
-	// 	.then(function(m) {
-	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 			res.send({html: model});
-	// 		});
-	// 	});
-	// } else {
-	// 	Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit).orderBy(req.body.sortParams, order)
-	// 	.then(function(m) {
-	// 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
-	// 			res.send({html: model});
-	// 		});
-	// 	});
-	// }
-
-	// });
 }
 
 exports.textVideoSearch = function(req,res) {
 	var sql = " lower(songs.artist) LIKE '" + req.body.sval + "%' OR lower(songs.artist) LIKE '% " + req.body.sval + "%' OR lower(songs.name) LIKE '" + req.body.sval + "%' OR lower(songs.name) LIKE '% " + req.body.sval + "%'";
-	Knex('songs').whereRaw(sql).offset(req.body.offset).limit(req.body.limit)
+	Knex('songs').whereRaw(sql).offset(req.body.offset).limit(75)
 		.then(function(m) {
 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
-				res.send({html: model});
+				res.send(200,{html: model});
 			});
 		});
 }
 
 exports.login = function(req, res) {
-	new User({username: req.body.user, password: req.body.password}).fetch({require: true})
+	Knex('users').where({username: req.body.user, password: req.body.password})
 	.then(function(model) {
 		req.session.user = req.body.user;
-		req.session.userid = model.id;
-		req.session.admin = model.attributes.admin;
-		Playlist.collection().query(function(search) {
-			search.where('userid', '=', req.session.userid);
-		}).fetch()
+		req.session.userid = model[0].id;
+		req.session.admin = model[0].admin;
+		Knex('playlists').where('userid', req.session.userid)
 		.then(function(m1) {
-			res.render('myLists', {session: req.session, lists: m1}, function(err, m) {
-				res.send({html: m, ses: req.session});
+			console.log(m1);
+			Knex('genres').distinct('genre_4')
+			.then(function(genres) {
+				res.render('myLists', {session: req.session, lists: m1, genres: genres}, function(err, m) {
+					res.send({html: m, ses: req.session});
+				});
 			});
 		}).catch(function(e) {
 			res.send(400,{});
 		});
 	}).catch(function(e) {
-    	res.send(400, {});
-    });
+		res.send(400,{});
+	});
 }
 
 exports.getLoginNav = function(req, res) {
-	Playlist.collection().query(function(search) {
-		search.where('userid', '=', req.session.userid);
-	}).fetch()
+	Knex('playlists').where('userid',req.session.userid)
 	.then(function(lists) {
 		res.render('myListsNav', {user: req.session.user, lists: lists}, function(err, m) {
-			res.send({html: m});
+			res.send(200, {html: m});
 		});
 	});
 }
 
 exports.deleteSong = function(req, res) {
-	new Song({vid: req.body.vid}).fetch({require: true})
-	.then(function(song) {
-		var lists = song.attributes.lists.replace(String(req.body.lid + ','), '');
-		song.save({lists: lists}, {patch: true});
-		new Playlist({id: req.body.lid}).fetch({require: true})
-		.then(function(list) {
-			list.save({the_order: req.body.order}, {patch: true});
+	Knex('songs_playlists').where({song_ID: req.body.song_ID, playlist_ID: req.body.lid}).del()
+	.then(function() {
+		Knex('playlists').where('id', req.body.lid).update('the_order', req.body.order)
+		.then(function() {
 			res.send(200, {});
 		});
 	})
@@ -286,112 +230,82 @@ exports.logout = function(req, res) {
 }
 
 exports.signUp = function(req, res) {
-	new User({username: req.body.user, password: req.body.password}).fetch({require: true})
+	Knex('users').where({username: req.body.user, password: req.body.password})
 	.then(function(model) {
-		res.send(400, {});
-	}).catch(function(e) {
-    	new User().save({username: req.body.user, password: req.body.password, email: req.body.email}, {patch: true})
-		.then(function(model) {
-			req.session.user = req.body.user;
-			req.session.userid = model.id;
-			req.session.admin = model.admin;
-			res.render('myLists', {session: req.session}, function(err, m) {
-				res.send({html: m});
-			});
-		}).catch(function(e) {
-	    	res.send(400, {});
-	    });
+		console.log(model);
+		console.log(model.length);
+		if(model.length != 0) {
+			res.send(400, {});
+		} else {
+			Knex('users').insert({username: req.body.user, password: req.body.password, email: req.body.email})
+			.then(function(m) {
+				req.session.user = req.body.user;
+				req.session.userid = m[0].id;
+				req.session.admin = m[0].admin;
+				Knex('genres').distinct('genre_4')
+				.then(function(genres) {
+					res.render('myLists', {session: req.session, lists: [], genres: genres}, function(err, m) {
+						res.send({html: m, ses: req.session});
+					});
+				});
+			})
+		}
     });
 }
 
 exports.createList = function(req, res) {
-	new Playlist({name: req.body.listName, userid: req.session.userid}).fetch({require: true})
+	Knex('playlists').where({name: req.body.listName, userid: req.session.userid})
 	.then(function(model) {
-		res.send(400, {err: 'found model'});
-	}).catch(function(e) {
-		new Playlist().save({name: req.body.listName, userid: req.session.userid, the_order: ""}, {patch: true})
-		.then(function(m) {
-			res.send(m);
-		}).catch(function(e) {
-			res.send(400, {err: 'error creating'});
-		});
+		if(model.length != 0) {
+			res.send(400, {err: 'found model'});
+		} else {
+			Knex('playlists').insert({name: req.body.listName, userid: req.session.userid, the_order: ""}).returning('id')
+			.then(function(m) {
+				res.send(200,{m: {id: m[0], name: req.body.listName}});
+			});
+		}
 	});
 }
 
 exports.deleteList = function(req, res) {
-	new Playlist({id: req.body.listid}).fetch({require: true})
-	.then(function(model) {
-		model.destroy();
-		console.log('check');
+	Knex('playlists').where('id',req.body.listid).del()
+	.then(function() {
 		Knex('songs_playlists').where('playlist_ID',req.body.listid).del()
 		.then(function(songs) {
 			res.send(200, {});
 		});
-	}).catch(function(e) {
-		res.send(400,{});
-	});
-}
-
-exports.userPlaylists = function(req, res) {
-	Playlist.collection().query(function(search) {
-			search.where('userid', '=', req.session.userid);
-	}).fetch()
-	.then(function(m) {
-		res.send(m);
-	}).catch(function(e) {
-		res.send(400,{});
 	});
 }
 
 exports.updateListName = function(req, res) {
-	new Playlist({id: req.body.lid}).fetch({require: true})
-	.then(function(m) {
-		var name = req.body.name;
-		m.save({name: name}, {patch: true});
+	Knex('playlists').where('id',req.body.lid).update('name', req.body.name)
+	.then(function() {
 		res.send(200,{});
-	}).catch(function(e) {
-		res.send(400,{});
 	});
 }
 
-// exports.showList = function(req, res) {
-// 	if(req.session.user) {
-// 		new Playlist({id: req.body.lid}).fetch({require: true})
-// 		.then(function(m) {
-// 			res.send({m: m});
-// 		}).catch(function(e) {
-// 			res.send(400,{});
-// 		});
-// 	}
-// }
-
 exports.addSong = function(req, res) {
-	new Playlist({id: req.body.lid, userid: req.session.userid}).fetch({require: true})
+	Knex('playlists').where('id',req.body.lid)
 	.then(function(m) {
-		console.log(m.attributes);
-		 var thumbnail = (m.attributes.thumbnail.length == 0 ? req.body.vid : m.attributes.thumbnail);
-		var order = (m.attributes.the_order.length == 0 ? req.body.song_ID : m.attributes.the_order + ',' + req.body.song_ID);
-		console.log(thumbnail);
-		console.log(order);
-		m.save({thumbnail: thumbnail, the_order: order}, {patch: true});
-		new Song({vid: req.body.vid}).fetch({require: true})
-			.then(function(song) {
-				var lists = (song.attributes.lists.length == 0 ? ',' + req.body.lid + ',' : song.attributes.lists + req.body.lid + ',');
-				song.save({lists: lists}, {patch: true});
-				res.send(200, {});
+		var thumbnail = (m[0].thumbnail.length == 0 ? req.body.vid : m[0].thumbnail);
+		var order = (m[0].the_order.length == 0 ? req.body.song_ID : m[0].the_order + ',' + req.body.song_ID);
+		Knex('playlists').where('id',req.body.lid).update({thumbnail: thumbnail, the_order: order})
+		.then(function() {
+			Knex('songs_playlists').insert({song_ID: req.body.song_ID, playlist_ID: req.body.lid})
+			.then(function() {
+				res.send(200,{});
 			});
-		new songList().save({song_ID: req.body.song_ID, playlist_ID: req.body.lid});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
 exports.updateListOrder = function(req, res) {
-	new Playlist({id: req.body.lid}).fetch({require: true})
-	.then(function(m) {
-		Knex('songs').where('id', req.body.order.split(',')[0])
-		.then(function(song) {
-			m.save({thumbnail: song[0].vid, the_order: req.body.order},{patch: true});
+	Knex('songs').where('id', req.body.order.split(',')[0])
+	.then(function(song) {
+		Knex('playlists').where('id', req.body.lid).update({thumbnail: song[0].vid, the_order: req.body.order})
+		.then(function() {
 			res.send(200, {});
 		});
 	}).catch(function(e) {
@@ -400,65 +314,73 @@ exports.updateListOrder = function(req, res) {
 }
 
 exports.likeSong = function(req, res) {
-	new Song({vid: req.body.vid}).fetch({require: true})
+	Knex('songs').where('vid',req.body.vid)
 	.then(function(model) {
-		var likes = parseInt(model.attributes.likes) + 1;
-		model.save({likes: likes},{patch: true});
-		res.send(200, {});
+		var likes = parseInt(model[0].likes) + 1;
+		Knex('songs').where('vid',req.body.vid).save({likes: likes},{patch: true})
+		.then(function() {
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
 exports.unlikeSong = function(req, res) {
-	new Song({vid: req.body.vid}).fetch({require: true})
+	Knex('songs').where('vid',req.body.vid)
 	.then(function(model) {
-		var likes = parseInt(model.attributes.likes) - 1;
-		model.save({likes: likes},{patch: true});
-		res.send(200, {});
+		var likes = parseInt(model[0].likes) - 1;
+		Knex('songs').where('vid',req.body.vid).save({likes: likes},{patch: true})
+		.then(function() {
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
 exports.staffAdd = function(req, res) {
-	new Song({vid: req.body.vid}).fetch({require: true})
+	Knex('songs').where('vid', req.body.vid)
 	.then(function(model) {
 		var staff = 1;
-		model.save({staff: staff},{patch: true});
-		res.send(200, {});
+		Knex('songs').where('vid', req.body.vid).update({staff: staff},{patch: true})
+		.then(function() {
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
 exports.staffRemove = function(req, res) {
-	new Song({vid: req.body.vid}).fetch({require: true})
+	Knex('songs').where('vid', req.body.vid)
 	.then(function(model) {
 		var staff = 0;
-		model.save({staff: staff},{patch: true});
-		res.send(200, {});
+		Knex('songs').where('vid', req.body.vid).update({staff: staff},{patch: true})
+		.then(function() {
+			res.send(200, {});
+		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
 }
 
 exports.blogVideos = function(req, res) {
-	Blog.collection().fetch()
-		.then(function(blogs) {
-			res.render('featuredVideos', {blogs: blogs}, function(err, m) {
-				res.send(200,{html: m});
-			});
+	Knex('blogs')
+	.then(function(blogs) {
+		res.render('featuredVideos', {blogs: blogs}, function(err, m) {
+			res.send(200,{html: m});
 		});
+	});
 }
 
 exports.blogInterviews = function(req, res) {
-	blogInterview.collection().fetch()
-		.then(function(blogs) {
-			res.render('interviews', {blogs: blogs}, function(err, m) {
-				res.send(200,{html: m});
-			});
+	Knex('interviews')
+	.then(function(blogs) {
+		res.render('interviews', {blogs: blogs}, function(err, m) {
+			res.send(200,{html: m});
 		});
+	});
 }
 
 exports.refreshGenres = function(req, res) {
@@ -481,70 +403,16 @@ exports.refreshGenres = function(req, res) {
 	}
 }
 
-exports.genreUpdate = function(req, res) {
-	Genre.collection().fetch()
-	.then(function(genres) {
-		var genreArray = [];
-		genres.forEach(function(genre) {
-			genreArray.push(genre.attributes);
-		// 	Song.collection().query(function(search) {
-		// 		search.whereRaw("genre LIKE '%, " + genre.attributes.genre_final + ",%'");
-		// 	}).fetch().then(function(songs) {
-		// 		songs.forEach(function(song) {
-		// 			var genre1 = song.attributes.top_genre + genre.attributes.genre1 + ',';
-		// 			console.log(genre1);
-		// 			var genre2 = (genre.attributes.genre2.length > 0 ? genre.attributes.genre2 + ',':'');
-		// 			var genre3 = (genre.attributes.genre3.length > 0 ? genre.attributes.genre3 + ',':'');
-		// 			song.save({top_genre: genre1});
-
-		// 		});
-		// 	});
-		});
-		genreUpdateQuery(genreArray, 0);
-		res.send(200,{});
-	});
-	// Knex('genres').where('genre_final',req.body.genre)
-	// .then(function(genre1) {
-	// 	res.send(200,{});
-	// });
-}
-
-function genreUpdateQuery(genres, n) {
-	if(n < genres.length) {
-		Song.collection().query(function(search) {
-			search.whereRaw("genre LIKE '%, " + genres[n].genre_4 + ",%'");
-		}).fetch().then(function(songs) {
-			songs.forEach(function(song) {
-				if(song.attributes.genre1.search(',' + genres[n].genre_1 + ',') >= 0) {
-					var genre1 = song.attributes.genre1;
-				} else {
-					var genre1 = song.attributes.genre1 + genres[n].genre_1 + ',';
-				}
-				var genre2 = ((genres[n].genre_2.length > 1 && song.attributes.genre2.search(',' + genres[n].genre_2 + ',') < 0) ? genres[n].genre_2 + ',':'');
-				var genre3 = ((genres[n].genre_3.length > 1 && song.attributes.genre3.search(',' + genres[n].genre_3 + ',') < 0) ? genres[n].genre_3 + ',':'');
-				song.save({genre1: genre1, genre2: song.attributes.genre2 + genre2, genre3: song.attributes.genre3 + genre3 })
-				.then(function() {
-					genreUpdateQuery(genres, n++);
-				});
-			});
-		});
-	} else {
-		console.log('done');
-	}
-}
-
 exports.newgenreUpdate = function(req, res) {
-	songGenre.collection().fetch()
+	Knex('songs_genres').del()
 	.then(function(songGenres) {
-		songGenres.destroy();
-		Genre.collection().fetch()
+		Knex('genres')
 		.then(function(genres) {
 			genres.forEach(function(genre) {
-				Song.collection().query(function(search) {
-					search.whereRaw("genre LIKE '%, " + genre.attributes.genre_4 + ",%'");
-				}).fetch().then(function(songs) {
+				Knex('songs').whereRaw("genre LIKE '%, " + genre.genre_4 + ",%'")
+				.then(function(songs) {
 					songs.forEach(function(song) {
-						new songGenre({song_ID: song.attributes.id, genre_1_ID: genre.attributes.genre_1_ID, genre_2_ID: genre.attributes.genre_2_ID}).save();
+						Knex('songs').insert({song_ID: song.id, genre_1_ID: genre.genre_1_ID, genre_2_ID: genre.genre_2_ID});
 					});
 				});
 			});

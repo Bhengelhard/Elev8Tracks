@@ -61,7 +61,6 @@ var generateRandomString = function(length) {
 
 var routes = require('./controllers/playlistC.js');
 var spotify = require('./controllers/spotifyC.js');
-var youtube = require('./controllers/youtubeC.js');
 
 app.get('/', routes.index);
 app.get('/index2', routes.index2);
@@ -72,7 +71,6 @@ app.get('/getLoginNav', routes.getLoginNav);
 
 app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
-app.get('/userPlaylists', routes.userPlaylists);
 
 app.post('/showList', routes.showList);
 app.post('/addToList', routes.addSong);
@@ -110,8 +108,6 @@ app.get('/spotifyAuthorize', spotify.authorize);
 app.get('/importSpotify', spotify.importSpotify);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
-
-app.get('/checkViews', youtube.checkViews);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

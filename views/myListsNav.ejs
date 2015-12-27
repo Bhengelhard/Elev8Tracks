@@ -1,9 +1,10 @@
 <div id="userListsNav">
 <% if(user) { %>
-  <div id="myLists" class="nav"><%=user %></div>
+  <div id="myLists" class="nav"><%= user %></div>
   <% lists.forEach(function(list) { %>
-    <div class="dItem listNav" data-lid="<%=list.attributes.id %>" onclick="showList(this)"><%=list.attributes.name %></div>
+    <div class="dItem listNav" data-lid="<%=list.id %>" onclick="showList(this)"><%=list.name %></div>
   <% }); %>
+  <div id="logout" onclick="logout()">Logout</div>
 <% } else { %> 
     <div id="myLists" class="nav">Login</div>
 <% } %>

@@ -32,18 +32,18 @@ Knex('songs').groupBy('vid')
 });
 
 function getLastViewCount(m) {
-  if(m.attributes.pop_6 != 0)
-    return m.attributes.pop_6;
-  else if(m.attributes.pop_5 != 0)
-    return m.attributes.pop_5;
-  else if(m.attributes.pop_4 != 0)
-    return m.attributes.pop_4;
-  else if(m.attributes.pop_3 != 0)
-    return m.attributes.pop_3;
-  else if(m.attributes.pop_2 != 0)
-    return m.attributes.pop_2;
+  if(m.pop_6 != 0)
+    return m.pop_6;
+  else if(m.pop_5 != 0)
+    return m.pop_5;
+  else if(m.pop_4 != 0)
+    return m.pop_4;
+  else if(m.pop_3 != 0)
+    return m.pop_3;
+  else if(m.pop_2 != 0)
+    return m.pop_2;
   else
-    return m.attributes.pop_1;
+    return m.pop_1;
 }
 
 function queryViews(vids) {
@@ -53,19 +53,19 @@ function queryViews(vids) {
     var today = time.toISOString().substr(0, 19).replace('T', ' ');
     time.setDate(time.getDate() - 1);
     items.forEach(function(item) {
-      new Pop({vid: item.id}).fetch({require: true})
+      Knex('popularity').where('vid', item.id)
       .then(function(m) {
-        if(new Date(m.attributes.updated_at) <= new Date(time)) {
-          var week = getLastViewCount(m);
-          week = item.statistics.viewCount - week;
-          m.save({pop_1: item.statistics.viewCount, pop_2: m.attributes.pop_1, pop_3: m.attributes.pop_2, pop_4: m.attributes.pop_3, pop_5: m.attributes.pop_4, pop_6: m.attributes.pop_5, pop_7: m.attributes.pop_6, pop_week: week, updated_at: today});
+        if(m.length != 0) {
+          if(new Date(m[0].updated_at) <= new Date(time)) {
+            var week = getLastViewCount(m[0]);
+            week = item.statistics.viewCount - week;
+            Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m[0].pop_1, pop_3: m[0].pop_2, pop_4: m[0].pop_3, pop_5: m[0].pop_4, pop_6: m[0].pop_5, pop_7: m[0].pop_6, pop_week: week, updated_at: today});
+          }
+        } else {
+          Knex('popularity').insert({pop_1: item.statistics.viewCount, vid: item.id, updated_at: today});
         }
-      }).catch(function(e) {
-        new Pop({pop_1: item.statistics.viewCount, vid: item.id, updated_at: today}).save();
       });
     });
-
-    console.log(JSON.parse(body).items[0].statistics.viewCount);
   });
 }
 

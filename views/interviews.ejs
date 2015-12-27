@@ -1,9 +1,9 @@
 <% blogs.forEach(function(blog) { %>
   <div class="blogEntry">
-    <img src="/images/<%= blog.attributes.image %>">
+    <img src="/images/<%= blog.image %>">
     <div class="blogEntryBody">
-      <div class="blogEntryName"><%= blog.attributes.name %></div>
-      <div class="blogEntryText"><%= blog.attributes.text %></div>
+      <div class="blogEntryName"><%= blog.name %></div>
+      <div class="blogEntryText"><%= blog.text %></div>
     </div>
   </div>
 <% }); %>

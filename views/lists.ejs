@@ -1,11 +1,11 @@
 <div id="playlists">
   <% var i = 0; %>
   <% lists.forEach(function(list) { %>
-  <div id="s<%= list.attributes.id %>" class="block" data-id="<%= list.attributes.id %>" data-num="<%= i %>">
-    <img src="http://img.youtube.com/vi/<%=list.attributes.thumbnail %>/0.jpg" class="list song"/>
+  <div id="s<%= list.id %>" class="block" data-id="<%= list.id %>" data-num="<%= i %>">
+    <img src="http://img.youtube.com/vi/<%=list.thumbnail %>/0.jpg" class="list song"/>
     <div class="description">
-      <span class="name"><%=list.attributes.name %></span>
-      <% if(session.userid == list.attributes.userid) { %>
+      <span class="name"><%=list.name %></span>
+      <% if(session.userid == list.userid) { %>
       	<div class="listDelete" onclick="promptListDelete(event)">&#215</div>
       <% } %>
     </div>
