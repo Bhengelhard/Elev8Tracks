@@ -168,6 +168,8 @@ exports.videoSearch = function(req, res) {
 	Knex.raw(sql).then(function(m) {
 		if(m[0]) {
 			m = m[0];
+		} else {
+			m = m[0].rows;
 		}
 		console.log(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
