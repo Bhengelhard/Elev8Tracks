@@ -398,7 +398,7 @@ exports.refreshGenres = function(req, res) {
 			});
 		});
 	} else {
-		Knex('genres').distinct('genre_2','genre_2_id').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + ' = ""')
+		Knex('genres').distinct('genre_2','genre_2_id').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + " = ''")
 		.then(function(genres) {
 			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
 				res.send(200,{html: m});
