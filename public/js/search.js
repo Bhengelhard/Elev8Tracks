@@ -14,6 +14,7 @@ function searchDB(params) {
         cache: false,
         timeout: 5000,
         success:function(res) {
+        	console.log(res.m);
         	$('.selected').removeClass('selected');
     		$('#videoSearcherWrapper').addClass('selected');
         	var time = transition();

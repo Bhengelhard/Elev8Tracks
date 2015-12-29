@@ -165,10 +165,13 @@ exports.videoSearch = function(req, res) {
 	}
 
 	sql += ' ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
-	console.log(sql);
 	Knex.raw(sql).then(function(m) {
-		res.render('songs', {songs: m[0], session: req.session}, function(err, model) {
-				res.send({html: model});
+		if(!m[0].song_id) {
+			m = m[0];
+		}
+		console.log(m);
+		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+				res.send({html: model, m: m});
 			});
 	});
 }
