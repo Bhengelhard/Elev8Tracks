@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#! /app/.heroku/node/bin/node
 
 var Song = require('../models/song');
 var request = require("request");
@@ -13,6 +13,8 @@ var cookieParser = require('cookie-parser');
 var api_key = 'AIzaSyBbIYtX2_L7X3GDe33LLxoYlWJBOcHWUwA';
 
 var vids = '_zR6ROjoOX0,s-BW2gKnVz8'
+
+console.log('running the file');
 
 Knex('songs').groupBy('vid')
   .then(function(songs) {
