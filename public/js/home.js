@@ -421,9 +421,9 @@ function insertSong() {
 		var vid = $("#url").val().split("v=")[1];
 		if(vid.indexOf('&') > -1)
 			vid = vid.split('&')[0];
-		var genre = ($('#inputGenre1').val() == null ? '' : $('#inputGenre1').val() + ',');
-		genre += ($('#inputGenre2').val() == null ? '' : $('#inputGenre2').val() + ',');
-		genre += ($('#inputGenre3').val() == null ? '' : $('#inputGenre3').val());
+		var genre = ', ' + ($('#inputGenre1').val() == null ? '' : $('#inputGenre1').val().toLowerCase() + ', ');
+		genre += ($('#inputGenre2').val() == null ? '' : $('#inputGenre2').val().toLowerCase() + ', ');
+		genre += ($('#inputGenre3').val() == null ? '' : $('#inputGenre3').val().toLowerCase()) +',';
 		console.log(genre);
 		$.ajax({
 			url: "/storeSong",

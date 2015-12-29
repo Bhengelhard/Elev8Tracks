@@ -7,9 +7,6 @@ exports.index = function(req, res) {
 			.then(function(lists) {
 				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
-					console.log(genres);
-					console.log(blogs);
-					console.log(lists);
 					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 				});
 			});
@@ -140,7 +137,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT * FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT vid, name, artist, song_id FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	var filter = req.body.filterParams.split(',');
 	var wherestatement = ' WHERE';
@@ -167,7 +164,8 @@ exports.videoSearch = function(req, res) {
 		}
 	}
 
-	sql += ' GROUP BY songs.id ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
+	sql += ' ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
+	console.log(sql);
 	Knex.raw(sql).then(function(m) {
 		res.render('songs', {songs: m[0], session: req.session}, function(err, model) {
 				res.send({html: model});
@@ -400,7 +398,7 @@ exports.refreshGenres = function(req, res) {
 			});
 		});
 	} else {
-		Knex('genres').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + ' = ""').groupBy(subGenre)
+		Knex('genres').distinct('genre_2','genre_2_id').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + ' = ""')
 		.then(function(genres) {
 			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
 				res.send(200,{html: m});
@@ -415,10 +413,17 @@ exports.newgenreUpdate = function(req, res) {
 		Knex('genres')
 		.then(function(genres) {
 			genres.forEach(function(genre) {
-				Knex('songs').whereRaw("genre LIKE '%, " + genre.genre_4 + ",%'")
+				var genreSQL = genre.genre_4.toLowerCase();
+				Knex('songs').whereRaw("genre LIKE '%, " + genreSQL + ",%'")
 				.then(function(songs) {
 					songs.forEach(function(song) {
-						Knex('songs').insert({song_id: song.id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id});
+						console.log(song.id);
+						Knex('songs_genres').insert({song_id: song.id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
+						.then(function() {
+
+						}).catch(function(e) {
+							console.log(e);
+						});
 					});
 				});
 			});
