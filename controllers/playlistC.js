@@ -169,7 +169,7 @@ exports.videoSearch = function(req, res) {
 		if(m[0]) {
 			m = m[0];
 		} else {
-			m = m[0].rows;
+			m = m.rows;
 		}
 		console.log(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
