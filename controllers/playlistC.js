@@ -137,7 +137,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT DISTINCT vid, name, artist, song_id FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT vid, name, artist, song_id, likes, created_at FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	var filter = req.body.filterParams.split(',');
 	var wherestatement = ' WHERE';
@@ -165,7 +165,6 @@ exports.videoSearch = function(req, res) {
 	}
 
 	sql += ' ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
-	console.log(sql);
 	Knex.raw(sql).then(function(m) {
 		res.render('songs', {songs: m[0], session: req.session}, function(err, model) {
 				res.send({html: model});

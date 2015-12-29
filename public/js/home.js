@@ -424,7 +424,6 @@ function insertSong() {
 		var genre = ', ' + ($('#inputGenre1').val() == null ? '' : $('#inputGenre1').val().toLowerCase() + ', ');
 		genre += ($('#inputGenre2').val() == null ? '' : $('#inputGenre2').val().toLowerCase() + ', ');
 		genre += ($('#inputGenre3').val() == null ? '' : $('#inputGenre3').val().toLowerCase()) +',';
-		console.log(genre);
 		$.ajax({
 			url: "/storeSong",
 	        type: "post",
