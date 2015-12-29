@@ -166,7 +166,7 @@ exports.videoSearch = function(req, res) {
 
 	sql += ' ORDER BY ' + req.body.sortParams + ' ASC LIMIT 75 OFFSET ' + req.body.offset;
 	Knex.raw(sql).then(function(m) {
-		if(!m[0].song_id) {
+		if(m[0]) {
 			m = m[0];
 		}
 		console.log(m);
