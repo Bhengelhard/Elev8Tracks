@@ -59,9 +59,9 @@ function getLastViewCount(m) {
 
 function psql(m) {
   if(m[0]) {
-    return = m[0];
+    return m[0];
   } else {
-    return = m.rows;
+    return m.rows;
   }
 }
 
