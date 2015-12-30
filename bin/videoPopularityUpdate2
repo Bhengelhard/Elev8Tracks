@@ -6,25 +6,39 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
+
+//for production environment
+var QUOTAGUARDSTATIC_URL = 'http://quotaguard4431:b20639d6f6d3@us-east-1-static-hopper.quotaguard.com:9293';
+
+var options, gapi;
+
 // for local development
 var api_key = 'AIzaSyBbIYtX2_L7X3GDe33LLxoYlWJBOcHWUwA';
 
-var vids = '_zR6ROjoOX0,s-BW2gKnVz8'
+var songList;
 
-Knex('songs').groupBy('vid')
+Knex('songs').distinct('vid')
   .then(function(songs) {
+    console.log(songs);
     var vids = '';
     var n = 0;
-    songs.forEach(function(song) {
-      if(song.vid != '#NAME?')
+    songList = songs.length;
+    for(var i = 0; i < 5; i++) {
+    //songs.forEach(function(song) {
+      if(song.vid != '#NAME?') {
         vids += song.vid + ',';
+      }
       n++;
-      if(n%20 == 0 || n == songs.length) {
+      if(n%50 == 0) {
         vids = vids.substring(0,vids.length - 1);
-        queryViews(vids);
+        queryViews(vids, n);
         vids = '';
       }
     });
+  if(vids.length > 0) {
+    vids = vids.substring(0,vids.length - 1);
+    queryViews(vids, TRUE);
+  }
   res.send(200,{});
 });
 
@@ -43,26 +57,54 @@ function getLastViewCount(m) {
     return m.pop_1;
 }
 
-function queryViews(vids) {
-  request("https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + vids + "&key=" + api_key + "&alt=json", function(error, response, body) {
+function psql(m) {
+  if(m[0]) {
+    return = m[0];
+  } else {
+    return = m.rows;
+  }
+}
+
+function queryViews(vids, end) {
+  gapi = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + vids + "&key=" + api_key + "&alt=json";
+  options = {
+    proxy: process.env.QUOTAGUARDSTATIC_URL,
+    url: gapi,
+    headers: {
+        'User-Agent': 'node.js'
+    }
+  };
+  request(options, function(error, response, body) {
     var items = JSON.parse(body).items;
     var time = new Date();
     var today = time.toISOString().substr(0, 19).replace('T', ' ');
     time.setDate(time.getDate() - 1);
+    var n = 0;
     items.forEach(function(item) {
+      n++;
       Knex('popularity').where('vid', item.id)
       .then(function(m) {
+        m = psql(m);
         if(m.length != 0) {
           if(new Date(m[0].updated_at) <= new Date(time)) {
             var week = getLastViewCount(m[0]);
             week = item.statistics.viewCount - week;
-            Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m[0].pop_1, pop_3: m[0].pop_2, pop_4: m[0].pop_3, pop_5: m[0].pop_4, pop_6: m[0].pop_5, pop_7: m[0].pop_6, pop_week: week, updated_at: today});
+            Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m[0].pop_1, pop_3: m[0].pop_2, pop_4: m[0].pop_3, pop_5: m[0].pop_4, pop_6: m[0].pop_5, pop_7: m[0].pop_6, pop_week: week, updated_at: today})
+            .then(function() {
+              if(end && n == m.length) {
+                process.exit();
+              }
+            });
           }
         } else {
-          Knex('popularity').insert({pop_1: item.statistics.viewCount, vid: item.id, updated_at: today});
+          Knex('popularity').insert({pop_1: item.statistics.viewCount, vid: item.id, updated_at: today})
+          .then(function() {
+            if(end && n == m.length) {
+              process.exit();
+            }
+          });
         }
       });
     });
   });
 }
-
