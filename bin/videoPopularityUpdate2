@@ -3,78 +3,24 @@
 var Knex = require('../init/knex');
 
 var request = require('request'); // "Request" library
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
-
 
 //for production environment
 var QUOTAGUARDSTATIC_URL = 'http://quotaguard4431:b20639d6f6d3@us-east-1-static-hopper.quotaguard.com:9293';
 
-var options, gapi;
-
-// for local development
-var api_key = 'AIzaSyBbIYtX2_L7X3GDe33LLxoYlWJBOcHWUwA';
-
-var songList;
-
-Knex('songs').distinct('vid')
-  .then(function(songs) {
-    console.log(songs);
-    var vids = '';
-    var n = 0;
-    songList = songs.length;
-    songs.forEach(function(song) {
-      if(n < 5) {
-        if(song.vid != '#NAME?') {
-          vids += song.vid + ',';
-        }
-        n++;
-        if(n%20 == 0) {
-          vids = vids.substring(0,vids.length - 1);
-          queryViews(vids, 0);
-          vids = '';
-        }
-      }
-    });
-  if(vids.length > 0) {
-    vids = vids.substring(0,vids.length - 1);
-    queryViews(vids, 1);
-  }
-});
-
-function getLastViewCount(m) {
-  if(m.pop_6 != 0)
-    return m.pop_6;
-  else if(m.pop_5 != 0)
-    return m.pop_5;
-  else if(m.pop_4 != 0)
-    return m.pop_4;
-  else if(m.pop_3 != 0)
-    return m.pop_3;
-  else if(m.pop_2 != 0)
-    return m.pop_2;
-  else
-    return m.pop_1;
-}
-
-function psql(m) {
-  if(m[0]) {
-    return m[0];
-  } else {
-    return m.rows;
-  }
-}
-
-function queryViews(vids, end) {
-  gapi = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + vids + "&key=" + api_key + "&alt=json";
-  options = {
+var request = require('request');
+ 
+var options = {
     proxy: process.env.QUOTAGUARDSTATIC_URL,
     url: 'https://www.google.com/',
     headers: {
         'User-Agent': 'node.js'
     }
-  };
-  request(options, function(error, response, body) {
-    console.log(executed);
-  });
+};
+ 
+function callback(error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log(body);
+    }
 }
+ 
+request(options, callback);
