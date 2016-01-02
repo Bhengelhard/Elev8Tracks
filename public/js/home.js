@@ -15,19 +15,6 @@ $(document).ready(function() {
 	$(document).on("click","#spotifyLogin", function() {
         spotifyLogin();
     });
-    $('#content').scroll(function() {
-    	if($('#homePage').length > 0) {
-		    if ($('#content').scrollTop() > 350) {
-		    	console.log('scroll');
-		      $('#navbar').removeClass('home');
-		      $('#controls').removeClass('home');
-		    }
-		    if ($('#content').scrollTop() <= 350) {
-		    	console.log('unscroll');
-		      $('#navbar').addClass('home');
-		    }
-		}
-	});
 
 	$('#vgenre').mouseenter(function() {
 		if(!$('#genreBar').hasClass('active')) {

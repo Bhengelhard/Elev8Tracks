@@ -23,18 +23,19 @@ Knex('songs').distinct('vid')
     var vids = '';
     var n = 0;
     songList = songs.length;
-    for(var i = 0; i < 5; i++) {
-    //songs.forEach(function(song) {
-      if(song.vid != '#NAME?') {
-        vids += song.vid + ',';
+    songs.forEach(function(song) {
+      if(n < 5) {
+        if(song.vid != '#NAME?') {
+          vids += song.vid + ',';
+        }
+        n++;
+        if(n%50 == 0) {
+          vids = vids.substring(0,vids.length - 1);
+          queryViews(vids, n);
+          vids = '';
+        }
       }
-      n++;
-      if(n%50 == 0) {
-        vids = vids.substring(0,vids.length - 1);
-        queryViews(vids, n);
-        vids = '';
-      }
-    };
+    });
   if(vids.length > 0) {
     vids = vids.substring(0,vids.length - 1);
     queryViews(vids, TRUE);
