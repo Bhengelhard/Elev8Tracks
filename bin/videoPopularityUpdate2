@@ -31,14 +31,14 @@ Knex('songs').distinct('vid')
         n++;
         if(n%50 == 0) {
           vids = vids.substring(0,vids.length - 1);
-          queryViews(vids, n);
+          queryViews(vids, 0);
           vids = '';
         }
       }
     });
   if(vids.length > 0) {
     vids = vids.substring(0,vids.length - 1);
-    queryViews(vids, TRUE);
+    queryViews(vids, 1);
   }
   res.send(200,{});
 });
