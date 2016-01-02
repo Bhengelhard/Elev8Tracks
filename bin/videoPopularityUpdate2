@@ -77,4 +77,5 @@ function queryViews(vids, end) {
   };
   request(options, function(error, response, body) {
     console.log(executed);
+  });
 }
