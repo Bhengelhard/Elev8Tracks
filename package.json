@@ -9,10 +9,12 @@
     "knex": "0.8",
     "mysql": "*",
     "querystring": "~0.2.0",
-    "request": "~2.34.0",
+    "request": "~2.x",
     "underscore": "1.6.x",
     "pg": "*",
-    "redis": "0.6.x",
-    "connect-redis": "2.x"
+    "redis": "2.x",
+    "connect-redis": "3.x",
+    "express-session": "*",
+    "body-parser": "*"
   }
 }
