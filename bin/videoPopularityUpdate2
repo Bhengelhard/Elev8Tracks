@@ -19,7 +19,6 @@ var songList;
 
 Knex('songs').distinct('vid')
   .then(function(songs) {
-    console.log(songs);
     var vids = '';
     var n = 0;
     songList = songs.length;
@@ -84,6 +83,7 @@ function queryViews(vids, end) {
       n++;
       Knex('popularity').where('vid', item.id)
       .then(function(m) {
+        console.log(m);
         m = psql(m);
         if(m.length != 0) {
           if(new Date(m[0].updated_at) <= new Date(time)) {
