@@ -69,7 +69,7 @@ function queryViews(vids, end) {
   gapi = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + vids + "&key=" + api_key + "&alt=json";
   options = {
     proxy: process.env.QUOTAGUARDSTATIC_URL,
-    url: 'https://www.google.com/',
+    url: gapi,
     headers: {
         'User-Agent': 'node.js'
     }
