@@ -23,17 +23,15 @@ Knex('songs').distinct('vid')
     var n = 0;
     songList = songs.length;
     songs.forEach(function(song) {
-      if(n < 5) {
         if(song.vid != '#NAME?') {
           vids += song.vid + ',';
         }
         n++;
-        if(n%20 == 0) {
+        if(n%70 == 0) {
           vids = vids.substring(0,vids.length - 1);
           queryViews(vids, 0);
           vids = '';
         }
-      }
     });
   if(vids.length > 0) {
     vids = vids.substring(0,vids.length - 1);
@@ -87,7 +85,6 @@ function queryViews(vids, end) {
       n++;
       Knex('popularity').where('vid', item.id)
       .then(function(m) {
-        console.log(m);
         m = psql(m);
         if(m.length != 0) {
           if(new Date(m[0].updated_at) <= new Date(time)) {
