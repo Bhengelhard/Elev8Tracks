@@ -27,7 +27,7 @@ Knex('songs').distinct('vid')
           vids += song.vid + ',';
         }
         n++;
-        if(n%70 == 0) {
+        if(n%40 == 0) {
           vids = vids.substring(0,vids.length - 1);
           queryViews(vids, 0);
           vids = '';
