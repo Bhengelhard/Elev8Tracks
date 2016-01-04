@@ -76,6 +76,7 @@ function queryViews(vids, end) {
     }
   };
   request(options, function(error, response, body) {
+    console.log(body);
     var items = JSON.parse(body).items;
     var time = new Date();
     var today = time.toISOString().substr(0, 19).replace('T', ' ');
