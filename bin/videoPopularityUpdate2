@@ -109,7 +109,7 @@ function queryViews(vids, end) {
           Knex('popularity').insert({pop_1: item.statistics.viewCount, vid: item.id, updated_at: today})
           .then(function() {
             if(end && n == m.length) {
-              process.exit();
+              
             }
           });
         }
