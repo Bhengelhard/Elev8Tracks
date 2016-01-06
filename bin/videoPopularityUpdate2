@@ -92,6 +92,7 @@ function queryViews(vids, end) {
         if(m.length != 0) {
           console.log(new Date(m.updated_at));
           console.log(new Date(time));
+          console.log(new Date(m.updated_at) <= new Date(time));
           if(new Date(m.updated_at) <= new Date(time)) {
             console.log('time check');
             var week = getLastViewCount(m);
