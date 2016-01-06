@@ -90,11 +90,12 @@ function queryViews(vids, end) {
       .then(function(m) {
         console.log(m);
         m = psql(m);
+        console.log(m);
         if(m.length != 0) {
           if(new Date(m.updated_at) <= new Date(time)) {
             var week = getLastViewCount(m);
             week = item.statistics.viewCount - week;
-            Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m[0].pop_1, pop_3: m[0].pop_2, pop_4: m[0].pop_3, pop_5: m[0].pop_4, pop_6: m[0].pop_5, pop_7: m[0].pop_6, pop_week: week, updated_at: today})
+            Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m.pop_1, pop_3: m.pop_2, pop_4: m.pop_3, pop_5: m.pop_4, pop_6: m.pop_5, pop_7: m.pop_6, pop_week: week, updated_at: today})
             .then(function() {
               if(end && n == m.length) {
                 process.exit();
