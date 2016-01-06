@@ -22,7 +22,8 @@ Knex('songs').distinct('vid')
     var vids = '';
     var n = 0;
     songList = songs.length;
-    songs.forEach(function(song) {
+    songs.forEach(function(song) {  
+      if(n < 10) {
         if(song.vid != '#NAME?') {
           vids += song.vid + ',';
         }
@@ -32,6 +33,7 @@ Knex('songs').distinct('vid')
           queryViews(vids, 0);
           vids = '';
         }
+      }
     });
   if(vids.length > 0) {
     vids = vids.substring(0,vids.length - 1);
@@ -88,6 +90,8 @@ function queryViews(vids, end) {
         m = psql(m);
         console.log(m);
         if(m.length != 0) {
+          console.log(new Date(m.updated_at));
+          console.log(new Date(time));
           if(new Date(m.updated_at) <= new Date(time)) {
             console.log('time check');
             var week = getLastViewCount(m);
