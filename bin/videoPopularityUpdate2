@@ -23,6 +23,7 @@ Knex('songs').distinct('vid')
     var n = 0;
     songList = songs.length;
     songs.forEach(function(song) {
+      if(n < 5) {
         if(song.vid != '#NAME?') {
           vids += song.vid + ',';
         }
@@ -32,6 +33,7 @@ Knex('songs').distinct('vid')
           queryViews(vids, 0);
           vids = '';
         }
+      }
     });
   if(vids.length > 0) {
     vids = vids.substring(0,vids.length - 1);
@@ -90,7 +92,7 @@ function queryViews(vids, end) {
         m = psql(m);
         if(m.length != 0) {
           if(new Date(m.updated_at) <= new Date(time)) {
-            var week = getLastViewCount(m[0]);
+            var week = getLastViewCount(m);
             week = item.statistics.viewCount - week;
             Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m[0].pop_1, pop_3: m[0].pop_2, pop_4: m[0].pop_3, pop_5: m[0].pop_4, pop_6: m[0].pop_5, pop_7: m[0].pop_6, pop_week: week, updated_at: today})
             .then(function() {
