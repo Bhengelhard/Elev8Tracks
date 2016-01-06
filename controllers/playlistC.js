@@ -139,9 +139,7 @@ exports.videoSearch = function(req, res) {
 
 	var sql = 'SELECT DISTINCT songs.vid, name, artist, songs_genres.song_id, likes, created_at, pop_week, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
-	if(req.body.sortParams == 'pop_week' || req.body.sortParams == 'pop_1') {
-		sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
-	}
+	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
 	var filter = req.body.filterParams.split(',');
 	var wherestatement = ' WHERE';
