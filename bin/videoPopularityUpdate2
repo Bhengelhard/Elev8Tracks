@@ -101,7 +101,7 @@ function queryViews(vids, end) {
             .then(function() {
               console.log('-----');
               if(end && n == items.length) {
-                process.exit();
+              
               }
             });
           }
