@@ -1083,3 +1083,13 @@ function genreUpdate() {
 function spotifyLogin() {
 	window.location.href = '/spotifyLogin';
 }
+
+function thisWeeksVideos() {
+	var params = ["","","pop_week",0,"",[0,75]];
+	searchDB(params);
+}
+
+function recentStaffPicks() {
+	var params = ["","staff","pop_week",0,"",[0,75]];
+	searchDB(params);
+}
