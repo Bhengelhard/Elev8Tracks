@@ -73,13 +73,15 @@ exports.storeSong = function(req, res) {
 		sql += "lower(genre_4) LIKE '" + genre_4[i] + "' OR ";
 	}
 	sql = sql.substring(0,sql.length-4);
+	console.log(sql);
 	Knex('genres').whereRaw(sql)
 	.then(function(genres) {
+		console.log(genres);
 		Knex('songs').where('vid', req.body.vid)
 		.then(function(song) {
 			var n = 0;
 			if(song.length != 0) {
-				console.log(req.body.genre);
+				console.log(song);
 				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time});
 				Knex('songs_genres').where('song_id',song[0].id).del()
 				.then(function(song_genres) {
