@@ -442,6 +442,7 @@ function insertBlog() {
 	        cache: false,
 	        timeout: 5000,
 	        success:function(res) {
+	        	$('.blogInputText').val('');
 	        	console.log('hey');
 		    }
 		});
