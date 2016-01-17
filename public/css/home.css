@@ -2038,9 +2038,6 @@ position: absolute;
     height: 350px;
     width: 1000px;
     background-color: #fff;
-    /*-webkit-box-shadow: 0px 10px 15px -12px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 10px 15px -12px rgba(0,0,0,0.75);
-    box-shadow: 0px 10px 15px -12px rgba(0,0,0,0.75);*/
 } .blogEntry .glyphicon {
 	position: relative;
     font-size: 50px;
@@ -2055,6 +2052,7 @@ position: absolute;
 } .imgWrapper {
 	width: 350px;
     height: 350px;
+    overflow: hidden;
 }
 .blogEntry img {
 	height:100%;
@@ -2259,4 +2257,8 @@ position: absolute;
     font-size: 24px;
     font-weight: 100;
     padding: 8px 0px 0px 20px;
+}
+
+.blogPicAdjust {
+	margin-left: -22%;
 }

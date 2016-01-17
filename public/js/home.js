@@ -428,14 +428,10 @@ function insertSong() {
 
 function insertBlog() {
 		var vid = $("#blogurl").val().split("v=")[1];
-		if(id.indexOf('&') > -1)
-			id = id.split('&')[0];
+		if(vid.indexOf('&') > -1)
+			vid = vid.split('&')[0];
 		var dt = new Date($.now());
 		var stamp = dt.getFullYear() + '-' + String(dt.getMonth()+1) + '-' + dt.getDate() +' '+ dt.getHours() + ':' + dt.getMinutes() +':'+ dt.getSeconds();
-		var finder = '/';
-		re = new RegExp(finder, "g");
-		var al = $('#inputArtistLink').val().replace(re, '^^');
-		var dl = $('#inputDirectorLink').val().replace(re, '^^');
 		//var data = id + ']&[' + $('#inputBlogName').val() + ']&[' + $('#inputBlogArtist').val() + ']&[' + $('#inputBlogDirector').val() + ']&[' + $('#inputText').val() + ']&[' + stamp + ']&[' + al + ']&[' + dl;
 		$.ajax({
 			url: "/storeBlog",
@@ -469,9 +465,10 @@ function loadBlogs() {
 }
 
 function replaceImg(e) {
-	var vid = $(e.target).closest('.block').attr('data-vid');
+	console.log('error catch');
+	var vid = $(e.target).closest('.playSong').attr('data-vid');
 
-	$(e.target).attr('src', "http://img.youtube.com/vi/"+vid+"/maxresdefault.jpg");
+	$(e.target).attr('src', "http://img.youtube.com/vi/"+vid+"/0.jpg").addClass('blogPicAdjust');
 }
 
 function accountSignUp(e) {

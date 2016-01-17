@@ -1,7 +1,7 @@
 var Knex = require('../init/knex');
 
 exports.index = function(req, res) {
-	Knex('blogs')
+	Knex('blogs').orderBy('date', 'desc')
 		.then(function(blogs) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
@@ -37,7 +37,7 @@ exports.songs = function(req, res) {
 }
 
 exports.blogs = function(req, res) {
-	Knex('blogs')
+	Knex('blogs').orderBy('date', 'desc')
 		.then(function(m) {
 			Knex('genres').distinct('genre_1','genre_1_id').select()
 			.then(function(genres) {
@@ -115,12 +115,22 @@ exports.storeSong = function(req, res) {
 exports.storeBlog = function(req, res) {
 	Knex('blogs').where('vid',req.body.vid)
 		.then(function(m) {
+			console.log(m);
 			if(m.length != 0) {
-				Knex('blogs').where('vid',req.body.vid).update({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl});
+				Knex('blogs').where('vid',req.body.vid).update({vid: req.body.id, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl})
+				.then(function() {
+					res.send(200, {});
+				}).catch(function(err) {
+					console.log(err);
+				});
 			} else {
-				Knex('blogs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl});
+				Knex('blogs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, director: req.body.director, text: req.body.text, date: req.body.stamp, artistLink: req.body.al, directorLink: req.body.dl})
+				.then(function() {
+					res.send(200, {});
+				}).catch(function(err) {
+					console.log(err);
+				});			
 			}
-			res.send(200, {});
 		});
 }
 
@@ -388,7 +398,7 @@ exports.staffRemove = function(req, res) {
 }
 
 exports.blogVideos = function(req, res) {
-	Knex('blogs')
+	Knex('blogs').orderBy('date', 'desc')
 	.then(function(blogs) {
 		res.render('featuredVideos', {blogs: blogs}, function(err, m) {
 			res.send(200,{html: m});

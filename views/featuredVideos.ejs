@@ -1,7 +1,7 @@
 <% blogs.forEach(function(blog) { %>
   <div class="blogEntry">
     <div class="imgWrapper playSong" data-name="<%=blog.name%>" data-artist="<%=blog.artist%>" data-vid="<%=blog.vid%>">
-      <img src="/images/<%=blog.vid%>.jpg"/>
+      <img class="blogImg" src="/images/<%=blog.vid%>.jpg" onerror="replaceImg(event)"/>
       <span class="glyphicon glyphicon-play"></span>
     </div>
     <div class="blogEntryBody">

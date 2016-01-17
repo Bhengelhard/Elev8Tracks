@@ -1,23 +1,9 @@
 <div id="backgroundImg" background="/images/sky.jpg"></div>
 <div id="blogs" class="inactive">
   <% blogs.forEach(function(blog) { %>
-  <% if(blog.sotd == 1) { %>
-    <div id="songOfTheDay" data-vid="<%=blog.vid%>">
-      <div id="sotdImg">
-      <img src="/images/<%=blog.vid%>.png" class="list" onerror="replaceImg(event)"/>
-      <div id="sotdCover">
-        <div id="sotdName"><%=blog.name %></div>
-        <div id="sotdArtist"><%=blog.artist %></div>
-        <div id="sotdPlay"><span class="glyphicon glyphicon-play"></span></div>
-      </div>
-      </div>
-      <div id="sotdBlogText"><%=blog.text %></div>
-    </div>
-  <% } }); %>
   <div id="staffPicksBanner">Recent Staff Picks</div>
   <div id="staffPicks">
   <% blogs.forEach(function(blog) { %>
-    <% if(blog.attributes.sotd != 1) { %>
       <div class="post">
         <div class="block" data-vid="<%=blog.attributes.vid %>" onmousedown="blockClick(event)">
           <img src="/images/<%=blog.attributes.vid%>.png" class="list" onerror="replaceImg(event)"/>
@@ -33,7 +19,6 @@
           <div class="directorLink" onclick="window.open('<%=blog.attributes.directorLink %>','directorpage');"><%=blog.attributes.director %></div>
         <% } %>
       </div>
-    <% } %>
   <% }); %>
   </div>
 </div>
