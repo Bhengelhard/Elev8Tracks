@@ -49,7 +49,7 @@ exports.myLists = function(req, res) {
 	if(req.session.user) {
 		Knex('playlists').where('userid',req.session.userid)
 		.then(function(lists) {
-			Knex('genres').distinct('genre_4')
+			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
 				res.render('myLists', {session: req.session, lists: lists, genres: genres}, function(err, m) {
 					res.send({html: m, ses: req.session});
@@ -67,33 +67,51 @@ exports.myLists = function(req, res) {
 
 exports.storeSong = function(req, res) {
 	var time = new Date().toISOString().substr(0, 19).replace('T', ' ');
-	var genre_4 = req.body.genre.split(',');
+	var genre_4 = req.body.genre.split(', ');
 	var sql = '';
 	for(var i = 0; i < genre_4.length; i++) {
-		sql += "genre_4 = '" + genre_4[i] + "' OR ";
+		sql += "lower(genre_4) LIKE '" + genre_4[i] + "' OR ";
 	}
 	sql = sql.substring(0,sql.length-4);
 	Knex('genres').whereRaw(sql)
 	.then(function(genres) {
 		Knex('songs').where('vid', req.body.vid)
 		.then(function(song) {
+			var n = 0;
 			if(song.length != 0) {
+				console.log(req.body.genre);
 				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time});
 				Knex('songs_genres').where('song_id',song[0].id).del()
 				.then(function(song_genres) {
 					genres.forEach(function(genre) {
 						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
+						.then(function() {
+							n++;
+							if(n == genres.length) { res.send(200,{}); }
+						});
 					});
-					res.send(200,{});
 				})
 			} else {
 				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time})
 				.then(function(song) {
 					genres.forEach(function(genre) {
-						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id});
+						console.log(song);
+						Knex('songs_genres').insert({song_id: song[0], genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
+							.then(function() {
+							n++;
+							if(n == genres.length) {
+								Knex('popularity').insert({vid: req.body.vid})
+								.then(function() {
+									res.send(200,{});
+								})
+							}
+						}).catch(function(err) {
+							console.log(err);
+						});
 					});
 					res.send(200,{});
 				}).catch(function(e) {
+					console.log(err);
 					res.send(400,{});
 				});
 			}
@@ -137,7 +155,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT DISTINCT songs.vid, name, artist, songs_genres.song_id, likes, created_at, pop_week, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, pop_week, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
@@ -174,10 +192,9 @@ exports.videoSearch = function(req, res) {
 		} else {
 			m = m.rows;
 		}
-		console.log(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
-				res.send({html: model, m: m});
-			});
+			res.send({html: model, m: m});
+		});
 	});
 }
 
@@ -200,7 +217,7 @@ exports.login = function(req, res) {
 		Knex('playlists').where('userid', req.session.userid)
 		.then(function(m1) {
 			console.log(m1);
-			Knex('genres').distinct('genre_4')
+			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
 				res.render('myLists', {session: req.session, lists: m1, genres: genres}, function(err, m) {
 					res.send({html: m, ses: req.session});
@@ -254,7 +271,7 @@ exports.signUp = function(req, res) {
 				req.session.user = req.body.user;
 				req.session.userid = m[0].id;
 				req.session.admin = m[0].admin;
-				Knex('genres').distinct('genre_4')
+				Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 				.then(function(genres) {
 					res.render('myLists', {session: req.session, lists: [], genres: genres}, function(err, m) {
 						res.send({html: m, ses: req.session});
