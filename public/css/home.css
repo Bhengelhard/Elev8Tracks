@@ -2045,9 +2045,9 @@ position: absolute;
     left: 150px;
     top: -200px;
     opacity: 0;
-} .blogEntry .imgWrapper:hover .glyphicon {
+} .blogEntry .imgWrapper:hover .glyphicon, .blogEntry img:hover .glyphicon {
 	opacity: 1;
-} .blogEntry .imgWrapper:active .glyphicon {
+} .blogEntry .imgWrapper:active .glyphicon, .blogEntry img:hover .glyphicon {
 	color: #ff4400;
 } .imgWrapper {
 	width: 350px;
@@ -2261,4 +2261,13 @@ position: absolute;
 
 .blogPicAdjust {
 	margin-left: -22%;
+}
+.blogEntry>.glyphicon {
+	position: absolute;
+    font-size: 50px;
+    color: #fff;
+    left: 150px;
+    top: 125px;
+    z-index: 101;
+    opacity: 0;
 }

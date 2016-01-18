@@ -1,6 +1,9 @@
 <% blogs.forEach(function(blog) { %>
   <div class="blogEntry">
+  	<div class="imgWrapper playSong" data-name="<%=blog.name%>" data-vid="<%=blog.vid%>">
     <img src="/images/<%= blog.image %>">
+    <span class="glyphicon glyphicon-play"></span>
+    </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
       <div class="blogEntryText"><%= blog.text %></div>
