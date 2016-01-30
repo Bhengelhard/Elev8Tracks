@@ -1,5 +1,6 @@
 body {
 	background-color: #000;
+	font-family: "Helvetica-Thin";
 }
 
 .list {
@@ -614,6 +615,14 @@ body {
 	font-family: "Neou-Bold";
 	src: url("../Neou-Bold.otf");
 }
+@font-face {
+	font-family: "Benton-Thin";
+	src: url("../BentonSans-Light.otf");	
+}
+@font-face {
+	font-family: "Helvetica-Thin";
+	src: url("../HelveticaNeueLTStd-Th.otf");	
+}
 #playlists {
 	line-height: 0px;
 }
@@ -708,7 +717,6 @@ body {
 	font-size: 14px;
 	padding: 5px 15px 0px 15px;
 	line-height: 1.25;
-	font-family: "Neou-Thin";
 	-webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
@@ -1878,8 +1886,8 @@ position: absolute;
     position: relative;
     left: 0%;
     font-size: 170px;
+    font-family: "Neou-Thin";
     height: 175px;
-    font-weight: 100;
     line-height: 1;
     background-color: transparent;
     color: #fff;
