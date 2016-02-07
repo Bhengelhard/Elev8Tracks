@@ -32,8 +32,37 @@ exports.playlistmodel = function(req, res) {
 exports.songs = function(req, res) {
 	Knex('songs')
 		.then(function(m) {
-			res.render('songs', {songs: m, session: req.session});
+			res.render('index', {songs: m, session: req.session});
 		});
+}
+
+exports.songsViewTrending = function(req, res) {
+	Knex('songs').join('popularity', 'songs.vid', '=', 'popularity.vid').orderBy('pop_trending', 'desc').limit(75)
+		.then(function(songs) {
+			Knex('playlists').where('userid', req.session.userid)
+			.then(function(lists) {
+				Knex('genres').distinct('genre_1','genre_1_id').select()
+				.then(function(genres) {
+					res.render('indexSongs', {songs: songs, session: req.session, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+				});
+			});
+		});
+}
+
+exports.songsViewTrendingPlay = function(req, res) {
+	Knex('songs').where('vid','=',req.params.vid)
+	.then(function(play) {
+		Knex('songs').join('popularity', 'songs.vid', '=', 'popularity.vid').orderBy('pop_trending', 'desc').limit(75)
+			.then(function(songs) {
+				Knex('playlists').where('userid', req.session.userid)
+				.then(function(lists) {
+					Knex('genres').distinct('genre_1','genre_1_id').select()
+					.then(function(genres) {
+						res.render('indexSongsPlay', {songs: songs, play: play, session: req.session, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+					});
+				});
+			});
+	});
 }
 
 exports.blogs = function(req, res) {

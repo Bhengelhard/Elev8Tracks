@@ -11,6 +11,11 @@ $(document).ready(function() {
 
 	$(document).on("mousedown", ".playSong", blockClick);
 
+	if($('.block.inactive').length > 0) {
+        videoEnter($('.block.inactive'), 0);
+	}
+	
+
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
         spotifyLogin();
@@ -199,14 +204,14 @@ function nav(e) {
 	setTimeout(function() {
 		switch(nav) {
 		case 'songs':
-			$.get('/songs', function(res) {
+			$.get('/songs/d', function(res) {
 				$('#content').html(res);
 				$('#content').append($('<input type="text" id="videoSearch">'));
 
 			});
 			break;
 		case 'lists':
-			$.get('/playlists', function(res) {
+			$.get('/playlists/d', function(res) {
 				$('#content').html(res);
 				$.get('/playlistmodel', function(m) {
 					playlists = m;
@@ -215,7 +220,7 @@ function nav(e) {
 			});
 			break;
 		case 'blog':
-			$.get('/blogs', function(res) {
+			$.get('/blogs/d', function(res) {
 				$('#genreBar .searched').removeClass('searched');
 				refreshGenres($('#genreBar .gItem:first'));
 				var time = transition();
@@ -223,13 +228,13 @@ function nav(e) {
 			});
 			break;
 		case 'myLists':
-				$.get('/myLists', function(res) {
+				$.get('/myLists/d', function(res) {
 					var time = transition();
         			pageEnter(res.html, time);
 				});
 			break;
 		case 'title':
-			$.get('/blogs', function(res) {
+			$.get('/blogs/d', function(res) {
 				var time = transition();
 				$('#navbar').addClass('home');
 				$('#genreBar .searched').removeClass('searched');

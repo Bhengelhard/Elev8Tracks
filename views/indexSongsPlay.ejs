@@ -84,7 +84,7 @@
       </div>
     </div>
     <div id="content">
-      <% include home %>
+      <% include songs %>
     </div>
     <div id="listDetails" class="hidden">
       <div id="listTitle"></div>
@@ -96,14 +96,14 @@
         <div id='buffer'></div>
       </div>
     </div>
-    <div id="player" data-vid="-" data-vidno="-" data-lid=""><div id="videoPlayer"></div>
+    <div id="player" data-vid="<%= play[0].vid %>" data-vidno="-" data-lid=""><div id="videoPlayer"></div>
       <div id="controls" class="home">
         <div id="fullScreenWrapper">
           <span class="glyphicon glyphicon-resize-full"></span>
         </div>
         <div id="playerExpand">
           <div class="controls-menu-up"></div>
-          <div id="playingName"></div>
+          <div id="playingName"><%= play[0].name %></div>
         </div>
         <div id="playToggleSelection"></div>
         <div id="playToggle">
@@ -114,8 +114,8 @@
       </div>
       <div id="playercover" class="playerOptions">
         <div id="songPlaylist">Show Playlist</div>
-        <div id="songTitle"></div>
-        <div id="songArtist"></div>
+        <div id="songTitle"><%= play[0].name %></div>
+        <div id="songArtist"><%= play[0].artist %></div>
         <div id="shuffle"><span class="glyphicon glyphicon-random"></span></div>
         <div id="repeat" class="active"><span class="glyphicon glyphicon-repeat"></span></div>
       </div>
@@ -124,6 +124,9 @@
       <div id="previousSong" class="playerOptions"><span class="glyphicon glyphicon-menu-left"></span></div>
     </div>
     <div id="userSaveLists"></div>
+    <script>
+      $('#player').addClass('active');
+    </script>
     <!-- <div id="constructionBlock">
       <span class="glyphicon glyphicon-wrench"></span>
       <div id="constructionTitle">The Site is under Construction. Login to Help.</div>

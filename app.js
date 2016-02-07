@@ -64,12 +64,18 @@ var spotify = require('./controllers/spotifyC.js');
 
 app.get('/', routes.index);
 app.get('/index2', routes.index2);
-app.get('/playlists', routes.playlists);
-app.get('/songs', routes.songs);
-app.get('/blogs', routes.blogs);
+app.get('/playlists/d', routes.playlists);
+app.get('/songs/d', routes.songs);
+app.get('/blogs/d', routes.blogs);
 app.get('/getLoginNav', routes.getLoginNav);
 
-app.get('/myLists', routes.myLists);
+app.get('/songs/trending', routes.songsViewTrending);
+app.get('/songs', routes.songsViewTrending);
+app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
+
+app.get('/login', routes.loginView);
+
+app.get('/myLists/d', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
 app.post('/showList', routes.showList);

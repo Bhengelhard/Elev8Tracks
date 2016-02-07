@@ -4,7 +4,7 @@ var player;
 
 //setup function to load YouTube player
 function onYouTubeIframeAPIReady() {
-	var vid = $('#songOfTheDay').attr('data-vid');
+	var vid = $('#player').attr('data-vid');
 	prevplayer = new YT.Player('prevPlayer', {
 	        videoId: vid,
 	        events: {
@@ -25,6 +25,9 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(e) {
 	e.target.setVolume(100);
+	if($('#player').hasClass('active')) {
+    	player.loadVideoById($('#player').attr('data-vid'),0,"large");
+    }
 }
 function onPrevPlayerReady(e) {
 	e.target.setVolume(0);
@@ -65,7 +68,6 @@ function playSong(e) {
 	// } else {
 		//build a new playlist to play from
 		var index = buildCurrentList(vid);
-		console.log(currentList);
 		//change name, artist, etc. on player
 		updateVidInfo(index);
 		//highlight block that is currently playing
@@ -74,6 +76,7 @@ function playSong(e) {
 		player.loadVideoById(vid,0,"large");
 	//}
 	$('#player').addClass('active');
+	history.pushState({},'','/songs/trending/'+vid);
 }
 
 //changes name, artist, etc. on player
