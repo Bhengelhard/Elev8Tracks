@@ -73,8 +73,6 @@ app.get('/songs/trending', routes.songsViewTrending);
 app.get('/songs', routes.songsViewTrending);
 app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
 
-app.get('/login', routes.loginView);
-
 app.get('/myLists/d', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
