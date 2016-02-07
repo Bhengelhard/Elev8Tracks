@@ -3,6 +3,7 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
 
 //var redis = require('redis'); 
 var session = require('express-session'); 
@@ -38,6 +39,8 @@ app.use(session({
     saveUninitialized: false,
     resave: false
 }));
+
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(cookieParser())
 //   .use(sessions(config.redis_url, config.cookie_secret));
