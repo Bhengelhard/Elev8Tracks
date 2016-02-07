@@ -187,7 +187,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT DISTINCT songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, pop_week, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, pop_week, pop_trending, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
