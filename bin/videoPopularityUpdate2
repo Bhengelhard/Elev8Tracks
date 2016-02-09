@@ -93,7 +93,7 @@ function queryViews(vids, end) {
           console.log(new Date(m.updated_at) <= new Date(time));
           if(new Date(m.updated_at) <= new Date(time)) {
             var week = getLastViewCount(m);
-            var trending = (item.statistics.viewCount - week)/week;
+            var trending = Math.round((item.statistics.viewCount - week)/week*10000);
             week = item.statistics.viewCount - week;
             Knex('popularity').where('vid', item.id).update({pop_1: item.statistics.viewCount, pop_2: m.pop_1, pop_3: m.pop_2, pop_4: m.pop_3, pop_5: m.pop_4, pop_6: m.pop_5, pop_7: m.pop_6, pop_week: week, pop_trending: trending, updated_at: today})
             .then(function() {
