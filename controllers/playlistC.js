@@ -187,7 +187,7 @@ exports.showList = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT DISTINCT songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, pop_week, pop_trending, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, songs.staff, pop_week, pop_trending, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
@@ -401,13 +401,9 @@ exports.unlikeSong = function(req, res) {
 }
 
 exports.staffAdd = function(req, res) {
-	Knex('songs').where('vid', req.body.vid)
-	.then(function(model) {
-		var staff = 1;
-		Knex('songs').where('vid', req.body.vid).update({staff: staff},{patch: true})
-		.then(function() {
-			res.send(200, {});
-		});
+	Knex('songs').where('vid', req.body.vid).update({staff: 1})
+	.then(function() {
+		res.send(200, {});
 	}).catch(function(e) {
 		res.send(400,{});
 	});

@@ -1166,8 +1166,9 @@ body {
 	height: 20px;
 	background-color: #FF4400;
 	text-align: center;
-	padding-top: 10px;
 	pointer-events: all;
+	line-height: 1.5;
+	cursor: default;
 } .remove.active {
 	background-color: #0077FF;
 }
@@ -1953,10 +1954,14 @@ position: absolute;
     right: 10px;
     width: 20px;
     height: 20px;
-    background-color: #FF4400;
+    background-color: #4D00FF;
     text-align: center;
-    padding-top: 10px;
     pointer-events: all;
+    line-height: 1.5;
+    cursor: default;
+}
+.staffRemove {
+	background-color: #ff4400;
 }
 
 #spotifyLogin {

@@ -14,7 +14,7 @@ $(document).ready(function() {
 	if($('.block.inactive').length > 0) {
         videoEnter($('.block.inactive'), 0);
 	}
-	
+
 
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
@@ -647,7 +647,6 @@ function blockClick(e) {
 		var block = $(e.target).closest('.block');
 		var count = 0;
 		var $e = e;
-		console.log('blockclick');
 		$('body').on("mousemove",function(e) {
 			console.log('fire move');
 			if(count == 0) {
@@ -962,6 +961,8 @@ function unlikeSong(vid) {
 }
 
 function staffAdd(e) {
+	e.stopPropagation();
+	e.preventDefault();
 	$.ajax({
 		url: "/staffAdd",
 	    type: "post",
@@ -971,12 +972,15 @@ function staffAdd(e) {
         cache: false,
         timeout: 5000,
         success:function(res) {
-        	console.log(res);
+        	$(e.target).closest('.description').append('<div class="staffRemove" onclick="staffRemove(event)">-</div>');
+        	$(e.target).closest('.staffAdd').remove();
         }
 	});
 }
 
 function staffRemove(e) {
+	e.stopPropagation();
+	e.preventDefault();
 	$.ajax({
 		url: "/staffRemove",
 	    type: "post",
@@ -986,7 +990,8 @@ function staffRemove(e) {
         cache: false,
         timeout: 5000,
         success:function(res) {
-        	console.log(res);
+        	$(e.target).closest('.description').append('<div class="staffAdd" onclick="staffAdd(event)">+</div>');
+        	$(e.target).closest('.remove').remove();
         }
 	});
 }
