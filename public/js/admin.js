@@ -51,6 +51,8 @@ function insertblog() {
 }
 
 function removeBlock(e) {
+	e.stopPropagation();
+	e.preventDefault();
 	if($(e.target).attr('data-click') == 0) {
 		$(e.target).attr('data-click',1);
 		$(e.target).addClass('active');

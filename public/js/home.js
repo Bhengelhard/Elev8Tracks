@@ -991,7 +991,7 @@ function staffRemove(e) {
         timeout: 5000,
         success:function(res) {
         	$(e.target).closest('.description').append('<div class="staffAdd" onclick="staffAdd(event)">+</div>');
-        	$(e.target).closest('.remove').remove();
+        	$(e.target).closest('.staffRemove').remove();
         }
 	});
 }

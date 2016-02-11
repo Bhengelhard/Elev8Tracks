@@ -6,7 +6,7 @@
       <span class="artist"><%=song.artist %></span>
       <span class="glyphicon glyphicon-play"></span>
       <% if(session.admin == 1) { %>
-      <div class="remove" data-click="0" onclick="removeBlock(event)">-</div>
+      <div class="remove" data-click="0" onmousedown="removeBlock(event)">-</div>
       <% if(parseInt(song.staff) == 1) { %>
         <div class="staffRemove" onmousedown="staffRemove(event)">-</div>
       <% } else { %>
