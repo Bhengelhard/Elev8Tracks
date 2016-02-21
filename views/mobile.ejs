@@ -16,7 +16,7 @@
     <script src='/js/home.js'></script>
     <title>E L E V A T E</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/home.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/mobile.css" rel="stylesheet">
   </head>
   <body>
     <script>
@@ -29,6 +29,15 @@
       ga('send', 'pageview');
 
     </script>
-    hello world
+    <div id="mobileNavBar">
+    <span class="glyphicon glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+    </div>
+    <div id="content">
+      <% include mobileSongs %>
+    </div>
+
+    <div id="mobilePlayer">
+    SONG
+    </div>
   </body>
 </html>

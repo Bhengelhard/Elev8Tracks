@@ -484,7 +484,3 @@ exports.newgenreUpdate = function(req, res) {
 		});
 	});
 }
-
-exports.mobile = function(req, res) {
-	res.render('mobile');
-}
