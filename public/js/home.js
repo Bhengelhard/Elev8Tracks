@@ -10,6 +10,7 @@ $(document).ready(function() {
 	$('#vidBackground').prop('volume',0);
 
 	$(document).on("mousedown", ".playSong", blockClick);
+	$(".playSong.mobile").click(playSong);
 
 	if($('.block.inactive').length > 0) {
         videoEnter($('.block.inactive'), 0);
@@ -672,7 +673,7 @@ function blockClick(e) {
 	e.stopPropagation();
 	e.preventDefault();
 	if($(e.target).closest('.mobile').length > 0) {
-		playSong(e);
+		return;
 	} else {
 		if($(e.target).closest('.listDelete').length == 0) {
 			var block = $(e.target).closest('.block');
