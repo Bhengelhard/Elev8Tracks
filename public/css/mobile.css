@@ -7,25 +7,131 @@ body {
 	top: 0px;
 	left:0px;
 	width: 100%;
-	height: 10%;
-	background-color: #fff;
+	height: 7%;
+	background-color: #222;
+	color: #fff;
+	text-align: center;
+	font-size: 75px;
+	font-weight: 100;
 } #mobileNavBar .glyphicon {
 	   font-size: 700%;
     padding: 30px 20px 20px 20px;
 }
 
-#mobilePlayer {
+#player {
+	position: fixed;
+	top: 100%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index:150;
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+} #player.active {
+	top: 0%;
+	pointer-events: all;
+} #player #playerCollapse {
 	position: absolute;
-	bottom: 0px;
+    top: 0px;
+    left: 50px;
+    width: 20%;
+    height: 20vw;
+    font-size: 100px;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    padding: 25px;
+} #player #playerCollapse .glyphicon {
+	padding-top: 15px;
+	pointer-events: none;
+} #player #playerCollapse.active{
+	opacity: 1;
+} #player #playerCollapse.active:hover{
+	background-color: rgba(200,200,200,.5);
+} #player #playerCollapse.active:active {
+	background-color: #777CFF;
+} #player #controls {
+	position: absolute;
+	top: -10%;
 	left:0px;
 	width: 100%;
 	height: 10%;
-	background-color: #fff;
+	background-color: #222;
+	border-top: 2px solid #000;
+	border-left: 2px solid #000;
+	border-right: 2px solid #000;
+	pointer-events: all;
+	overflow: hidden;
+} #player #controls .glyphicon-menu-up {
+	position: absolute;
+	top: 11px;
+	left: 15px;
+	font-size: 30px;
+	color: #fff;
+	pointer-events: none;
+} #player #controls #playToggle {
+	position: absolute;
+    top: 8px;
+    right: 90px;
+    font-size: 30px;
+    color: #fff;
+	-webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+    pointer-events: none;
+} #player #controls #playToggle.play {
+	top: -40px;
+} #player #controls .glyphicon-play {
+	position: absolute;
+	top: 5px;
+	left: 0px;
+	font-size: 20px;
+} #player #controls .glyphicon-pause {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+} #controls #playingName {
+	position: absolute;
+    top: 15%;
+    width: 100%;
+    color: #fff;
+    font-weight: 100;
+    font-size: 500%;
+    opacity: 1;
+    overflow: hidden;
+    pointer-events: none;
+    text-align: center;
+} #controls #playerExpand {
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+} #controls #playerExpand:hover {
+	background-color: #555;
+} #controls #playToggleSelection {
+	position: absolute;
+    top: 0px;
+    right: 50px;
+    height: 50px;
+    width: 60px;
+} #controls #playToggleSelection:hover {
+	background-color: #555;
+} #player #videoPlayer {
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 }
 
 #content {
 	position: fixed;
-	top: 10%;
+	top: 7%;
 	bottom:10%;
 	width: 100%;
 	overflow: scroll;
@@ -89,7 +195,6 @@ body {
   	box-shadow:         0px 0px 60px 40px rgba(0,0,0,.5); 
 	font-size: 40px;
 	/*font-family: "Neou-Thin";*/
-	font-weight: 100;
 } .description .artist {
 	font-size: 30px;
 	display: block;
@@ -97,4 +202,8 @@ body {
 	width: 100%;
 	left: 0%;
 	padding: 0px 25px 0px 25px;
+}
+
+.mobilePlayerOptions.active {
+	opacity: 1;
 }

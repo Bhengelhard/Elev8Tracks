@@ -141,7 +141,24 @@ $(document).ready(function() {
 			}, 2000);
 		}
 	};
+
+	var mobilePlayerControls = function() {
+		if($('#player').hasClass('active')) {
+			if(!$('#nextSong').hasClass('active')) {
+				$('.mobilePlayerOptions').addClass('active');
+				$('#videoPlayer').css('pointer-events','all');
+			} else {
+				clearTimeout(controlTimeout);
+			}
+			controlTimeout = setTimeout(function() {
+				$('.mobilePlayerOptions').removeClass('active');
+				$('#videoPlayer').css('pointer-events','none');
+			}, 2000);
+		}
+	};
+
 	$('#player').on('mousemove',playerControls);
+	$('#player').on('click',mobilePlayerControls);
 
 	$('.playerOptions').hover(function() {
 		$('#player').off('mousemove',playerControls);
@@ -150,6 +167,17 @@ $(document).ready(function() {
 		$('#player').on('mousemove',playerControls);
 		controlTimeout = setTimeout(function() {
 			$('.playerOptions').removeClass('active');
+			$('#videoPlayer').css('pointer-events','none');
+		}, 2000);
+	});
+
+	$('.mobilePlayerOptions').hover(function() {
+		$('#player').off('click',mobilePlayerControls);
+		clearTimeout(controlTimeout);
+	}, function() {
+		$('#player').on('click',mobilePlayerControls);
+		controlTimeout = setTimeout(function() {
+			$('.mobilePlayerOptions').removeClass('active');
 			$('#videoPlayer').css('pointer-events','none');
 		}, 2000);
 	});
