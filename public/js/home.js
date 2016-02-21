@@ -671,53 +671,57 @@ function removeSaveList() {
 function blockClick(e) {
 	e.stopPropagation();
 	e.preventDefault();
-	if($(e.target).closest('.listDelete').length == 0) {
-		var block = $(e.target).closest('.block');
-		var count = 0;
-		var $e = e;
-		$('body').on("mousemove",function(e) {
-			console.log('fire move');
-			if(count == 0) {
-				var $drag = $('<div id="blockDragger"></div>');
-				var vid = block.attr('data-vid');
-				$('.saveList').each(function(index, element) {
-					var vids = $(this).attr('data-vids');
-					if(vids.search(vid) >= 0) {
-						$(this).addClass('included');
-					}
-				});
-				block.addClass('dragging');
-				block.append($('<div id="songOrder" style="display:none;"></div>'));
-				$('.block.edit').on('mouseenter', listOrderChange);
-	        	$drag.css('left',e.pageX).css('top',e.pageY).css('width','0px').css('height','0px').css('opacity','1').css('border-radius','10px');
-				$('body').append($drag);
-				$('#userSaveLists').css('left','0px');
-			} else {
-				$('#blockDragger').css('left',e.pageX-15).css('top',e.pageY-15).css('border-width','15px').css('border-radius','15px');
-			}
-			count++;
-		}).on("mouseup",function(e) {
-			if($(e.target).closest('.saveList').length > 0) {
-				saveSong(e, block);
-			} else {
-				$('#userSaveLists').css('left','-20%');
-				$('.included').removeClass('included');
-			}
-			$('#blockDragger').remove();
-			block.removeClass('dragging');
-			$('.block.edit').off('mouseenter', songOrder);
-			console.log('fire up');
-			handleDrop(e, block);
-			if($('#player').attr('data-lid') == block.closest('#videos').attr('data-lid')) {
-				var index = buildCurrentList($('#player').attr('data-vid'));
-				updateVidInfo(index);
-			}
-			$('#songOrder').remove();
-			$('body').off("mousemove").off("mouseup");
-			if(count == 0) {
-				playSong($e);
-			}
-		});
+	if($(e.target).closest('.mobile').length > 0) {
+		playSong(e);
+	} else {
+		if($(e.target).closest('.listDelete').length == 0) {
+			var block = $(e.target).closest('.block');
+			var count = 0;
+			var $e = e;
+			$('body').on("mousemove",function(e) {
+				console.log('fire move');
+				if(count == 0) {
+					var $drag = $('<div id="blockDragger"></div>');
+					var vid = block.attr('data-vid');
+					$('.saveList').each(function(index, element) {
+						var vids = $(this).attr('data-vids');
+						if(vids.search(vid) >= 0) {
+							$(this).addClass('included');
+						}
+					});
+					block.addClass('dragging');
+					block.append($('<div id="songOrder" style="display:none;"></div>'));
+					$('.block.edit').on('mouseenter', listOrderChange);
+		        	$drag.css('left',e.pageX).css('top',e.pageY).css('width','0px').css('height','0px').css('opacity','1').css('border-radius','10px');
+					$('body').append($drag);
+					$('#userSaveLists').css('left','0px');
+				} else {
+					$('#blockDragger').css('left',e.pageX-15).css('top',e.pageY-15).css('border-width','15px').css('border-radius','15px');
+				}
+				count++;
+			}).on("mouseup",function(e) {
+				if($(e.target).closest('.saveList').length > 0) {
+					saveSong(e, block);
+				} else {
+					$('#userSaveLists').css('left','-20%');
+					$('.included').removeClass('included');
+				}
+				$('#blockDragger').remove();
+				block.removeClass('dragging');
+				$('.block.edit').off('mouseenter', songOrder);
+				console.log('fire up');
+				handleDrop(e, block);
+				if($('#player').attr('data-lid') == block.closest('#videos').attr('data-lid')) {
+					var index = buildCurrentList($('#player').attr('data-vid'));
+					updateVidInfo(index);
+				}
+				$('#songOrder').remove();
+				$('body').off("mousemove").off("mouseup");
+				if(count == 0) {
+					playSong($e);
+				}
+			});
+		}
 	}
 }
 
