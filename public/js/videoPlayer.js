@@ -73,7 +73,9 @@ function playSong(e) {
 		//highlight block that is currently playing
 		currentlyPlaying(vid);
 		//load video
-		player.loadVideoById(vid,0,"large");
+		if(!$(e.target).closest('.playSong').hasClass('mobile')) {
+			player.loadVideoById(vid,0,"large");
+		}
 	//}
 	$('#player').addClass('active');
 	history.pushState({},'','/songs/trending/'+vid);
