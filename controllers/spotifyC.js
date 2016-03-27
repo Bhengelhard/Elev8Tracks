@@ -97,34 +97,57 @@ exports.callback = function(req, res) {
           var spotifyArtists = [];
           var spotifyTable = [];
           var n = 0;
+          var spotifyLists = [];
+          var listTracks = [];
           request.get(playlists, function(error, data, body) {
             for(var i = 0; i < data.body.items.length; i++) {
+              spotifyLists.push({name: data.body.items[i].name, spotify_id: req.session.spotifyID, playlist_id: data.body.items[i].id, track_ids: ''});
               var spotifyPlaylist = {
                 url: data.body.items[i].tracks.href,
                 headers: { 'Authorization': 'Bearer ' + access_token },
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
-                var listTracks = [];
                 for(var j = 0; j < tracks.body.items.length; j++) {
+                  console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
+                  if(tracks.body.items[j].track.id != null)
+                    listTracks.push({spotify_id: req.session.spotifyID, song_id: tracks.body.items[j].track.id, playlist_id: tracks.body.href.split('playlists/')[1].split('/tracks')[0]});
                   for(var k = 0; k < tracks.body.items[j].track.artists.length; k++) {
                     var artist = tracks.body.items[j].track.artists[k].name.replace(new RegExp('"', 'g'), "'");
                     if(spotifyArtists.indexOf(artist) < 0) {
-                      var tableInsert = {name: artist, spotify_id: req.session.spotifyID};
+                      var tableInsert = {artist: artist, spotify_id: req.session.spotifyID};
                       spotifyArtists.push(artist);
                       spotifyTable.push(tableInsert);
                     }
                   }
                 }
+                // listTracks = listTracks.replace(/null,/g, "").substring(0,listTracks.length-1);
+                // spotifyLists[n].track_ids = listTracks;
                 n++;
                 if(n == data.body.items.length) {
-                  Knex('spotify_artists').where({spotify_id: req.session.spotifyID}).del()
-                  .then(function(model) {
-                      console.log(spotifyArtists);
-                      for(var k = 0; k < spotifyArtists.length; k++) {
-                        Knex('spotify_artists').insert({artist: spotifyArtists[k], spotify_id: req.session.spotifyID, user_id: req.session.userid});
-                      }
-                  });
+                    Knex('spotify_artists').where({spotify_id: req.session.spotifyID}).del()
+                    .then(function(model) {
+                        if(!req.session.userid)
+                          var userid = 0;
+                        else 
+                          var userid = req.session.userid;
+                        Knex('spotify_playlists').where({spotify_id: req.session.spotifyID}).del()
+                        .then(function() {
+                          Knex('spotify_playlists').insert(spotifyLists)
+                          .then(function() {
+                            Knex('spotify_songs_playlists').where({spotify_id: req.session.spotifyID}).del()
+                            .then(function() {
+                              Knex('spotify_songs_playlists').insert(listTracks)
+                              .then(function() {
+                                Knex('spotify_artists').insert(spotifyTable)
+                                .then(function() {
+                                  console.log('artists inserted');
+                                });
+                              });
+                            });
+                          });
+                        });
+                    });
                 }
               });
             }
@@ -234,4 +257,60 @@ exports.importSpotify = function(req, res) {
   } else {
     res.send(200,{error: 'login'});
   }
+}
+
+exports.idUpdate = function(req, res) {
+  Knex('songs').then(function(m) {
+    // m.forEach(function(song) {
+    //   idUpdater(song);
+    // });
+    // console.log(m[0]);
+    console.log(m);
+    idUpdater(0, m);
+  });
+  res.send(200, {});
+}
+
+function idUpdater(n, songs) {
+    if(n < 5) {
+      // var name = 'I Follow You';
+      // var artist = "melody's echo chamber";
+      var match = 0;
+      var name = songs[n].name;
+      var artist = songs[n].artist.toLowerCase().split(' feat.')[0].split(' ft.')[0];
+      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(name) + '&type=track';
+      request.get(url, function(error, data, body) {
+        var response = JSON.parse(body);
+        if(response.tracks) {
+          response.tracks.items.forEach(function(item) {
+            for(var i = 0; i < item.artists.length; i++) {
+              if(item.artists[i].name.toLowerCase() == artist && match == 0) {
+                match = item.id;
+                break;
+              }
+            }
+          }); 
+        }
+        Knex('songs').where('id',songs[n].id).update({spotify_id: match})
+        .then(function() {
+          console.log(n);
+          n = n+1;
+          idUpdater(n, songs);
+        });
+      });
+    }
+}
+
+exports.showList = function(req, res) {
+  console.log(req.body.list_id);
+  Knex('spotify_playlists').where('id',req.body.list_id)
+  .then(function(list) {
+    console.log(list[0].playlist_id);
+    Knex('songs').join('spotify_songs_playlists', 'songs.spotify_id', '=', 'spotify_songs_playlists.song_id').where('spotify_songs_playlists.spotify_id','=',req.session.spotifyID).andWhere('spotify_songs_playlists.playlist_id','=',list[0].playlist_id)
+    .then(function(m) {
+      res.render('songs', {songs: m, session: req.session}, function(err, model) {
+        res.send({html: model, m: m});
+      });
+    })
+  })
 }

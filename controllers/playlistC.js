@@ -7,7 +7,14 @@ exports.index = function(req, res) {
 			.then(function(lists) {
 				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
-					res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+					if(req.session.spotifyID) {
+						Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
+						.then(function(spotifyLists) {
+							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0});
+						});
+					} else {
+						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0});
+					}
 				});
 			});
 		});
@@ -378,7 +385,7 @@ exports.likeSong = function(req, res) {
 	Knex('songs').where('vid',req.body.vid)
 	.then(function(model) {
 		var likes = parseInt(model[0].likes) + 1;
-		Knex('songs').where('vid',req.body.vid).save({likes: likes},{patch: true})
+		Knex('songs').where('vid',req.body.vid).update({likes: likes})
 		.then(function() {
 			res.send(200, {});
 		});
@@ -391,7 +398,7 @@ exports.unlikeSong = function(req, res) {
 	Knex('songs').where('vid',req.body.vid)
 	.then(function(model) {
 		var likes = parseInt(model[0].likes) - 1;
-		Knex('songs').where('vid',req.body.vid).save({likes: likes},{patch: true})
+		Knex('songs').where('vid',req.body.vid).update({likes: likes})
 		.then(function() {
 			res.send(200, {});
 		});

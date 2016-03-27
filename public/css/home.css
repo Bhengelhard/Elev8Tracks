@@ -2245,6 +2245,18 @@ position: absolute;
     margin-bottom: 50px;
 }
 
+#adminSpotifyID {
+	position: relative;
+    width: 150px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -75px;
+    margin-bottom: 50px;
+}
+
 #findVideosBestNewVideos, #findVideosStaffPicks {
 	color: #fff;
     font-size: 20px;
@@ -2283,4 +2295,77 @@ position: absolute;
     top: 125px;
     z-index: 101;
     opacity: 0;
+}
+
+#spotifyControls {
+	position: fixed;
+    z-index: 120;
+    right: -150px;
+    top: 70px;
+    width: 150px;
+}
+.spotifyTitle {
+	-webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    background-color: #6AE368;
+    position: absolute;
+    top: 10px;
+    padding: 10px;
+    left: -50px;
+    color: #fff;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+#spotifyControls:hover {
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+	right:0px;
+}
+.spotifyLogin {
+	background-color: #6AE368;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 150px;
+    color: #fff;
+    height: 60px;
+    text-align: center;
+    padding: 10px;
+    cursor: default;
+} .spotifyLogin:hover {
+	background-color: #ABDEAB;
+}
+#spotifyLists {
+	background-color: #6AE368;
+    position: relative;
+    top: 0px;
+    width: 150px;
+    max-height: 50vh;
+    overflow:scroll;
+    padding-bottom: 50px;
+} .spotifyList {
+	color: #fff;
+    padding: 10px;
+    width:150px;
+} .spotifyList:hover {
+	background-color: #ABDEAB;
+} #spotifyChange {
+	position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #6AE368;
+    width: 150px;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #fff;
+    color: #fff;
+    cursor: default;
+} #spotifyChange:hover {
+	background-color: #ABDEAB;
 }

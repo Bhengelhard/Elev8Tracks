@@ -117,6 +117,8 @@ app.get('/spotifyAuthorize', spotify.authorize);
 app.get('/importSpotify', spotify.importSpotify);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
+app.get('/spotifyIDUpdate', spotify.idUpdate);
+app.post('/showSpotifyList', spotify.showList);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

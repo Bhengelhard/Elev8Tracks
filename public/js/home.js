@@ -1134,3 +1134,28 @@ function recentStaffPicks() {
 	var params = ["","staff","pop_week",0,"",[0,75]];
 	searchDB(params);
 }
+
+function spotifyIDUpdate() {
+	$.get('/spotifyIDUpdate', function() {
+		console.log('success');
+	});
+}
+
+function showSpotifyList(e) {
+	$.ajax({
+		url: "/showSpotifyList",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({list_id: $(e.target).closest('.spotifyList').attr('data-id')}),
+	    contentType: "application/json",
+	    cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res.m);
+        	$('.selected').removeClass('selected');
+    		$('#videoSearcherWrapper').addClass('selected');
+        	var time = transition();
+        	videoEnter(res.html, time, 0);
+	    }
+	});
+}
