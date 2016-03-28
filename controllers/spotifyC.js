@@ -286,7 +286,10 @@ function idUpdater(n, songs) {
       // var artist = "melody's echo chamber";
       var match = 0;
       var name = songs[n].name;
-      var artist = songs[n].artist.toLowerCase().split(' feat.')[0].split(' ft.')[0];
+      if(songs[n].artist != null)
+        var artist = songs[n].artist.toLowerCase().split(' feat.')[0].split(' ft.')[0];
+      else
+        var artist = '';
       var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(name) + '&type=track';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
