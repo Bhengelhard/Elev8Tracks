@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 
 var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
 var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
-var redirect_uri = 'http://elevatemore.com/callback';
+var redirect_uri = 'http://www.elevatemore.com/callback';
 
 var Knex = require('../init/knex');
 
@@ -30,15 +30,16 @@ exports.login = function(req, res) {
   res.cookie(stateKey, state);
   // your application requests authorization
   var scope = 'user-read-private user-read-email playlist-read-private';
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state,
-      show_dialog: true
-    }));
+  res.redirect('https://www.google.com/');
+  // res.redirect('https://accounts.spotify.com/authorize?' +
+  //   querystring.stringify({
+  //     response_type: 'code',
+  //     client_id: client_id,
+  //     scope: scope,
+  //     redirect_uri: redirect_uri,
+  //     state: state,
+  //     show_dialog: true
+  //   }));
 };
 
 exports.callback = function(req, res) {
