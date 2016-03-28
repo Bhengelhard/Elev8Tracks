@@ -275,14 +275,13 @@ exports.idUpdate = function(req, res) {
     //   idUpdater(song);
     // });
     // console.log(m[0]);
-    console.log(m);
     idUpdater(0, m);
   });
   res.send(200, {});
 }
 
 function idUpdater(n, songs) {
-    if(n < 5) {
+    if(n < songs.length) {
       // var name = 'I Follow You';
       // var artist = "melody's echo chamber";
       var match = 0;
