@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 
 var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
 var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
-var redirect_uri = 'http://www.elevatemore.com/callback';
+var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
 
