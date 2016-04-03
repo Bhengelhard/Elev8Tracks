@@ -24,8 +24,15 @@
 <% if(session.admin == 1) { %>
 <div id="songInput">
 <input type="text" id="url" placeholder="URL">
-<input type="text" id="inputName" placeholder="Name">
-<input type="text" id="inputArtist" placeholder="Artist">
+<div id="spotifyMatch">
+  <input type="text" id="inputName" placeholder="Name">
+  <br>
+  <input type="text" id="inputArtist" placeholder="Artist">
+  <br>
+  <div id="spotifyMatchSearch" onclick="spotifyMatchSearch()">SEARCH</div>
+  <div id="spotifyMatchList">
+  </div>
+</div>
 <input type="text" id="inputDirector" placeholder="Director">
 <select id="inputGenre1">
   <option value="  "></option>
@@ -45,14 +52,7 @@
     <option value="<%= genre.genre_4 %>"><%= genre.genre_4 %></option>
   <% }); %>
 </select>
-
 <div id="inputSubmit" onclick="insertSong()">SUBMIT</div>
-</div>
-<div id="blogInput">
-<input type="text" id="blogurl" class="blogInputText" placeholder="URL">
-<input type="text" id="inputBlogName" class="blogInputText" placeholder="Name">
-<input type="text" id="inputBlogArtist" class="blogInputText" placeholder="Artist">
-<input type="text" id="inputBlogDirector" class="blogInputText" placeholder="Director">
 <input type="text" id="inputText" class="blogInputText" placeholder="blog text">
 <input type="text" id="inputArtistLink" class="blogInputText" placeholder="Artist Website URL">
 <input type="text" id="inputDirectorLink" class="blogInputText" placeholder="Director Website URL">

@@ -1,0 +1,3 @@
+<% songs.forEach(function(song) { %>
+    <div class="spotifyMatchEntry" data-spotifyid="<%= song.id %>" data-spotifyname="<%= song.name %>" data-spotifyartist="<%= song.artists[0].name %>" data-spotifypop="<%= song.popularity %>" onclick="spotifyMatchSelect(event)"><%= song.name %> | <%= song.artists[0].name %></div>
+<% }) %>

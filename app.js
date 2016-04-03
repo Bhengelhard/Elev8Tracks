@@ -119,6 +119,7 @@ app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 app.get('/spotifyIDUpdate', spotify.idUpdate);
 app.post('/showSpotifyList', spotify.showList);
+app.post('/spotifyMatchSearch', spotify.matchSearch);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

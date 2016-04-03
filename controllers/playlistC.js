@@ -118,34 +118,36 @@ exports.storeSong = function(req, res) {
 			var n = 0;
 			if(song.length != 0) {
 				console.log(song);
-				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time});
+				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, updated_at: time});
 				Knex('songs_genres').where('song_id',song[0].id).del()
 				.then(function(song_genres) {
 					genres.forEach(function(genre) {
 						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
 						.then(function() {
-							n++;
-							if(n == genres.length) { res.send(200,{}); }
+							console.log('test');
 						});
 					});
 				})
 			} else {
-				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, created_at: time})
+				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, created_at: time})
 				.then(function() {
 					Knex('popularity').insert({vid: req.body.vid})
 					.then(function() {
-						genres.forEach(function(genre) {
-							Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id});
+						Knex('songs').where('vid', req.body.vid)
+						.then(function(song) {
+							genres.forEach(function(genre) {
+								Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
+								.then(function() {
+									console.log('insert');
+								});
+							});
 						});
-						res.send(200,{});
 					});
-				}).catch(function(e) {
-					console.log(err);
-					res.send(400,{});
 				});
 			}
 		});
 	});
+	res.send(200,{});
 }
 
 exports.storeBlog = function(req, res) {

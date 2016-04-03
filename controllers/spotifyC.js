@@ -323,6 +323,17 @@ exports.showList = function(req, res) {
       res.render('songs', {songs: m, session: req.session}, function(err, model) {
         res.send({html: model, m: m});
       });
-    })
-  })
+    });
+  });
+}
+
+exports.matchSearch = function(req, res) {
+  var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(req.body.name) + '&type=track';
+      request.get(url, function(error, data, body) {
+        var response = JSON.parse(body);
+        console.log(response.tracks.items[0].artists[0].name);
+        res.render('spotifyMatches', {songs: response.tracks.items}, function(err, model) {
+          res.send(200,{html: model});
+        });
+      });
 }

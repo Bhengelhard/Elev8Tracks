@@ -16,7 +16,6 @@ $(document).ready(function() {
         videoEnter($('.block.inactive'), 0);
 	}
 
-
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
         spotifyLogin();
@@ -439,23 +438,36 @@ function moveSelector(e) {
 }
 
 function insertSong() {
+		console.log('whuuut');
 		var vid = $("#url").val().split("v=")[1];
 		if(vid.indexOf('&') > -1)
 			vid = vid.split('&')[0];
 		var genre = ', ' + ($('#inputGenre1').val() == null ? '' : $('#inputGenre1').val().toLowerCase() + ', ');
 		genre += ($('#inputGenre2').val() == null ? '' : $('#inputGenre2').val().toLowerCase() + ', ');
 		genre += ($('#inputGenre3').val() == null ? '' : $('#inputGenre3').val().toLowerCase()) +',';
+		if($('.spotifyMatchEntry.active').length > 0) {
+			var name = $('.spotifyMatchEntry.active').attr('data-spotifyname');
+			var artist = $('.spotifyMatchEntry.active').attr('data-spotifyartist');
+			var spotify_id = $('.spotifyMatchEntry.active').attr('data-spotifyid');
+			var pop = $('.spotifyMatchEntry.active').attr('data-spotifypop');
+		} else {
+			var name = $('#inputName').val();
+			var artist = $('#inputArtist').val();
+			var spotify_id = 0;
+			var pop = 0;
+		}
 		$.ajax({
 			url: "/storeSong",
 	        type: "post",
 	        dataType: "json",
-	        data: JSON.stringify({vid: vid, name: $('#inputName').val(), artist: $('#inputArtist').val(), genre: genre, director: $('#inputDirector').val()}),
+	        data: JSON.stringify({vid: vid, name: name, artist: artist, genre: genre, director: $('#inputDirector').val(), spotify_id: spotify_id, pop: pop}),
 	        contentType: "application/json",
 	        cache: false,
 	        timeout: 5000,
 	        success:function(res) {
-	        	console.log('back');
+	        	console.log(res);
 				$('#songInput input').val('');
+				$('#spotifyMatchList').html('');
 		    }
 		});
 }
@@ -1142,6 +1154,7 @@ function spotifyIDUpdate() {
 }
 
 function showSpotifyList(e) {
+	console.log('clicked');
 	$.ajax({
 		url: "/showSpotifyList",
 	    type: "post",
@@ -1158,4 +1171,32 @@ function showSpotifyList(e) {
         	videoEnter(res.html, time, 0);
 	    }
 	});
+}
+
+function spotifyMatchSearch() {
+	console.log('in');
+	var name = $('#inputName').val();
+	var artist = $('#inputArtist').val();
+	$.ajax({
+		url: "/spotifyMatchSearch",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({name: name, artist: artist}),
+	    contentType: "application/json",
+	    cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	console.log(res);
+        	$('#spotifyMatchList').html(res.html);
+	    }
+	});
+}
+
+function spotifyMatchSelect(e) {
+	$('.spotifyMatchEntry').removeClass('active');
+	if($(e.target).closest('.spotifyMatchEntry').hasClass('active')) {
+		$(e.target).closest('.spotifyMatchEntry').removeClass('active');
+	} else {
+		$(e.target).closest('.spotifyMatchEntry').addClass('active');
+	}
 }
