@@ -12,7 +12,7 @@ var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
 var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
-var imported = 0;
+var imported = 1;
 
 var generateRandomString = function(length) {
   var text = '';
@@ -393,7 +393,6 @@ exports.matchSearch = function(req, res) {
   var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
-        console.log(response.tracks.items[0].artists[0].name);
         res.render('spotifyMatches', {songs: response.tracks.items}, function(err, model) {
           res.send(200,{html: model});
         });

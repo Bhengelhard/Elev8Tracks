@@ -134,6 +134,10 @@ exports.storeSong = function(req, res) {
 								console.log(req.body.spotify_ids);
 								for(var i = 0; i < req.body.spotify_ids.length; i++) {
 									spotify_ids.push({song_id: song[0].id, spotify_id: req.body.spotify_ids[i]});
+									Knex('spotify_songs_playlists').where('spotify_id', req.body.spotify_ids[i]).update({song_id: song[0].id})
+									.then(function() {
+										console.log('matched');
+									});
 								}
 								Knex('spotify_match').insert(spotify_ids)
                           		.then(function() {
@@ -157,6 +161,10 @@ exports.storeSong = function(req, res) {
 									console.log(req.body.spotify_ids);
 									for(var i = 0; i < req.body.spotify_ids.length; i++) {
 										spotify_ids.push({song_id: song[0].id, spotify_id: req.body.spotify_ids[i]});
+										Knex('spotify_songs_playlists').where('spotify_id', req.body.spotify_ids[i]).update({song_id: song[0].id})
+										.then(function() {
+											console.log('matched');
+										});
 									}
 									Knex('spotify_match').insert(spotify_ids)
                               		.then(function() {
