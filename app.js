@@ -118,6 +118,7 @@ app.get('/importSpotify', spotify.importSpotify);
 app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 app.get('/spotifyIDUpdate', spotify.idUpdate);
+app.get('/checkImport', spotify.checkImport);
 app.post('/showSpotifyList', spotify.showList);
 app.post('/spotifyMatchSearch', spotify.matchSearch);
 

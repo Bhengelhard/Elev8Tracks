@@ -30,12 +30,14 @@ function videoExit() {
 	return time;
 }
 
-function videoEnter(res, time, page) {
+function videoEnter(res, time, page, banner) {
 	setTimeout(function() {
 		console.log('empty');
 		$('#content').empty();
 		$('#content').scrollTop(0);
 		var $html = $('<div id="videos" data-lid=""></div>');
+		if(banner)
+			$html.append('<div class="'+banner.class+'">'+banner.name+'</div>');
 		$html.append(res);
 		$('#content').append($html);
 		var n = 0,

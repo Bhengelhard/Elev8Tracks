@@ -8,10 +8,14 @@ exports.index = function(req, res) {
 				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
 					if(req.session.spotifyID) {
-						Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
-						.then(function(spotifyLists) {
-							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0});
-						});
+						if(req.session.imported) {
+							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
+							.then(function(spotifyLists) {
+								res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0});
+							});
+						} else {
+							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0});
+						}
 					} else {
 						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0});
 					}
@@ -124,7 +128,18 @@ exports.storeSong = function(req, res) {
 					genres.forEach(function(genre) {
 						Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
 						.then(function() {
-							console.log('test');
+							Knex('spotify_match').where('song_id',song[0].id).del()
+							.then(function() {
+								var spotify_ids = [];
+								console.log(req.body.spotify_ids);
+								for(var i = 0; i < req.body.spotify_ids.length; i++) {
+									spotify_ids.push({song_id: song[0].id, spotify_id: req.body.spotify_ids[i]});
+								}
+								Knex('spotify_match').insert(spotify_ids)
+                          		.then(function() {
+                          			console.log('updated');
+                           		});
+							});
 						});
 					});
 				})
@@ -138,7 +153,15 @@ exports.storeSong = function(req, res) {
 							genres.forEach(function(genre) {
 								Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
 								.then(function() {
-									console.log('insert');
+									var spotify_ids = [];
+									console.log(req.body.spotify_ids);
+									for(var i = 0; i < req.body.spotify_ids.length; i++) {
+										spotify_ids.push({song_id: song[0].id, spotify_id: req.body.spotify_ids[i]});
+									}
+									Knex('spotify_match').insert(spotify_ids)
+                              		.then(function() {
+                              			console.log('inserted');
+                              		});
 								});
 							});
 						});
@@ -173,8 +196,10 @@ exports.storeBlog = function(req, res) {
 }
 
 exports.removeBlock = function(req, res) {
-	Knex('song').where('vid',req.params.data).del();
-	res.send(200, {});
+	Knex('songs').where('vid',req.params.data).limit(1).del()
+	.then(function() {
+		res.send(200, {});
+	});
 }
 
 exports.showList = function(req, res) {

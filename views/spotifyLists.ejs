@@ -1,11 +1,15 @@
-<% if(!spotifyLists) { %>
+<% if(spotifyLists == 1) { %>
+	<div class="spotifyImporting" onload="checkImport()">
+      Importing...
+    </div>
+<% } else if(spotifyLists == 0) { %>
     <div class="spotifyLogin" onclick="spotifyLogin()">
       Import Spotify <br>Playlists
     </div>
 <% } else { %>
 	<div id="spotifyLists">
 	<% spotifyLists.forEach(function(list) { %>
-		<div class="spotifyList" data-id="<%= list.id %>" onclick="showSpotifyList(event)"><%= list.name %></div>
+		<div class="spotifyList" data-id="<%= list.playlist_id %>" onclick="showSpotifyList(event)"><%= list.name %></div>
 	<% }); %>
 	</div>
 	<div id="spotifyChange" onclick="spotifyLogin()">Change Accounts</div>

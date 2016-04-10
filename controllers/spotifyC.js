@@ -2,7 +2,7 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-// for local development
+//for local development
 // var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
 // var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
 // var redirect_uri = 'http://localhost:8888/callback';
@@ -12,6 +12,7 @@ var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
 var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
+var imported = 0;
 
 var generateRandomString = function(length) {
   var text = '';
@@ -98,15 +99,16 @@ exports.callback = function(req, res) {
           req.session.spotifyID = response.body.id;
           req.session.access_token = access_token;
           req.session.refresh_token = refresh_token;
+          req.session.imported = 0;
+          imported = 0;
 
           var playlists = {
             url: 'https://api.spotify.com/v1/users/' + req.session.spotifyID + '/playlists',
             headers: { 'Authorization': 'Bearer ' + access_token },
             json: true
           };
-          var spotifyArtists = [];
-          var spotifyTable = [];
-          var n = 0;
+          var n = 0,
+              m = 0;
           var spotifyLists = [];
           var listTracks = [];
           request.get(playlists, function(error, data, body) {
@@ -119,24 +121,17 @@ exports.callback = function(req, res) {
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
                 for(var j = 0; j < tracks.body.items.length; j++) {
-                  console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
-                  if(tracks.body.items[j].track.id != null)
-                    listTracks.push({spotify_id: req.session.spotifyID, song_id: tracks.body.items[j].track.id, playlist_id: tracks.body.href.split('playlists/')[1].split('/tracks')[0]});
-                  for(var k = 0; k < tracks.body.items[j].track.artists.length; k++) {
-                    var artist = tracks.body.items[j].track.artists[k].name.replace(new RegExp('"', 'g'), "'");
-                    if(spotifyArtists.indexOf(artist) < 0) {
-                      var tableInsert = {artist: artist, spotify_id: req.session.spotifyID};
-                      spotifyArtists.push(artist);
-                      spotifyTable.push(tableInsert);
-                    }
+                  m++;
+                  if(tracks.body.items[j].track.name == 'All Gold Everything') {
+                    console.log(tracks.body.items[j].track.id);
+                    console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
                   }
+                  listTracks.push({insert: {spotify_user_id: req.session.spotifyID, spotify_id: tracks.body.items[j].track.id, playlist_id: tracks.body.href.split('playlists/')[1].split('/tracks')[0], song_id: 0}, name: tracks.body.items[j].track.name, artist: tracks.body.items[j].track.artists[0].name});
                 }
-                // listTracks = listTracks.replace(/null,/g, "").substring(0,listTracks.length-1);
-                // spotifyLists[n].track_ids = listTracks;
                 n++;
                 if(n == data.body.items.length) {
-                    Knex('spotify_artists').where({spotify_id: req.session.spotifyID}).del()
-                    .then(function(model) {
+                        console.log(m);
+                        console.log(n);
                         if(!req.session.userid)
                           var userid = 0;
                         else 
@@ -145,19 +140,84 @@ exports.callback = function(req, res) {
                         .then(function() {
                           Knex('spotify_playlists').insert(spotifyLists)
                           .then(function() {
-                            Knex('spotify_songs_playlists').where({spotify_id: req.session.spotifyID}).del()
+                            Knex('spotify_songs_playlists').where({spotify_user_id: req.session.spotifyID}).del()
                             .then(function() {
-                              Knex('spotify_songs_playlists').insert(listTracks)
-                              .then(function() {
-                                Knex('spotify_artists').insert(spotifyTable)
-                                .then(function() {
-                                  console.log('artists inserted');
+                              listTracks.forEach(function(track) {
+                                Knex('spotify_match').where('spotify_id',track.insert.spotify_id)
+                                .then(function(match) {
+                                  if(match[0]) {
+                                    match = match[0];
+                                  } else {
+                                    match = match.rows;
+                                  }
+                                  if(typeof match != 'undefined') {
+                                    track.insert.song_id = match.song_id;
+                                    Knex('spotify_songs_playlists').insert(track.insert)
+                                    .then(function() {
+                                      req.session.imported = 1;
+                                      imported = 1;
+                                    });
+                                  } else {
+                                    var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                    console.log(sql);
+                                    if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
+                                      Knex.raw(sql).then(function(textMatch) {
+                                        if(textMatch[0]) {
+                                          textMatch = textMatch[0];
+                                          if(textMatch[0]) {
+                                            textMatch = textMatch[0];
+                                          }
+                                        } else {
+                                          textMatch = textMatch.rows;
+                                        }
+                                        if(typeof textMatch != 'undefined') {
+                                          track.insert.song_id = textMatch.id;
+                                        }
+                                        Knex('spotify_songs_playlists').insert(track.insert)
+                                        .then(function() {
+                                          req.session.imported = 1;
+                                          imported = 1;
+                                        });
+                                      });
+                                    }
+                                  }
+                                }).catch(function() {
+                                  var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                  if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
+                                    Knex.raw(sql).then(function(textMatch) {
+                                        if(textMatch[0]) {
+                                          textMatch = textMatch[0];
+                                          if(textMatch[0]) {
+                                            textMatch = textMatch[0];
+                                          }
+                                        } else {
+                                          textMatch = textMatch.rows;
+                                        }
+                                        if(typeof textMatch != 'undefined') {
+                                          track.insert.song_id = textMatch.id;
+                                          if(track.artist == 'Trinidad James') {
+                                            console.log(textMatch);
+                                            console.log(textMatch.id);
+                                          }
+                                        }
+                                        Knex('spotify_songs_playlists').insert(track.insert)
+                                        .then(function() {
+                                          req.session.imported = 1;
+                                          imported = 1;
+                                        });
+                                    }).catch(function() {
+                                        Knex('spotify_songs_playlists').insert(track.insert)
+                                        .then(function() {
+                                          req.session.imported = 1;
+                                          imported = 1;
+                                        });
+                                    });
+                                  }
                                 });
                               });
                             });
                           });
                         });
-                    });
                 }
               });
             }
@@ -167,7 +227,7 @@ exports.callback = function(req, res) {
       }
     });
   }
-};
+}; 
 
 exports.refresh_token = function(req, res) {
 
@@ -270,55 +330,56 @@ exports.importSpotify = function(req, res) {
 }
 
 exports.idUpdate = function(req, res) {
-  Knex('songs').then(function(m) {
-    // m.forEach(function(song) {
-    //   idUpdater(song);
-    // });
-    // console.log(m[0]);
-    idUpdater(0, m);
+  Knex('spotify_match').del()
+  .then(function() {
+    Knex('songs').then(function(m) {
+      idUpdater(0, m);
+    });
   });
   res.send(200, {});
 }
 
 function idUpdater(n, songs) {
     if(n < songs.length) {
-      // var name = 'I Follow You';
-      // var artist = "melody's echo chamber";
-      var match = 0;
       var name = songs[n].name;
       if(songs[n].artist != null)
         var artist = songs[n].artist.toLowerCase().split(' feat.')[0].split(' ft.')[0];
       else
         var artist = '';
-      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(name) + '&type=track';
+      var search = name + ' ' + artist;
+      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
+        var spotify_match = [];
         if(response.tracks) {
           response.tracks.items.forEach(function(item) {
             for(var i = 0; i < item.artists.length; i++) {
-              if(item.artists[i].name.toLowerCase() == artist && match == 0) {
-                match = item.id;
-                break;
+              if(item.artists[i].name.toLowerCase() == artist) {
+                spotify_match.push({song_id: songs[n].id, spotify_id: item.id});
               }
             }
           }); 
         }
-        Knex('songs').where('id',songs[n].id).update({spotify_id: match})
-        .then(function() {
-          console.log(n);
-          n = n+1;
-          idUpdater(n, songs);
-        });
+        console.log(spotify_match);
+        if(spotify_match.length > 0) {
+          Knex('spotify_match').insert(spotify_match)
+          .then(function() {
+            console.log('updated');
+          });
+        } 
+        console.log(n);
+        n = n+1;
+        idUpdater(n, songs);
       });
     }
 }
 
 exports.showList = function(req, res) {
-  console.log(req.body.list_id);
-  Knex('spotify_playlists').where('id',req.body.list_id)
+  console.log(req.body.playlist_id);
+  Knex('spotify_playlists').where('playlist_id',req.body.playlist_id)
   .then(function(list) {
     console.log(list[0].playlist_id);
-    Knex('songs').join('spotify_songs_playlists', 'songs.spotify_id', '=', 'spotify_songs_playlists.song_id').where('spotify_songs_playlists.spotify_id','=',req.session.spotifyID).andWhere('spotify_songs_playlists.playlist_id','=',list[0].playlist_id)
+    Knex('songs').join('spotify_songs_playlists', 'songs.id', '=', 'spotify_songs_playlists.song_id').where('spotify_songs_playlists.spotify_user_id','=',req.session.spotifyID).andWhere('spotify_songs_playlists.playlist_id','=',list[0].playlist_id)
     .then(function(m) {
       res.render('songs', {songs: m, session: req.session}, function(err, model) {
         res.send({html: model, m: m});
@@ -328,7 +389,8 @@ exports.showList = function(req, res) {
 }
 
 exports.matchSearch = function(req, res) {
-  var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(req.body.name) + '&type=track';
+  var search = req.body.name + ' ' + req.body.artist;
+  var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
         console.log(response.tracks.items[0].artists[0].name);
@@ -337,3 +399,19 @@ exports.matchSearch = function(req, res) {
         });
       });
 }
+
+exports.checkImport = function(req, res) {
+  console.log(imported);
+  if(imported == 1) {
+    Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
+    .then(function(lists) {
+      res.render('spotifyLists', {spotifyLists: lists}, function(err, html) {
+        console.log('success!!');
+        res.send(200,{html: html});
+      })
+    });
+  } else {
+    res.send(200,{html: 0});
+  }
+}
+

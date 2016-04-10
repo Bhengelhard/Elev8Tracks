@@ -216,7 +216,26 @@ $(document).ready(function() {
 		var params = homeSearchParams();
 		searchDB(params);
 	});
+
+	if($('.spotifyImporting').length > 0) {
+		checkImportStatus();
+	}
 });
+
+function checkImportStatus() {
+	console.log('checking');
+	$.get("/checkImport", function(res) {
+		if(!res.html) {
+			setTimeout(function() {
+				checkImportStatus();
+			},2000);
+		} else {
+			console.log(res.html);
+			$('.spotifyImporting').remove();
+			$('#spotifyControls').append(res.html);
+		}
+	});
+}
 
 function nav(e) {
 	$('.selected').removeClass('selected');
@@ -438,7 +457,6 @@ function moveSelector(e) {
 }
 
 function insertSong() {
-		console.log('whuuut');
 		var vid = $("#url").val().split("v=")[1];
 		if(vid.indexOf('&') > -1)
 			vid = vid.split('&')[0];
@@ -456,11 +474,18 @@ function insertSong() {
 			var spotify_id = 0;
 			var pop = 0;
 		}
+		var spotify_ids = [];
+		$('.spotifyMatchEntry').each(function() {
+			if($(this).attr('data-spotifyname') == name && $(this).attr('data-spotifyartist') == artist) {
+				spotify_ids.push($(this).attr('data-spotifyid'));
+			}
+		});
+		console.log(spotify_ids);
 		$.ajax({
 			url: "/storeSong",
 	        type: "post",
 	        dataType: "json",
-	        data: JSON.stringify({vid: vid, name: name, artist: artist, genre: genre, director: $('#inputDirector').val(), spotify_id: spotify_id, pop: pop}),
+	        data: JSON.stringify({vid: vid, name: name, artist: artist, genre: genre, director: $('#inputDirector').val(), spotify_id: spotify_id, spotify_ids: spotify_ids, pop: pop}),
 	        contentType: "application/json",
 	        cache: false,
 	        timeout: 5000,
@@ -1159,7 +1184,7 @@ function showSpotifyList(e) {
 		url: "/showSpotifyList",
 	    type: "post",
 	    dataType: "json",
-	    data: JSON.stringify({list_id: $(e.target).closest('.spotifyList').attr('data-id')}),
+	    data: JSON.stringify({playlist_id: $(e.target).closest('.spotifyList').attr('data-id')}),
 	    contentType: "application/json",
 	    cache: false,
         timeout: 5000,
@@ -1168,7 +1193,7 @@ function showSpotifyList(e) {
         	$('.selected').removeClass('selected');
     		$('#videoSearcherWrapper').addClass('selected');
         	var time = transition();
-        	videoEnter(res.html, time, 0);
+        	videoEnter(res.html, time, 0, {name: $(e.target).closest('.spotifyList').html(), class: 'spotifyListBanner'});
 	    }
 	});
 }
