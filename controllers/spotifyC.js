@@ -167,7 +167,6 @@ exports.callback = function(req, res) {
                                     });
                                   } else {
                                     console.log('____TRACKS___' + listTracks.length);
-                              console.log(listTracks);
                                     console.log('*****');
                                     var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
                                     console.log(sql);
