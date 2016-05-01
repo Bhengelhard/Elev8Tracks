@@ -189,33 +189,35 @@ exports.callback = function(req, res) {
                                   }
                                 }).catch(function() {
                                   console.log('__****');
-                                  var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
-                                  if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
-                                    Knex.raw(sql).then(function(textMatch) {
-                                        if(textMatch[0]) {
-                                          textMatch = textMatch[0];
+                                  listTracks.forEach(function(track) {
+                                    var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                    if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
+                                      Knex.raw(sql).then(function(textMatch) {
                                           if(textMatch[0]) {
                                             textMatch = textMatch[0];
+                                            if(textMatch[0]) {
+                                              textMatch = textMatch[0];
+                                            }
+                                          } else {
+                                            textMatch = textMatch.rows;
                                           }
-                                        } else {
-                                          textMatch = textMatch.rows;
-                                        }
-                                        if(typeof textMatch != 'undefined') {
-                                          track.insert.song_id = textMatch.id;
-                                        }
-                                        Knex('spotify_songs_playlists').insert(track.insert)
-                                        .then(function() {
-                                          req.session.imported = 1;
-                                          imported = 1;
-                                        });
-                                    }).catch(function() {
-                                        Knex('spotify_songs_playlists').insert(track.insert)
-                                        .then(function() {
-                                          req.session.imported = 1;
-                                          imported = 1;
-                                        });
-                                    });
-                                  }
+                                          if(typeof textMatch != 'undefined') {
+                                            track.insert.song_id = textMatch.id;
+                                          }
+                                          Knex('spotify_songs_playlists').insert(track.insert)
+                                          .then(function() {
+                                            req.session.imported = 1;
+                                            imported = 1;
+                                          });
+                                      }).catch(function() {
+                                          Knex('spotify_songs_playlists').insert(track.insert)
+                                          .then(function() {
+                                            req.session.imported = 1;
+                                            imported = 1;
+                                          });
+                                      });
+                                    }
+                                  });
                                 });
                               });
                             });
