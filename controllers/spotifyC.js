@@ -153,8 +153,10 @@ exports.callback = function(req, res) {
                                     });
                                   } else {
                                     var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
-                                    if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
+                                    if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 || track.artist.indexOf('"') < 0) {
                                       Knex.raw(sql).then(function(textMatch) {
+                                        console.log("__**__");
+                                        console.log(textMatch);
                                         if(textMatch[0]) {
                                           textMatch = textMatch[0];
                                           if(textMatch[0]) {
