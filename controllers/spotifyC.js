@@ -335,7 +335,7 @@ exports.importSpotify = function(req, res) {
 exports.idUpdate = function(req, res) {
   Knex('spotify_match').del()
   .then(function() {
-    Knex('songs').orderBy('song_id','asc').then(function(m) {
+    Knex('songs').orderBy('id','asc').then(function(m) {
       idUpdater(0, m);
     });
   });
