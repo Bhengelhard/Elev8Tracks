@@ -158,6 +158,9 @@ exports.callback = function(req, res) {
                                   }
                                   if(typeof match != 'undefined') {
                                     track.insert.song_id = match.song_id;
+                                  } else {
+                                    track.insert.song_id = 0;
+                                  }
                                     Knex('spotify_songs_playlists').insert(track.insert)
                                     .then(function() {
                                       req.session.imported = 1;
@@ -166,6 +169,7 @@ exports.callback = function(req, res) {
                                   } else {
                                     console.log('*****');
                                     var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                    console.log(sql);
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                         if(textMatch[0]) {
@@ -178,6 +182,8 @@ exports.callback = function(req, res) {
                                         }
                                         if(typeof textMatch != 'undefined') {
                                           track.insert.song_id = textMatch.id;
+                                        } else {
+                                          track.insert.song_id = 0;
                                         }
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
