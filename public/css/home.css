@@ -666,7 +666,7 @@ body {
 	opacity: 0;
 }
 
-.block img{
+.block>img{
 	display: inline-block;
 	position: absolute;
 	z-index: 104;
@@ -2432,4 +2432,32 @@ position: absolute;
 }
 .spotifyMatchEntry.active {
 	background-color: #ff4400;
+}
+
+.block .blur {
+	height: 100px;
+	  width: 100%;
+	  top: -40%;
+	  left: -35%;
+	  width:170%;
+	  z-index: 105;
+	  position: relative;
+	  overflow:hidden;
+	  filter: blur(10px);
+	  -webkit-filter: blur(10px);
+	  -moz-filter: blur(10px);
+	  -o-filter: blur(10px);
+	  -ms-filter: blur(10px);
+	  filter: url(#blur);
+	  filter: progid: DXImageTransform.Microsoft.Blur(PixelRadius='10');
+	  -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+	  overflow: hidden;
+}
+
+.blur:after {
+  content: '';
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, .2);
+  position: absolute;
 }

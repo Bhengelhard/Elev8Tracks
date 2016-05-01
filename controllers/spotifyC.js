@@ -122,7 +122,9 @@ exports.callback = function(req, res) {
               request.get(spotifyPlaylist, function(error, tracks, body) {
                 for(var j = 0; j < tracks.body.items.length; j++) {
                   m++;
+                  console.log('______ABC_____');
                   if(tracks.body.items[j].track.name == 'All Gold Everything') {
+                    console.log('______AGE_____');
                     console.log(tracks.body.items[j].track.id);
                     console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
                   }
@@ -159,7 +161,6 @@ exports.callback = function(req, res) {
                                     });
                                   } else {
                                     var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
-                                    console.log(sql);
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                         if(textMatch[0]) {
@@ -183,7 +184,7 @@ exports.callback = function(req, res) {
                                   }
                                 }).catch(function() {
                                   var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
-                                  if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
+                                  if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
                                     Knex.raw(sql).then(function(textMatch) {
                                         if(textMatch[0]) {
                                           textMatch = textMatch[0];
@@ -195,10 +196,6 @@ exports.callback = function(req, res) {
                                         }
                                         if(typeof textMatch != 'undefined') {
                                           track.insert.song_id = textMatch.id;
-                                          if(track.artist == 'Trinidad James') {
-                                            console.log(textMatch);
-                                            console.log(textMatch.id);
-                                          }
                                         }
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
