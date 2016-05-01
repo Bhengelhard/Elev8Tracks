@@ -187,7 +187,15 @@ exports.callback = function(req, res) {
                                           req.session.imported = 1;
                                           imported = 1;
                                         });
-                                      });
+                                      }).catch(function() {
+                                        console.log('***Catch**');
+                                        track.insert.song_id = 0;
+                                        Knex('spotify_songs_playlists').insert(track.insert)
+                                        .then(function() {
+                                          req.session.imported = 1;
+                                          imported = 1;
+                                        });
+                                      })
                                     }
                                   }
                                 }).catch(function() {
