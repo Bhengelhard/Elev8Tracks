@@ -120,11 +120,13 @@ exports.callback = function(req, res) {
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
+                console.log('Playlists');
+                console.log(tracks.body.items);
                 for(var j = 0; j < tracks.body.items.length; j++) {
                   m++;
-                  console.log('______ABC_____');
-                  if(tracks.body.items[j].track.name == 'All Gold Everything') {
+                  if(tracks.body.href.split('playlists/')[1].split('/tracks')[0] == '5ZQhFYEw1udMykUc4KAiB3') {
                     console.log('______AGE_____');
+                    console.log(tracks.body.items[j].track.name);
                     console.log(tracks.body.items[j].track.id);
                     console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
                   }
