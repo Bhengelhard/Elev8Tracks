@@ -113,8 +113,6 @@ exports.callback = function(req, res) {
           var listTracks = [];
           request.get(playlists, function(error, data, body) {
             for(var i = 0; i < data.body.items.length; i++) {
-              console.log('_______Playlists__________');
-              console.log(data.body.items);
               spotifyLists.push({name: data.body.items[i].name, spotify_id: req.session.spotifyID, playlist_id: data.body.items[i].id, track_ids: ''});
               var spotifyPlaylist = {
                 url: data.body.items[i].tracks.href,
@@ -122,22 +120,12 @@ exports.callback = function(req, res) {
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
-                console.log('_______Playlist Tracks__________');
-                console.log(tracks.body.items);
                 for(var j = 0; j < tracks.body.items.length; j++) {
                   m++;
-                  if(tracks.body.href.split('playlists/')[1].split('/tracks')[0] == '5ZQhFYEw1udMykUc4KAiB3') {
-                    console.log('______AGE_____');
-                    console.log(tracks.body.items[j].track.name);
-                    console.log(tracks.body.items[j].track.id);
-                    console.log(tracks.body.href.split('playlists/')[1].split('/tracks')[0]);
-                  }
                   listTracks.push({insert: {spotify_user_id: req.session.spotifyID, spotify_id: tracks.body.items[j].track.id, playlist_id: tracks.body.href.split('playlists/')[1].split('/tracks')[0], song_id: 0}, name: tracks.body.items[j].track.name, artist: tracks.body.items[j].track.artists[0].name});
                 }
                 n++;
                 if(n == data.body.items.length) {
-                        console.log(m);
-                        console.log(n);
                         if(!req.session.userid)
                           var userid = 0;
                         else 
@@ -180,6 +168,8 @@ exports.callback = function(req, res) {
                                         } else {
                                           track.insert.song_id = 0;
                                         }
+                                        console.log(textMatch);
+                                        console.log(track.insert);
                                         if(track.artist == 'Trinidad James') {
                                           console.log('__**__');
                                           console.log(textMatch);
@@ -205,9 +195,6 @@ exports.callback = function(req, res) {
                                   console.log('__****');
                                   listTracks.forEach(function(track) {
                                     var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
-                                    if(track.artist == 'Trinidad James') {
-                                      console.log(sql);
-                                    }
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                           if(textMatch[0]) {
@@ -423,12 +410,10 @@ exports.matchSearch = function(req, res) {
 }
 
 exports.checkImport = function(req, res) {
-  console.log(imported);
   if(imported == 1) {
     Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
     .then(function(lists) {
       res.render('spotifyLists', {spotifyLists: lists}, function(err, html) {
-        console.log('success!!');
         res.send(200,{html: html});
       })
     });
