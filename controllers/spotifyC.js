@@ -163,7 +163,7 @@ exports.callback = function(req, res) {
                                             textMatch = textMatch[0];
                                           }
                                         } else {
-                                          textMatch = textMatch.rows;
+                                          textMatch = textMatch.rows[0];
                                         }
                                         if(textMatch.length > 0) {
                                           console.log(textMatch);
@@ -174,11 +174,6 @@ exports.callback = function(req, res) {
                                           track.insert.song_id = 0;
                                         }
                                         console.log(track.insert);
-                                        // if(track.artist == 'Trinidad James') {
-                                        //   console.log('__**__');
-                                        //   console.log(textMatch);
-                                        //   console.log(track.insert);
-                                        // }
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
                                           req.session.imported = 1;
