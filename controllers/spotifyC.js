@@ -354,8 +354,6 @@ function idUpdater(n, songs) {
       var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
-        console.log("__________Response_____");
-        console.log(response);
         var spotify_match = [];
         if(response.tracks) {
           response.tracks.items.forEach(function(item) {
