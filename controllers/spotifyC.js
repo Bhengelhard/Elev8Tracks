@@ -164,10 +164,13 @@ exports.callback = function(req, res) {
                                       imported = 1;
                                     });
                                   } else {
-                                    console.log('____TRACKS___' + listTracks.length);
-                                    console.log('*****');
                                     var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
-                                    console.log(sql);
+                                    if(track.artist == 'Trinidad James') {
+                                      console.log(sql);
+                                    }
+                                    if(track.playlist_id == '05iAfDazCTW8dTCmSaiZJZ') {
+                                      console.log(sql);
+                                    }
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                         if(textMatch[0]) {
@@ -203,6 +206,9 @@ exports.callback = function(req, res) {
                                   console.log('__****');
                                   listTracks.forEach(function(track) {
                                     var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                    if(track.artist == 'Trinidad James') {
+                                      console.log(sql);
+                                    }
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                           if(textMatch[0]) {
