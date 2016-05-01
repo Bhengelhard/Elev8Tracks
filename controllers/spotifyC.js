@@ -158,9 +158,6 @@ exports.callback = function(req, res) {
                                   }
                                   if(typeof match != 'undefined') {
                                     track.insert.song_id = match.song_id;
-                                  } else {
-                                    track.insert.song_id = 0;
-                                  }
                                     Knex('spotify_songs_playlists').insert(track.insert)
                                     .then(function() {
                                       req.session.imported = 1;
