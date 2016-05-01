@@ -165,12 +165,6 @@ exports.callback = function(req, res) {
                                     });
                                   } else {
                                     var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
-                                    if(track.artist == 'Trinidad James') {
-                                      console.log(sql);
-                                    }
-                                    if(track.playlist_id == '05iAfDazCTW8dTCmSaiZJZ') {
-                                      console.log(sql);
-                                    }
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                         if(textMatch[0]) {
@@ -185,6 +179,11 @@ exports.callback = function(req, res) {
                                           track.insert.song_id = textMatch.id;
                                         } else {
                                           track.insert.song_id = 0;
+                                        }
+                                        if(track.artist == 'Trinidad James') {
+                                          console.log('__**__');
+                                          console.log(textMatch);
+                                          console.log(track.insert);
                                         }
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
