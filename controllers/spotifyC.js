@@ -113,6 +113,8 @@ exports.callback = function(req, res) {
           var listTracks = [];
           request.get(playlists, function(error, data, body) {
             for(var i = 0; i < data.body.items.length; i++) {
+              console.log('_______Playlists__________');
+              console.log(data.body.items);
               spotifyLists.push({name: data.body.items[i].name, spotify_id: req.session.spotifyID, playlist_id: data.body.items[i].id, track_ids: ''});
               var spotifyPlaylist = {
                 url: data.body.items[i].tracks.href,
@@ -120,7 +122,7 @@ exports.callback = function(req, res) {
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
-                console.log('_______Playlists__________');
+                console.log('_______Playlist Tracks__________');
                 console.log(tracks.body.items);
                 for(var j = 0; j < tracks.body.items.length; j++) {
                   m++;
