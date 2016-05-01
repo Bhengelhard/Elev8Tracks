@@ -120,7 +120,7 @@ exports.callback = function(req, res) {
                 json: true
               };
               request.get(spotifyPlaylist, function(error, tracks, body) {
-                console.log('Playlists');
+                console.log('_______Playlists__________');
                 console.log(tracks.body.items);
                 for(var j = 0; j < tracks.body.items.length; j++) {
                   m++;
