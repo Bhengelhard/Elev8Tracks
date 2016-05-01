@@ -148,6 +148,8 @@ exports.callback = function(req, res) {
                           .then(function() {
                             Knex('spotify_songs_playlists').where({spotify_user_id: req.session.spotifyID}).del()
                             .then(function() {
+                              console.log('____TRACKS___' + listTracks.length);
+                              console.log(listTracks);
                               listTracks.forEach(function(track) {
                                 Knex('spotify_match').where('spotify_id',track.insert.spotify_id)
                                 .then(function(match) {
@@ -165,7 +167,7 @@ exports.callback = function(req, res) {
                                     });
                                   } else {
                                     console.log('*****');
-                                    var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
+                                    var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
                                     console.log(sql);
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
