@@ -148,8 +148,6 @@ exports.callback = function(req, res) {
                           .then(function() {
                             Knex('spotify_songs_playlists').where({spotify_user_id: req.session.spotifyID}).del()
                             .then(function() {
-                              console.log('____TRACKS___' + listTracks.length);
-                              console.log(listTracks);
                               listTracks.forEach(function(track) {
                                 Knex('spotify_match').where('spotify_id',track.insert.spotify_id)
                                 .then(function(match) {
@@ -359,7 +357,7 @@ exports.idUpdate = function(req, res) {
 }
 
 function idUpdater(n, songs) {
-    if(n < 10) {
+    if(n < songs.length) {
       var name = songs[n].name;
       console.log(name);
       if(songs[n].artist != null)
