@@ -164,6 +164,7 @@ exports.callback = function(req, res) {
                                       imported = 1;
                                     });
                                   } else {
+                                    console.log('*****');
                                     var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') > 0 || track.artist.indexOf('"') > 0) {
                                       Knex.raw(sql).then(function(textMatch) {
@@ -187,6 +188,7 @@ exports.callback = function(req, res) {
                                     }
                                   }
                                 }).catch(function() {
+                                  console.log('__****');
                                   var sql = 'SELECT * FROM songs WHERE lower(name) = lower("' + track.name.split(" (")[0].split(' feat.')[0] + '") AND lower(artist) = lower("' + track.artist + '")';
                                   if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 && track.artist.indexOf('"') < 0) {
                                     Knex.raw(sql).then(function(textMatch) {
@@ -333,7 +335,7 @@ exports.importSpotify = function(req, res) {
 exports.idUpdate = function(req, res) {
   Knex('spotify_match').del()
   .then(function() {
-    Knex('songs').then(function(m) {
+    Knex('songs').orderBy('song_id','asc').then(function(m) {
       idUpdater(0, m);
     });
   });
@@ -341,8 +343,9 @@ exports.idUpdate = function(req, res) {
 }
 
 function idUpdater(n, songs) {
-    if(n < songs.length) {
+    if(n < 10) {
       var name = songs[n].name;
+      console.log(name);
       if(songs[n].artist != null)
         var artist = songs[n].artist.toLowerCase().split(' feat.')[0].split(' ft.')[0];
       else
@@ -351,6 +354,8 @@ function idUpdater(n, songs) {
       var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
+        console.log("__________Response_____");
+        console.log(response);
         var spotify_match = [];
         if(response.tracks) {
           response.tracks.items.forEach(function(item) {
