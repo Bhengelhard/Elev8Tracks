@@ -156,7 +156,7 @@ exports.callback = function(req, res) {
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 || track.artist.indexOf('"') < 0) {
                                       Knex.raw(sql).then(function(textMatch) {
                                         console.log("__**__");
-                                        console.log(textMatch);
+                                        console.log(sql);
                                         if(textMatch[0]) {
                                           textMatch = textMatch[0];
                                           if(textMatch[0]) {
@@ -165,18 +165,20 @@ exports.callback = function(req, res) {
                                         } else {
                                           textMatch = textMatch.rows;
                                         }
+                                        if(textMatch.length > 0) {
+                                          console.log(textMatch);
+                                        }
                                         if(typeof textMatch != 'undefined') {
                                           track.insert.song_id = textMatch.id;
                                         } else {
                                           track.insert.song_id = 0;
                                         }
-                                        console.log(textMatch);
                                         console.log(track.insert);
-                                        if(track.artist == 'Trinidad James') {
-                                          console.log('__**__');
-                                          console.log(textMatch);
-                                          console.log(track.insert);
-                                        }
+                                        // if(track.artist == 'Trinidad James') {
+                                        //   console.log('__**__');
+                                        //   console.log(textMatch);
+                                        //   console.log(track.insert);
+                                        // }
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
                                           req.session.imported = 1;
