@@ -24,6 +24,7 @@
 <% if(session.admin == 1) { %>
 <div id="songInput">
 <input type="text" id="url" placeholder="URL">
+<% if(spotify) { %>
 <div id="spotifyMatch">
   <input type="text" id="inputName" placeholder="Name">
   <br>
@@ -33,6 +34,11 @@
   <div id="spotifyMatchList">
   </div>
 </div>
+<% } else { %>
+<div id="spotifyAdminLogin" onclick="spotifyLogin()">
+Login to Spotify to match songs
+</div>
+<% } %>
 <input type="text" id="inputDirector" placeholder="Director">
 <select id="inputGenre1">
   <option value="  "></option>
@@ -59,5 +65,6 @@
 </div>
 <div id="adminGenreUpdate" onclick="genreUpdate()">Update Genres</div>
 <div id="adminSpotifyID" onclick="spotifyIDUpdate()">Update Spotify ID</div>
+<div id="adminSpotifySongData" onclick="spotifyDataUpdate()">Update Spotify Song Attributes</div>
 <% } %>
 <div class="spotifyData"></div>

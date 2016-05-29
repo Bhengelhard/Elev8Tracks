@@ -91,7 +91,7 @@ exports.myLists = function(req, res) {
 		.then(function(lists) {
 			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
-				res.render('myLists', {session: req.session, lists: lists, genres: genres}, function(err, m) {
+				res.render('myLists', {session: req.session, lists: lists, genres: genres, spotify: req.session.spotifyID}, function(err, m) {
 					res.send({html: m, ses: req.session});
 				});
 			});
@@ -122,7 +122,7 @@ exports.storeSong = function(req, res) {
 			var n = 0;
 			if(song.length != 0) {
 				console.log(song);
-				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, updated_at: time});
+				Knex('songs').where('vid', req.body.vid).update({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, updated_at: time, energy: req.body.energy, danceability: req.body.danceability, key: req.body.key, loudness: req.body.loudness, mode: req.body.mode, speechiness: req.body.speechiness, acousticness: req.body.acousticness, instrumentalness: req.body.instrumentalness, liveness: req.body.liveness, valence: req.body.valence, tempo: req.body.tempo});
 				Knex('songs_genres').where('song_id',song[0].id).del()
 				.then(function(song_genres) {
 					genres.forEach(function(genre) {
@@ -148,7 +148,7 @@ exports.storeSong = function(req, res) {
 					});
 				})
 			} else {
-				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, created_at: time})
+				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, created_at: time, energy: req.body.energy, danceability: req.body.danceability, key: req.body.key, loudness: req.body.loudness, mode: req.body.mode, speechiness: req.body.speechiness, acousticness: req.body.acousticness, instrumentalness: req.body.instrumentalness, liveness: req.body.liveness, valence: req.body.valence, tempo: req.body.tempo})
 				.then(function() {
 					Knex('popularity').insert({vid: req.body.vid})
 					.then(function() {
@@ -227,11 +227,31 @@ exports.showList = function(req, res) {
 	}
 }
 
+exports.artistSearch = function(req, res) {
+	Knex('songs').where('artist_id', req.body.artist_id)
+	.then(function(m) {
+		res.render('songs', {songs: m, session: req.session}, function(err, model) {
+			res.send({html: model, m: m});
+		});
+	})
+}
+
 exports.videoSearch = function(req, res) {
 
-	var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.created_at, songs.staff, pop_week, pop_trending, pop_1 FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	if(req.body.audio != 0) {
+		var audio = ', ' + req.body.audio[0];
+		var audioSearch = ' AND ' + req.body.audio[1];
+	} else {
+		var audio = '';
+		var audioSearch = '';
+	}
+
+	var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.artist_id, songs.created_at, songs.staff, pop_week, pop_trending, pop_1' + audio + ' FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
 
 	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
+
+	if(req.body.searchParams == 'artist')
+		sql += ' INNER JOIN artists ON songs.artist_id=artists.id ';
 
 	var filter = req.body.filterParams.split(',');
 	var wherestatement = ' WHERE';
@@ -249,6 +269,11 @@ exports.videoSearch = function(req, res) {
 			}
 		}
 	}
+
+	if(req.body.searchParams == 'artist')
+		sql += ' AND songs.artist_id='+req.body.sval;
+
+	sql += audioSearch;
 
 	if(req.body.genreParams > 0) {
 		if(req.body.genreParams < 200) {
@@ -293,7 +318,7 @@ exports.login = function(req, res) {
 			console.log(m1);
 			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
-				res.render('myLists', {session: req.session, lists: m1, genres: genres}, function(err, m) {
+				res.render('myLists', {session: req.session, lists: m1, genres: genres, spotify: req.session.spotifyID}, function(err, m) {
 					res.send({html: m, ses: req.session});
 				});
 			});
@@ -347,7 +372,7 @@ exports.signUp = function(req, res) {
 				req.session.admin = m[0].admin;
 				Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 				.then(function(genres) {
-					res.render('myLists', {session: req.session, lists: [], genres: genres}, function(err, m) {
+					res.render('myLists', {session: req.session, lists: [], genres: genres, spotify: req.session.spotifyID}, function(err, m) {
 						res.send({html: m, ses: req.session});
 					});
 				});

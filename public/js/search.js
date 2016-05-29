@@ -9,7 +9,7 @@ function searchDB(params) {
 		url: "/videoSearch",
         type: "post",
         dataType: "json",
-        data: JSON.stringify({sval: params[4], searchParams: params[0], filterParams: params[1], sortParams: params[2], genreParams: params[3], offset: params[5][0], limit:params[5][1]}),
+        data: JSON.stringify({sval: params[4], searchParams: params[0], filterParams: params[1], sortParams: params[2], genreParams: params[3], audio: params[5], offset: params[6][0], limit:params[6][1]}),
         contentType: "application/json",
         cache: false,
         timeout: 5000,
@@ -18,7 +18,7 @@ function searchDB(params) {
         	$('.selected').removeClass('selected');
     		$('#videoSearcherWrapper').addClass('selected');
         	var time = transition();
-        	videoEnter(res.html, time, params[5][0]);
+        	videoEnter(res.html, time, params[6][0]);
         }
     });
 }
@@ -83,6 +83,7 @@ function searchParams() {
 	params.push(genreParams);
 	var sval = $('#videoSearcher').val();
 	params.push(sval);
+	params.push(0);
 	var limits = [0,75];
 	params.push(limits);
 	console.log(params);
@@ -91,7 +92,7 @@ function searchParams() {
 
 function setParams(params) {
 	$('#videoSearcherWrapper .searched').removeClass('searched');
-	for(var i = 0; i < params.length-2; i++) {
+	for(var i = 0; i < params.length-3; i++) {
 		var p = params[i].split(',');
 		for(var j = 0; j < p.length; j++) {
 			$('.query').each(function() {
@@ -128,38 +129,38 @@ function buildSongs(m, name, lid) {
 	return $html;
 }
 
-function homeSearchParams() {
-	params = [];
-	var searchParams = '';
-	$('#searchDrop').find('.searched').each(function() {
-		searchParams += $(this).attr('data-search') + ',';
-	});
-	searchParams = searchParams.substring(0,searchParams.length-1);
-	params.push(searchParams);
-	var filterParams = '';
-	$('#filterDrop').find('.searched').each(function() {
-		filterParams += $(this).attr('data-search') + ',';
-	});
-	filterParams = filterParams.substring(0,filterParams.length-1);
-	params.push(filterParams);
-	var sortParams = '';
-	$('#sortDrop').find('.searched').each(function() {
-		sortParams += $(this).attr('data-search') + ',';
-	});
-	sortParams = sortParams.substring(0,sortParams.length-1);
-	params.push(sortParams);
-	var genreParams = '';
-	$('#genreDrop').find('.searched').each(function() {
-		genreParams += $(this).attr('data-search') + ',';
-	});
-	genreParams = genreParams.substring(0,genreParams.length-1);
-	params.push(genreParams);
-	var sval = $('#findVideosText').val();
-	params.push(sval);
-	var limits = [0,75];
-	params.push(limits);
-	return params;
-}
+// function homeSearchParams() {
+// 	params = [];
+// 	var searchParams = '';
+// 	$('#searchDrop').find('.searched').each(function() {
+// 		searchParams += $(this).attr('data-search') + ',';
+// 	});
+// 	searchParams = searchParams.substring(0,searchParams.length-1);
+// 	params.push(searchParams);
+// 	var filterParams = '';
+// 	$('#filterDrop').find('.searched').each(function() {
+// 		filterParams += $(this).attr('data-search') + ',';
+// 	});
+// 	filterParams = filterParams.substring(0,filterParams.length-1);
+// 	params.push(filterParams);
+// 	var sortParams = '';
+// 	$('#sortDrop').find('.searched').each(function() {
+// 		sortParams += $(this).attr('data-search') + ',';
+// 	});
+// 	sortParams = sortParams.substring(0,sortParams.length-1);
+// 	params.push(sortParams);
+// 	var genreParams = '';
+// 	$('#genreDrop').find('.searched').each(function() {
+// 		genreParams += $(this).attr('data-search') + ',';
+// 	});
+// 	genreParams = genreParams.substring(0,genreParams.length-1);
+// 	params.push(genreParams);
+// 	var sval = $('#findVideosText').val();
+// 	params.push(sval);
+// 	var limits = [0,75];
+// 	params.push(limits);
+// 	return params;
+// }
 
 function clearParams() {
 	$('#navbar .searched').removeClass('searched');

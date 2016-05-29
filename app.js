@@ -101,6 +101,7 @@ app.post('/updateListName', routes.updateListName);
 app.post('/unlikeSong', routes.unlikeSong);
 app.post('/staffAdd', routes.staffAdd);
 app.post('/staffRemove', routes.staffRemove);
+app.post('/artistSearch', routes.artistSearch);
 app.get('/genreUpdate', routes.newgenreUpdate);
 
 app.get('/blogInterviews', routes.blogInterviews);
@@ -119,6 +120,7 @@ app.get('/callback', spotify.callback);
 app.get('/refresh_token', spotify.refresh_token);
 app.get('/spotifyIDUpdate', spotify.idUpdate);
 app.get('/checkImport', spotify.checkImport);
+app.get('/spotifyDataUpdate', spotify.dataUpdate);
 app.post('/showSpotifyList', spotify.showList);
 app.post('/spotifyMatchSearch', spotify.matchSearch);
 

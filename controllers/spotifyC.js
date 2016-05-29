@@ -3,13 +3,13 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 //for local development
-// var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
-// var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
-// var redirect_uri = 'http://localhost:8888/callback';
+var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
+var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
+var redirect_uri = 'http://localhost:8888/callback';
 
-var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
-var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
-var redirect_uri = 'http://elevatemore.com/callback';
+// var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
+// var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
+// var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
 var imported = 1;
@@ -155,8 +155,6 @@ exports.callback = function(req, res) {
                                     var sql = "SELECT * FROM songs WHERE lower(name) = lower('" + track.name.split(" (")[0].split(' feat.')[0] + "') AND lower(artist) = lower('" + track.artist + "')";
                                     if(track.name.split(" (")[0].split(' feat.')[0].indexOf('"') < 0 || track.artist.indexOf('"') < 0) {
                                       Knex.raw(sql).then(function(textMatch) {
-                                        console.log("__**__");
-                                        console.log(sql);
                                         if(textMatch[0]) {
                                           textMatch = textMatch[0];
                                           if(textMatch[0]) {
@@ -165,22 +163,26 @@ exports.callback = function(req, res) {
                                         } else {
                                           textMatch = textMatch.rows[0];
                                         }
-                                        if(textMatch.length > 0) {
-                                          console.log(textMatch);
-                                        }
                                         if(typeof textMatch != 'undefined') {
                                           track.insert.song_id = textMatch.id;
                                         } else {
                                           track.insert.song_id = 0;
                                         }
-                                        console.log(track.insert);
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
-                                          req.session.imported = 1;
-                                          imported = 1;
+                                          if(track.insert.song_id != 0) {
+                                            var matchInsert = {song_id: track.insert.song_id, spotify_id: track.insert.spotify_id};
+                                            Knex('spotify_match').insert(matchInsert)
+                                            .then(function() {
+                                              req.session.imported = 1;
+                                              imported = 1;
+                                            });
+                                          } else {
+                                            req.session.imported = 1;
+                                            imported = 1;
+                                          }
                                         });
                                       }).catch(function() {
-                                        console.log('***Catch**');
                                         track.insert.song_id = 0;
                                         Knex('spotify_songs_playlists').insert(track.insert)
                                         .then(function() {
@@ -356,7 +358,7 @@ function idUpdater(n, songs) {
       else
         var artist = '';
       var search = name + ' ' + artist;
-      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track';
+      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&limit=40&type=track';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
         var spotify_match = [];
@@ -402,8 +404,45 @@ exports.matchSearch = function(req, res) {
   var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40';
       request.get(url, function(error, data, body) {
         var response = JSON.parse(body);
-        res.render('spotifyMatches', {songs: response.tracks.items}, function(err, model) {
-          res.send(200,{html: model});
+        var query = '';
+        // res.render('spotifyMatches', {songs: response.tracks.items}, function(err, model) {
+        //     res.send(200,{html: model});
+        //   });
+        var searchResults = [];
+        response.tracks.items.forEach(function(track) {
+          query += track.id + ',';
+          searchResults.push({id: track.id, name: track.name, artist: track.artists[0].name, pop: track.popularity})
+        });
+        query = query.slice(0, -1);
+        var audio_url = {
+          url: 'https://api.spotify.com/v1/audio-features/?ids=' + query,
+          headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+          json: true
+        };
+        var n = 0;
+        request.get(audio_url, function(error, data, body) {
+          console.log('Error: ' + error);
+          console.log('Data: ' + data.body.audio_features);
+          if(searchResults.length > 0 && data.body.audio_features) {
+            data.body.audio_features.forEach(function(audio) {
+                console.log(audio);
+                searchResults[n].energy = audio.energy;
+                searchResults[n].danceability = audio.danceability;
+                searchResults[n].key = audio.key;
+                searchResults[n].loudness = audio.loudness;
+                searchResults[n].mode = audio.mode;
+                searchResults[n].speechiness = audio.speechiness;
+                searchResults[n].acousticness = audio.acousticness;
+                searchResults[n].instrumentalness = audio.instrumentalness;
+                searchResults[n].liveness = audio.liveness;
+                searchResults[n].valence = audio.valence;
+                searchResults[n].tempo = audio.tempo;
+              n++;
+            });
+          }
+          res.render('spotifyMatches', {songs: searchResults}, function(err, model) {
+            res.send(200,{html: model});
+          });
         });
       });
 }
@@ -421,3 +460,59 @@ exports.checkImport = function(req, res) {
   }
 }
 
+exports.dataUpdate = function(req, res) {
+  var queries = [];
+  var ids = [];
+  var n = 0;
+  Knex('spotify_match').groupBy('song_id')
+  .then(function(matches) {
+    console.log(matches);
+    if(matches.rows) {
+      matches = matches.rows;
+    }
+    var querystring = '';
+    var idstring = [];
+    matches.forEach(function(match) {
+      if(n < 50) {
+        querystring += match.spotify_id + ',';
+        idstring.push(match.song_id);
+        n += 1;
+      } else {
+        queries.push(querystring.slice(0, -1));
+        ids.push(idstring.slice(0, -1));
+        querystring = '';
+        idstring = [];
+        n = 0;
+      }
+    });
+    for(var i = 0; i < queries.length; i++) {
+      n = 0;
+      var trackData = {
+        url: 'https://api.spotify.com/v1/audio-features/?ids=' + queries[i],
+        headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+        json: true
+      };
+      request.get(trackData, function(error, data, body) {
+        data.body.audio_features.forEach(function(track) {
+          Knex('spotify_match').where('spotify_id', track.id)
+          .then(function(m) {
+            if(m[0]) {
+              m = m[0];
+            } else {
+              m = m.rows;
+            }
+            console.log(m);
+            Knex('songs').where('id', m.song_id).update({energy: track.energy, danceability: track.danceability, key: track.key, loudness: track.loudness, mode: track.mode, speechiness: track.speechiness, acousticness: track.acousticness, instrumentalness: track.instrumentalness, liveness: track.liveness, valence: track.valence, tempo: track.tempo})
+            .then(function() {
+              console.log('done');
+            });
+          }).catch(function(e) {
+            console.log(e);
+          });
+          n++;
+        });
+      });
+    }
+    res.send(200);
+  });
+}

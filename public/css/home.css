@@ -762,7 +762,7 @@ body {
 #content {
 	position: fixed;
     top: 0px;
-    min-width: 1000px;
+    min-width: 1100px;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -1867,6 +1867,16 @@ position: absolute;
     line-height: normal;
     padding:10px;
 } 
+.listBanner {
+	position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #0080FF;
+    color: #fff;
+    font-size: 28px;
+    line-height: normal;
+    padding:10px;
+} 
 
 #vidPlayer {
 	position: fixed;
@@ -1880,6 +1890,11 @@ position: absolute;
     min-width:100%;
     min-height:100%;
     top: 0%;
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
 } #vidPlayerCover {
 	position: absolute;
     top: 0px;
@@ -1906,7 +1921,7 @@ position: absolute;
     transition: all .1s ease;
     position: relative;
     left: 0%;
-    font-size: 170px;
+    font-size: 160px;
     font-family: "Neou-Thin";
     height: 175px;
     line-height: 1;
@@ -2036,7 +2051,7 @@ position: absolute;
 }
 #homePage {
 	position: relative;
-    top: 50px;
+    top: 0px;
     left: 0%;
     width: 100%;
 }
@@ -2066,16 +2081,19 @@ position: absolute;
 }
 .blogEntry {
 	position: relative;
-    left: 50%;
-    margin: 10px 0px 10px -500px;
-    height: 350px;
-    width: 1000px;
+    margin: 20px 0px 10px 20px;
+    width: 500px;
     background-color: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+    display: inline-block;
 } .blogEntry .glyphicon {
-	position: relative;
+	position: absolute;
+	top: 100px;
     font-size: 50px;
     color: #fff;
-    left: 150px;
+    left: 50%;
+    margin-left: -20px;
     top: -200px;
     opacity: 0;
 } .blogEntry .imgWrapper:hover .glyphicon, .blogEntry img:hover .glyphicon {
@@ -2083,27 +2101,28 @@ position: absolute;
 } .blogEntry .imgWrapper:active .glyphicon, .blogEntry img:hover .glyphicon {
 	color: #ff4400;
 } .imgWrapper {
-	width: 350px;
-    height: 350px;
-    overflow: hidden;
+    width: 500px;
+    height: 275px;
+    overflow: scroll;
+    z-index: 99;
+    background-color: #345;
+    overflow:hidden;
 }
 .blogEntry img {
-	height:100%;
+	width: 100%;
+    margin-top: -10%;
 }
 .blogEntryBody {
-	position: absolute;
     display: inline-block;
-    top: 0%;
-    left: 350px;
-    right: 0px;
     padding-left: 20px;
-    height: 100%;
+    width: 100%;
     background-color: #fff;
+    z-index: 100;
 }.blogEntryName {
 	position: relative;
     display: inline-block;
     font-size: 40px;
-    padding: 10px;
+    padding: 10px 0px 0px 0px;
 } .blogEntryText {
  	position: relative;
     display: inline-block;
@@ -2115,7 +2134,19 @@ position: absolute;
     font-size: 20px;
     font-weight: 100;
     top: -5px;
-
+}
+.blogStream1 {
+    width: 600px;
+    position: relative;
+    display: inline-block;
+    padding: 0px 0px 0px 90px;
+    vertical-align: top;
+} .blogStream2 {
+    width: 600px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px 0px 0px 20px;
 }
 .controls-menu-up {
 	width: 20px;
@@ -2279,6 +2310,19 @@ position: absolute;
     margin-bottom: 50px;
 }
 
+#adminSpotifySongData {
+	position: absolute;
+	top: 1200px;
+    width: 250px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -125px;
+    margin-bottom: 50px;
+}
+
 #findVideosBestNewVideos, #findVideosStaffPicks {
 	color: #fff;
     font-size: 20px;
@@ -2306,18 +2350,6 @@ position: absolute;
     padding: 8px 0px 0px 20px;
 }
 
-.blogPicAdjust {
-	margin-left: -22%;
-}
-.blogEntry>.glyphicon {
-	position: absolute;
-    font-size: 50px;
-    color: #fff;
-    left: 150px;
-    top: 125px;
-    z-index: 101;
-    opacity: 0;
-}
 
 #spotifyControls {
 	position: fixed;
@@ -2391,7 +2423,7 @@ position: absolute;
 } #spotifyChange:hover {
 	background-color: #ABDEAB;
 }
-#spotifyMatch {
+#spotifyMatch, #spotifyAdminLogin {
 	position: absolute;
     top: 150px;
     left: 50%;
@@ -2399,6 +2431,12 @@ position: absolute;
     margin-left: -250px;
     padding: 20px;
     border: 1px solid #555;
+} #spotifyAdminLogin {
+	text-align: center;
+    color: #fff;
+    background-color: #6AE368;
+} #spotifyAdminLogin:hover {
+	background-color: #ABDEAB;
 }
 #spotifyMatchSearch {
 	position: relative;
@@ -2460,4 +2498,59 @@ position: absolute;
   width: 100%;
   background: rgba(255, 255, 255, .2);
   position: absolute;
+}
+.searchBlocks {
+	position: relative;
+    width: 1000px;
+    left: 50%;
+    margin-left: -500px;
+    height: 150px;
+}
+.searchBlock {
+	-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;
+	position: absolute;
+    display: inline-block;
+    width: 20%;
+    height: 150px;
+    color: #fff;
+    padding-top: 40px;
+    font-size: 16px;
+} .searchBlock .glyphicon {
+	font-size: 30px;
+	padding-bottom: 20px;
+} .searchBlock:nth-of-type(1) {
+	left: 0px;
+	top: 0px;
+}.searchBlock:nth-of-type(2) {
+	left: 20%;
+	top: 0px;
+} .searchBlock:nth-of-type(3) {
+	left: 40%;
+	top: 0px;
+}.searchBlock:nth-of-type(4) {
+	left: 60%;
+	top: 0px;
+} .searchBlock:nth-of-type(5) {
+	left: 80%;
+	top: 0px;
+}
+.searchBlock:hover {
+	background-color: rgba(255,255,255,.4);
+	padding-top: 20px;
+}
+.searchBlock:active {
+	background-color: #ff4400;
+}
+.siteTitle {
+	position: relative;
+    width: 100%;
+    height: 200px;
+    font-size: 140px;
+    padding-top: 30px;
+    color: #fff;
+    font-family: "Neou-Thin";
 }

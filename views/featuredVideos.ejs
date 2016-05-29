@@ -1,4 +1,7 @@
-<% blogs.forEach(function(blog) { %>
+<div class="blogStream1">
+<% var n = 0;
+blogs.forEach(function(blog) { 
+  if(n%2 == 0) { %>
   <div class="blogEntry">
     <div class="imgWrapper playSong" data-name="<%=blog.name%>" data-artist="<%=blog.artist%>" data-vid="<%=blog.vid%>">
       <img class="blogImg" src="/images/<%=blog.vid%>.jpg" onerror="replaceImg(event)"/>
@@ -6,9 +9,35 @@
     </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
+      <br>
       <div class="blogEntryArtist"><%= blog.artist %></div>
       <br>
       <div class="blogEntryText"><%= blog.text %></div>
     </div>
   </div>
-<% }); %>
+<% }
+n += 1;
+}); %>
+</div>
+
+<div class="blogStream2">
+<% var n = 0;
+blogs.forEach(function(blog) { 
+  if(n%2 == 1) { %>
+  <div class="blogEntry">
+    <div class="imgWrapper playSong" data-name="<%=blog.name%>" data-artist="<%=blog.artist%>" data-vid="<%=blog.vid%>">
+      <img class="blogImg" src="/images/<%=blog.vid%>.jpg" onerror="replaceImg(event)"/>
+      <span class="glyphicon glyphicon-play"></span>
+    </div>
+    <div class="blogEntryBody">
+      <div class="blogEntryName"><%= blog.name %></div>
+      <br>
+      <div class="blogEntryArtist"><%= blog.artist %></div>
+      <br>
+      <div class="blogEntryText"><%= blog.text %></div>
+    </div>
+  </div>
+<% }
+n += 1;
+}); %>
+</div>

@@ -6,9 +6,31 @@
   <div id="vidPlayerCover"></div>
 </div>
 <div id="finder">
-<div id="findVideos">E L E V A T E</div>
-<div id="findVideosBestNewVideos" onclick="thisWeeksVideos()">Week's Best Videos</div>
-<div id="findVideosStaffPicks" onclick="recentStaffPicks()">Recent Staff Picks</div>
+<div class="siteTitle">E L E V A T E</div>
+<div class="searchBlocks">
+<div class="searchBlock" onclick="thisWeeksVideos()">
+  <span class="glyphicon glyphicon-fire"></span><br>
+  <div class="searchBlockName">TRENDING</div>
+</div>
+<div class="searchBlock" onclick="recentStaffPicks()">
+  <span class="glyphicon glyphicon-user"></span><br>
+  <div class="searchBlockName">STAFF PICKS</div>
+</div>
+<div class="searchBlock" onclick="danceSearch()">
+  <span class="glyphicon glyphicon-music"></span><br>
+  <div class="searchBlockName">DANCE</div>
+</div>
+<div class="searchBlock" onclick="chillSearch()">
+  <span class="glyphicon glyphicon-sunglasses"></span><br>
+  <div class="searchBlockName">CHILL</div>
+</div>
+<div class="searchBlock" onclick="partySearch()">
+  <span class="glyphicon glyphicon-glass"></span><br>
+  <div class="searchBlockName">PARTY</div>
+</div>
+</div>
+<!--<div id="findVideosBestNewVideos" onclick="thisWeeksVideos()">Week's Best Videos</div>
+<div id="findVideosStaffPicks" onclick="recentStaffPicks()">Recent Staff Picks</div>-->
 <!--<input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>-->
 <!--<% if(spotify) { %>
   <div id="spotifyLogin">Change Spotify</div>
@@ -63,9 +85,9 @@
 <div id="blogMenuUpWrapper">
 <div id="blogMenuUp"></div>
 </div>-->
-<div id="sotdWrapper">
+<!--<div id="sotdWrapper">
   <div id="sotdTitle" class="playSong" data-name="Girl" data-artist="Mura Masa" data-vid="XEcKhamKyW4">Mura Masa: Girl</div>
-</div>
+</div>-->
 </div>
 <div id="blogsContent">
   <div id="blogsTitleContainer">
@@ -75,7 +97,7 @@
     </div>
   </div>
   <div id="blogsType">
-    <% include featuredVideos %>
+      <% include featuredVideos %>
   </div>
 </div>
 </div>
