@@ -493,7 +493,7 @@ exports.dataUpdate = function(req, res) {
       };
       request.get(trackData, function(error, data, body) {
         data.body.audio_features.forEach(function(track) {
-          console.log(track);
+          console.log(track.id);
           Knex('spotify_match').where('spotify_id', track.id)
           .then(function(m) {
             if(m[0]) {
