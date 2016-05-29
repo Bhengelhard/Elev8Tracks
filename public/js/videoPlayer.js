@@ -78,7 +78,7 @@ function playSong(e) {
 		}
 	//}
 	$('#player').addClass('active');
-	history.pushState({},'','/songs/trending/'+vid);
+	//history.pushState({},'','/songs/trending/'+vid);
 }
 
 //changes name, artist, etc. on player

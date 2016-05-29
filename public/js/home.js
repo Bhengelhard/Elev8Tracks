@@ -15,7 +15,6 @@ $(document).ready(function() {
 	if($('.block.inactive').length > 0) {
         videoEnter($('.block.inactive'), 0);
 	}
-
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
         spotifyLogin();
@@ -1283,4 +1282,9 @@ function artistSearch(artist_id, artist) {
         	videoEnter(res.html, time, 0, {name: artist, class: 'listBanner'});
 	    }
 	});
+}
+
+function playTitleVideo() {
+	console.log('loaded');
+	$('#vidPlayer').prepend('<video loop muted autoplay><source src="images/muramasa1.mp4" type="video/mp4"></video>');
 }
