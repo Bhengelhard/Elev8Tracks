@@ -464,7 +464,7 @@ exports.dataUpdate = function(req, res) {
   var queries = [];
   var ids = [];
   var n = 0;
-  Knex('spotify_match').groupBy('song_id')
+  Knex('spotify_match').groupByRaw('song_id WITH ROLLUP')
   .then(function(matches) {
     console.log(matches);
     if(matches.rows) {
