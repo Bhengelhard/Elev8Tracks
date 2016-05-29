@@ -1888,7 +1888,6 @@ position: absolute;
 	position: absolute;
     left: 0%;
     min-width:100%;
-    min-height:100%;
     top: 0%;
     -webkit-filter: blur(10px);
     -moz-filter: blur(10px);
