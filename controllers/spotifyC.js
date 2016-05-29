@@ -466,7 +466,6 @@ exports.dataUpdate = function(req, res) {
   var n = 0;
   Knex('spotify_match').groupBy('song_id','spotify_id')
   .then(function(matches) {
-    console.log(matches);
     if(matches.rows) {
       matches = matches.rows;
     }
@@ -494,6 +493,7 @@ exports.dataUpdate = function(req, res) {
       };
       request.get(trackData, function(error, data, body) {
         data.body.audio_features.forEach(function(track) {
+          console.log(track);
           Knex('spotify_match').where('spotify_id', track.id)
           .then(function(m) {
             if(m[0]) {
