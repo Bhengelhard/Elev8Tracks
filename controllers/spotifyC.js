@@ -494,22 +494,24 @@ exports.dataUpdate = function(req, res) {
       request.get(trackData, function(error, data, body) {
         data.body.audio_features.forEach(function(track) {
           console.log(track.id);
-          Knex('spotify_match').where('spotify_id', track.id)
-          .then(function(m) {
-            if(m[0]) {
-              m = m[0];
-            } else {
-              m = m.rows;
-            }
-            console.log(m);
-            Knex('songs').where('id', m.song_id).update({energy: track.energy, danceability: track.danceability, key: track.key, loudness: track.loudness, mode: track.mode, speechiness: track.speechiness, acousticness: track.acousticness, instrumentalness: track.instrumentalness, liveness: track.liveness, valence: track.valence, tempo: track.tempo})
-            .then(function() {
-              console.log('done');
+          if(track != null) {
+            Knex('spotify_match').where('spotify_id', track.id)
+            .then(function(m) {
+              if(m[0]) {
+                m = m[0];
+              } else {
+                m = m.rows;
+              }
+              console.log(m);
+              Knex('songs').where('id', m.song_id).update({energy: track.energy, danceability: track.danceability, key: track.key, loudness: track.loudness, mode: track.mode, speechiness: track.speechiness, acousticness: track.acousticness, instrumentalness: track.instrumentalness, liveness: track.liveness, valence: track.valence, tempo: track.tempo})
+              .then(function() {
+                console.log('done');
+              });
+            }).catch(function(e) {
+              console.log(e);
             });
-          }).catch(function(e) {
-            console.log(e);
-          });
-          n++;
+            n++;
+          }
         });
       });
     }
