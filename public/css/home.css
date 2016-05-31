@@ -762,7 +762,7 @@ body {
 #content {
 	position: fixed;
     top: 0px;
-    min-width: 1300px;
+    min-width: 1100px;
     left: 0px;
     right: 0px;
     bottom: 0px;
@@ -2160,17 +2160,18 @@ position: absolute;
     top: -5px;
 }
 .blogStream1 {
-    width: 600px;
+    width: 500px;
     position: relative;
     left: 50%;
-    margin-left: -650px;
+    margin-left: -600px;
     display: inline-block;
     padding: 0px 0px 0px 90px;
     vertical-align: top;
 } .blogStream2 {
-    width: 600px;
+    width: 500px;
     position: relative;
     left: 50%;
+    margin-left: 100px;
     display: inline-block;
     vertical-align: top;
     padding: 0px 0px 0px 20px;
