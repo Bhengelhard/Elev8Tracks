@@ -79,6 +79,7 @@ app.get('/songs', routes.songsViewTrending);
 app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
 
 app.get('/myLists/d', routes.myLists);
+app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
 
 app.post('/showList', routes.showList);
@@ -96,12 +97,13 @@ app.post('/deleteList', routes.deleteList);
 app.post('/deleteSong', routes.deleteSong);
 app.post('/updateListOrder', routes.updateListOrder);
 app.post('/updateListName', routes.updateListName);
-app.post('/likeSong', routes.likeSong);
+// app.post('/likeSong', routes.likeSong);
 app.post('/updateListName', routes.updateListName);
-app.post('/unlikeSong', routes.unlikeSong);
+// app.post('/unlikeSong', routes.unlikeSong);
 app.post('/staffAdd', routes.staffAdd);
 app.post('/staffRemove', routes.staffRemove);
 app.post('/artistSearch', routes.artistSearch);
+app.post('/playlistSongDelete', routes.playlistSongDelete);
 app.get('/genreUpdate', routes.newgenreUpdate);
 
 app.get('/blogInterviews', routes.blogInterviews);

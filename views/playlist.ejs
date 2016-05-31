@@ -1,8 +1,9 @@
 <div id="listBanner" data-lid="<%= playlist_id %>"><input type="text" id="listNameInput" value="<%= name %>"/></div>
   <% order.forEach(function(entry) { 
+    var n = 0;
     list.forEach(function(song) { %>
-      <% if(entry == song.song_id) { %>
-        <div id="s<%= song.song_id %>" class="block inactive playSong edit" data-name="<%= song.name %>" data-artist="<%=song.artist %>" data-vid="<%=song.vid %>">
+      <% if(entry == song.song_id && n==0) { %>
+        <div id="s<%= song.song_id %>" data-id="<%= song.song_id %>" class="block inactive playSong edit" data-name="<%= song.name %>" data-artist="<%=song.artist %>" data-vid="<%=song.vid %>">
           <img src="http://img.youtube.com/vi/<%=song.vid %>/0.jpg" class="list song"/>
           <div class="description">
             <span class="name"><%=song.name %></span>
@@ -13,12 +14,14 @@
               <% if(parseInt(song.staff) == 1) { %>
                 <div class="staffRemove" onclick="staffRemove(event)">-</div>
               <% } else { %>
-                <div class="staffAdd" onclick="staffAdd(event)">+</div>
+                <div class="staffAdd-List" onclick="staffAdd(event)">+</div>
               <% } %>
             <% } %>
+            <div class="playlistSongDelete" onmousedown="playlistSongDelete(event)">×</div>
           </div>
         </div>
-      <% }
+      <% n++;
+      }
     });
   }); %>
   <div id="pageSelection"><div id="pageNumber">1</div></div>

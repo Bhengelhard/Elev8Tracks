@@ -582,6 +582,7 @@ function accountSignUp(e) {
 			        cache: false,
 			        timeout: 5000,
 			        success:function(res) {
+			        	console.log(res.html);
 					       	$.get('/myLists', function(res) {
 							loginNav();
 							$('#content').html(res.html);
@@ -798,9 +799,6 @@ function handleDrop(e, block) {
 }
 
 function addToPlaylist(vid, song_ID, lid) {
-	console.log(vid);
-	console.log(song_ID);
-	console.log(lid);
 	$.ajax({
 		url: "/addToList",
 	    type: "post",
@@ -880,6 +878,7 @@ function promptListDelete(e) {
 				}, 200, function() {
 					$('.promptOverlay').remove();
 					block.remove();
+					loginNav();
 	        	});
 	        }
 	    });
@@ -1035,6 +1034,37 @@ function likeSong(vid) {
         success:function(res) {
         	console.log(res);
         }
+	});
+}
+
+function playerLikeSong(e) {
+	$(e.target).closest('#likeSong').find('span').toggleClass('glyphicon-heart-empty');
+	$(e.target).closest('#likeSong').find('span').toggleClass('glyphicon-heart');
+	$(e.target).closest('#likeSong').attr('onclick', 'playerUnlikeSong(event)');
+	var list_id = $('#userListsNav').find('.dItem').first().attr('data-lid');
+	var song_id = $('#player').attr('data-id');
+	var vid = $('#player').attr('data-vid');
+	addToPlaylist(vid, song_id, list_id);
+}
+
+function playerUnlikeSong(e) {
+	$(e.target).closest('#likeSong').find('span').toggleClass('glyphicon-heart-empty');
+	$(e.target).closest('#likeSong').find('span').toggleClass('glyphicon-heart');
+	$(e.target).closest('#likeSong').attr('onclick', 'playerLikeSong(event)');
+	var list_id = $('#myLists:first-child').attr('data-lid');
+	var song_id = $('#player').attr('data-id');
+	console.log(song_id);
+	$.ajax({
+		url: "/playlistSongDelete",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ song_id: $('#player').attr('data-id'), list_id: $('#myLists:first-child').attr('data-lid') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$(e.target).closest('.playSong').remove();
+	    }
 	});
 }
 
@@ -1273,7 +1303,7 @@ function artistSearch(artist_id, artist) {
 		url: "/artistSearch",
 	    type: "post",
 	    dataType: "json",
-	    data: JSON.stringify({ artist_id: artist_id }),
+	    data: JSON.stringify({ artist: artist }),
 	    contentType: "application/json",
 	    cache: false,
 	    timeout: 5000,
@@ -1287,4 +1317,21 @@ function artistSearch(artist_id, artist) {
 function playTitleVideo() {
 	console.log('loaded');
 	$('#vidPlayer').prepend('<video loop muted autoplay><source src="images/muramasa1.mp4" type="video/mp4"></video>');
+}
+
+function playlistSongDelete(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	$.ajax({
+		url: "/playlistSongDelete",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ song_id: $(e.target).closest('.playSong').attr('data-id'), list_id: $('#listBanner').attr('data-lid') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$(e.target).closest('.playSong').remove();
+	    }
+	});
 }

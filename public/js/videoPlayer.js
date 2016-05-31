@@ -89,6 +89,7 @@ function updateVidInfo(index) {
 	$('#player #songArtist').attr('data-artist-id', currentList[index][3]);
 	$('#player').attr('data-vid',currentList[index][2]);
 	$('#player').attr('data-vidno',index);
+	$('#player').attr('data-id',currentList[index][4]);
 	$('#player').attr('data-lid',$('.block').closest('#videos').attr('data-lid'));
 }
 
@@ -144,6 +145,7 @@ function buildCurrentList(vid) {
 		info.push($(this).attr('data-artist'));
 		info.push($(this).attr('data-vid'));
 		info.push($(this).attr('data-artist-id'));
+		info.push($(this).attr('data-id'));
 		currentList.push(info);
 		if(vid == $(this).attr('data-vid')) {
 			num = n;
