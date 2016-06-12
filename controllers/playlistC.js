@@ -211,7 +211,7 @@ exports.storeBlog = function(req, res) {
 exports.removeBlock = function(req, res) {
 	Knex('songs').where('id',req.body.song_id).limit(1).del()
 	.then(function() {
-		Knex('spotify_songs_playlists').where('id',req.body.song_id).del()
+		Knex('spotify_songs_playlists').where('song_id',req.body.song_id).del()
 		.then(function() {
 			Knex('spotify_match').where('song_id', req.body.song_id).del()
 			.then(function() {
