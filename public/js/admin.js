@@ -57,9 +57,21 @@ function removeBlock(e) {
 		$(e.target).attr('data-click',1);
 		$(e.target).addClass('active');
 	} else {
-		var data = $(e.target).closest('.block').attr('data-vid');
-		$.post('/removeBlock/'+data, function() {
-			$(e.target).closest('.block').remove();
-		})
+		var vid = $(e.target).closest('.block').attr('data-vid');
+		var song_id = $(e.target).closest('.block').attr('data-id');
+		console.log('removing');
+		$.ajax({
+				url: "/removeBlock",
+		        type: "post",
+		        dataType: "json",
+		        data: JSON.stringify({vid: vid, song_id: song_id}),
+		        contentType: "application/json",
+		        cache: false,
+		        timeout: 5000,
+		        success:function(res) {
+		        	console.log('removed');
+		        	$(e.target).closest('.block').remove();
+			    }
+			});
 	}
 }

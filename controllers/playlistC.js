@@ -209,9 +209,27 @@ exports.storeBlog = function(req, res) {
 }
 
 exports.removeBlock = function(req, res) {
-	Knex('songs').where('vid',req.params.data).limit(1).del()
+	Knex('songs').where('id',req.body.song_id).limit(1).del()
 	.then(function() {
-		res.send(200, {});
+		Knex('spotify_songs_playlists').where('id',req.body.song_id).del()
+		.then(function() {
+			Knex('spotify_match').where('song_id', req.body.song_id).del()
+			.then(function() {
+				Knex('songs_playlists').where('song_id', req.body.song_id).del()
+				.then(function() {
+					Knex('songs_genres').where('song_id', req.body.song_id).del()
+					.then(function() {
+						Knex('popularity').where('vid', req.body.vid).del()
+						.then(function() {
+							Knex('blogs').where('vid', req.body.vid).del()
+							.then(function() {
+								res.send(200, {});
+							});
+						});
+					});
+				});
+			});
+		});
 	});
 }
 

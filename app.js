@@ -86,7 +86,7 @@ app.post('/showList', routes.showList);
 app.post('/addToList', routes.addSong);
 app.post('/storeSong', routes.storeSong);
 app.post('/storeBlog', routes.storeBlog);
-app.post('/removeBlock/:data', routes.removeBlock);
+app.post('/removeBlock', routes.removeBlock);
 app.post('/videoSearch', routes.videoSearch);
 app.post('/textVideoSearch', routes.textVideoSearch);
 app.post('/login', routes.login);
