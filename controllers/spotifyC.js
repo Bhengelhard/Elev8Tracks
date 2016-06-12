@@ -3,13 +3,13 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 //for local development
-var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
-var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
-var redirect_uri = 'http://localhost:8888/callback';
+// var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
+// var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
+// var redirect_uri = 'http://localhost:8888/callback';
 
-// var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
-// var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
-// var redirect_uri = 'http://elevatemore.com/callback';
+var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
+var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
+var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
 var imported = 1;
