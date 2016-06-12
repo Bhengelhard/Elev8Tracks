@@ -569,30 +569,31 @@ function replaceImg(e) {
 function accountSignUp(e) {
 	if($(e.target).hasClass('active')) {
 			$('#accountSignUp').html('Create Account');
-			console.log($('#newAccountUser').val());
-			console.log($('#newAccountPassword').val());
-			console.log($('#newAccountEmail').val());
 			if($('#account #user').val() != '' && $('#account #password').val() != '' && $('#accout #email').val() != '') {
-				$.ajax({
-					url: "/signUp",
-			        type: "post",
-			        dataType: "json",
-			        data: JSON.stringify({user: $('#account #user').val(), password: $('#account #password').val(), email: $('#account #email').val()}),
-			        contentType: "application/json",
-			        cache: false,
-			        timeout: 5000,
-			        success:function(res) {
-			        	console.log(res.html);
-					       	$.get('/myLists', function(res) {
-							loginNav();
-							$('#content').html(res.html);
-						});
-				    },
-				    error: function(res) {
-				    	alert('User Already Exists.');
-				       	$('.signUp').val('');
-				    }
-				});
+				if($('#account #email').val().indexOf('@') == -1) {
+					alert('Please enter a valid email address');
+				} else {
+					$.ajax({
+						url: "/signUp",
+				        type: "post",
+				        dataType: "json",
+				        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()), password: encodeURIComponent($('#account #password').val()), email: encodeURIComponent($('#account #email').val())}),
+				        contentType: "application/json",
+				        cache: false,
+				        timeout: 5000,
+				        success:function(res) {
+				        	console.log(res.html);
+						       	$.get('/myLists', function(res) {
+								loginNav();
+								$('#content').html(res.html);
+							});
+					    },
+					    error: function(res) {
+					    	alert('User Already Exists.');
+					       	$('.signUp').val('');
+					    }
+					});
+				}
 			} else {
 				alert('All fields must be filled in.');
 			}
@@ -609,18 +610,16 @@ function accountLogin(e) {
 			url: "/login",
 	        type: "post",
 	        dataType: "json",
-	        data: JSON.stringify({user: $('#account #user').val(), password: $('#account #password').val()}),
+	        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()), password: encodeURIComponent($('#account #password').val())}),
 	        contentType: "application/json",
 	        cache: false,
 	        timeout: 5000,
 	        success:function(res) {
-	        	console.log(res);
 		       	var time = transition();
         		pageEnter(res.html, time);
         		loginNav();
 		    },
 		    error: function(res) {
-		    	console.log(res);
 		    	alert('User Not Found.');
 		       	$('#account #user').val('');
 		       	$('#account #password').val('');

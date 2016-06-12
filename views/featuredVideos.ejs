@@ -13,6 +13,12 @@ blogs.forEach(function(blog) {
       <div class="blogEntryArtist"><%= blog.artist %></div>
       <br>
       <div class="blogEntryText"><%= blog.text %></div>
+      <% if(blog.artist && blog.artistLink) { %>
+          <div class="artistLink" onclick="window.open('<%=blog.artistLink %>','artistpage');"><%=blog.artist %></div>
+      <% } %>
+      <% if(blog.director && blog.directorLink) { %>
+          <div class="directorLink" onclick="window.open('<%=blog.directorLink %>','directorpage');"><%=blog.director %></div>
+      <% } %>
     </div>
   </div>
 <% }
@@ -35,6 +41,12 @@ blogs.forEach(function(blog) {
       <div class="blogEntryArtist"><%= blog.artist %></div>
       <br>
       <div class="blogEntryText"><%= blog.text %></div>
+      <% if(blog.artist && blog.artistLink) { %>
+          <div class="artistLink" onclick="window.open('<%=blog.artistLink %>','artistpage');"><%=blog.artist %></div>
+      <% } %>
+      <% if(blog.director && blog.directorLink) { %>
+          <div class="directorLink" onclick="window.open('<%=blog.directorLink %>','directorpage');"><%=blog.director %></div>
+      <% } %>
     </div>
   </div>
 <% }

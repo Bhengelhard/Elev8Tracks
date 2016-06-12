@@ -334,8 +334,8 @@ exports.login = function(req, res) {
 	Knex('users').where({username: req.body.user, password: req.body.password})
 	.then(function(model) {
 		req.session.user = req.body.user;
-		req.session.userid = model[0].id;
-		req.session.admin = model[0].admin;
+		req.session.userid = decodeURIComponent(model[0].id);
+		req.session.admin = decodeURIComponent(model[0].admin);
 		Knex('playlists').where('userid', req.session.userid)
 		.then(function(m1) {
 			console.log(m1);
@@ -398,11 +398,10 @@ exports.signUp = function(req, res) {
 		              } else if(user.rows) {
 		                user = user.rows;
 		              }
-		            console.log(user);
-					req.session.user = req.body.user;
-					req.session.userid = user.id;
-					req.session.admin = user.admin;
-					Knex('playlists').insert({name:'Likes', userid: user.id})
+					req.session.user = decodeURIComponent(req.body.user);
+					req.session.userid = decodeURIComponent(user.id);
+					req.session.admin = decodeURIComponent(user.admin);
+					Knex('playlists').insert({name:'Likes', userid: decodeURIComponent(user.id)})
 					.then(function() {
 						res.send(200, {});
 					});

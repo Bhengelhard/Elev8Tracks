@@ -1032,13 +1032,15 @@ body {
 	font-style: italic;
 	padding-left: 10px;
 }
-.post .artistLink, .post .directorLink {
-	margin: 10px 0px 15px 15px;
-	color: #FF4400;
-	border: 1px solid #FF4400;
-	display: inline-block;
-	padding: 4px;
-} .post .artistLink:hover, .post .directorLink:hover {
+.artistLink, .directorLink {
+	border: 1px solid #ff4400;
+    width: 100px;
+    text-align: center;
+    color: #ff4400;
+    padding: 5px;
+    margin-bottom: 10px;
+    cursor: default;
+} .artistLink:hover,.directorLink:hover {
 	background-color: #FF4400;
 	color: #fff;
 }
