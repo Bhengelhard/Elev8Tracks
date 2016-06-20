@@ -94,7 +94,6 @@ app.get('/logout', routes.logout);
 app.post('/signUp', routes.signUp);
 app.post('/createList', routes.createList);
 app.post('/deleteList', routes.deleteList);
-app.post('/deleteSong', routes.deleteSong);
 app.post('/updateListOrder', routes.updateListOrder);
 app.post('/updateListName', routes.updateListName);
 // app.post('/likeSong', routes.likeSong);
@@ -109,6 +108,7 @@ app.get('/genreUpdate', routes.newgenreUpdate);
 app.get('/blogInterviews', routes.blogInterviews);
 app.get('/blogVideos', routes.blogVideos);
 app.post('/refreshGenres', routes.refreshGenres);
+app.post('/playlistsSearch', routes.playlistsSearch);
 
 var stateKey = 'spotify_auth_state';
 

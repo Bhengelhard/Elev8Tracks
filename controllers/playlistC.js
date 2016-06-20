@@ -11,13 +11,13 @@ exports.index = function(req, res) {
 						if(req.session.imported) {
 							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
 							.then(function(spotifyLists) {
-								res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0});
+								res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0, user_id: req.session.userid});
 							});
 						} else {
-							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0});
+							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0, user_id: req.session.userid});
 						}
 					} else {
-						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0});
+						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid});
 					}
 				});
 			});
@@ -235,14 +235,15 @@ exports.removeBlock = function(req, res) {
 
 exports.showList = function(req, res) {
 	if(req.session.user) {
-		Knex('songs').join('songs_playlists', 'songs_playlists.song_id','=','songs.id').where('songs_playlists.playlist_id','=',req.body.lid)
+		Knex('songs').join('songs_playlists', 'songs_playlists.song_id','=','songs.id').where('songs_playlists.playlist_id','=',req.body.lid).orderBy('songs_playlists.entry','asc')
 		.then(function(songs) {
 			console.log(songs);
 			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
-				console.log(list);
-				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, order: list[0].the_order.split(',')}, function(err, model) {
+				console.log(songs);
+				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back}, function(err, model) {
 					console.log(err);
+					console.log(model);
 					res.send({html: model});
 				});
 			});
@@ -356,21 +357,22 @@ exports.login = function(req, res) {
 exports.getLoginNav = function(req, res) {
 	Knex('playlists').where('userid',req.session.userid)
 	.then(function(lists) {
-		res.render('myListsNav', {user: req.session.user, lists: lists}, function(err, m) {
+		console.log(req.session.userid);
+		res.render('myListsNav', {user: req.session.user, lists: lists, user_id: req.session.userid}, function(err, m) {
 			res.send(200, {html: m});
 		});
 	});
 }
 
-exports.deleteSong = function(req, res) {
-	Knex('songs_playlists').where({song_id: req.body.song_ID, playlist_id: req.body.lid}).del()
-	.then(function() {
-		Knex('playlists').where('id', req.body.lid).update('the_order', req.body.order)
-		.then(function() {
-			res.send(200, {});
-		});
-	})
-}
+// exports.deleteSong = function(req, res) {
+// 	Knex('songs_playlists').where({song_id: req.body.song_ID, playlist_id: req.body.lid}).del()
+// 	.then(function() {
+// 		Knex('playlists').where('id', req.body.lid).update('the_order', req.body.order)
+// 		.then(function() {
+// 			res.send(200, {});
+// 		});
+// 	})
+// }
 
 exports.logout = function(req, res) {
 	req.session.destroy();
@@ -401,7 +403,7 @@ exports.signUp = function(req, res) {
 					req.session.user = decodeURIComponent(req.body.user);
 					req.session.userid = decodeURIComponent(user.id);
 					req.session.admin = decodeURIComponent(user.admin);
-					Knex('playlists').insert({name:'Likes', userid: decodeURIComponent(user.id)})
+					Knex('playlists').insert({name:'Likes', userid: decodeURIComponent(user.id), public: 0})
 					.then(function() {
 						res.send(200, {});
 					});
@@ -417,7 +419,7 @@ exports.createList = function(req, res) {
 		if(model.length != 0) {
 			res.send(400, {err: 'found model'});
 		} else {
-			Knex('playlists').insert({name: req.body.listName, userid: req.session.userid, the_order: ""}).returning('id')
+			Knex('playlists').insert({name: req.body.listName, userid: req.session.userid, the_order: "", public: req.session.admin}).returning('id')
 			.then(function(m) {
 				res.send(200,{m: {id: m[0], name: req.body.listName}});
 			});
@@ -452,9 +454,16 @@ exports.addSong = function(req, res) {
 		var order = (m[0].the_order.length == 0 ? req.body.song_ID : m[0].the_order + ',' + req.body.song_ID);
 		Knex('playlists').where('id',req.body.lid).update({thumbnail: thumbnail, the_order: order})
 		.then(function() {
-			Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid})
-			.then(function() {
-				res.send(200,{});
+			Knex('songs_playlists').where({playlist_id: req.body.lid}).orderBy('entry', 'desc')
+			.then(function(n) {
+				if(n.length > 0)
+					var orderNo = n[0].entry + 1;
+				else
+					var orderNo = 0;
+				Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid, entry: orderNo})
+				.then(function() {
+					res.send(200,{});
+				});
 			});
 		});
 	}).catch(function(e) {
@@ -463,15 +472,30 @@ exports.addSong = function(req, res) {
 }
 
 exports.updateListOrder = function(req, res) {
-	Knex('songs').where('id', req.body.order.split(',')[0])
+	Knex('songs').where('id', req.body.order[0])
 	.then(function(song) {
-		Knex('playlists').where('id', req.body.lid).update({thumbnail: song[0].vid, the_order: req.body.order})
+		Knex('playlists').where('id', req.body.lid).update({thumbnail: song[0].vid})
 		.then(function() {
+			Knex('songs_playlists').where({playlist_id: req.body.lid}).del()
+			.then(function() {
+				orderUpdate(req.body.lid, req.body.order, 0);
+			});
 			res.send(200, {});
 		});
 	}).catch(function(e) {
 		res.send(400,{});
 	});
+}
+
+function orderUpdate(playlist_id, order, n) {
+	console.log('ordering');
+	if(n < order.length) {
+		Knex('songs_playlists').where({ playlist_id: playlist_id, song_id: order[n]}).insert({ playlist_id: playlist_id, song_id: order[n], entry: n})
+		.then(function() {
+			n = n+1;
+			orderUpdate(playlist_id, order, n);
+		});
+	} 
 }
 
 // exports.likeSong = function(req, res) {
@@ -606,6 +630,16 @@ exports.playlistSongDelete = function(req, res) {
 					res.send(200,{});
 				});
 			});
+		});
+	});
+}
+
+exports.playlistsSearch = function(req, res) {
+	Knex('playlists').where('public', '1')
+	.then(function(lists) {
+		res.render('lists', {lists: lists}, function(err, m) {
+			console.log(m);
+			res.send(200,{html: m});
 		});
 	});
 }

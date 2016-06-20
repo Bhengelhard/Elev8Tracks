@@ -396,7 +396,7 @@ function showList(el) {
 		url: "/showList",
 	    type: "post",
 	    dataType: "json",
-	    data: JSON.stringify({ lid: lid }),
+	    data: JSON.stringify({ lid: lid, user_id: $(el).attr('data-user'), back: $('#myListsBanner').attr('data-type') }),
 	    contentType: "application/json",
 	    cache: false,
 	    timeout: 5000,
@@ -577,7 +577,7 @@ function accountSignUp(e) {
 						url: "/signUp",
 				        type: "post",
 				        dataType: "json",
-				        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()), password: encodeURIComponent($('#account #password').val()), email: encodeURIComponent($('#account #email').val())}),
+				        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()).replace, password: encodeURIComponent($('#account #password').val()), email: encodeURIComponent($('#account #email').val())}),
 				        contentType: "application/json",
 				        cache: false,
 				        timeout: 5000,
@@ -740,7 +740,6 @@ function blockClick(e) {
 			var count = 0;
 			var $e = e;
 			$('body').on("mousemove",function(e) {
-				console.log('fire move');
 				if(count == 0) {
 					var $drag = $('<div id="blockDragger"></div>');
 					var vid = block.attr('data-vid');
@@ -751,8 +750,10 @@ function blockClick(e) {
 						}
 					});
 					block.addClass('dragging');
-					block.append($('<div id="songOrder" style="display:none;"></div>'));
-					$('.block.edit').on('mouseenter', listOrderChange);
+					if($('#listBanner input').length > 0) {
+						block.append($('<div id="songOrder" style="display:none;"></div>'));
+						$('.block.edit').on('mouseenter', listOrderChange);
+					}
 		        	$drag.css('left',e.pageX).css('top',e.pageY).css('width','0px').css('height','0px').css('opacity','1').css('border-radius','10px');
 					$('body').append($drag);
 					$('#userSaveLists').css('left','0px');
@@ -770,7 +771,6 @@ function blockClick(e) {
 				$('#blockDragger').remove();
 				block.removeClass('dragging');
 				$('.block.edit').off('mouseenter', songOrder);
-				console.log('fire up');
 				handleDrop(e, block);
 				if($('#player').attr('data-lid') == block.closest('#videos').attr('data-lid')) {
 					var index = buildCurrentList($('#player').attr('data-vid'));
@@ -787,7 +787,7 @@ function blockClick(e) {
 }
 
 function handleDrop(e, block) {
-	if($(e.target).closest('.block').length > 0) {
+	if($('#listBanner input').length > 0 && $(e.target).closest('.block').length > 0) {
 		$('#songOrder').closest('.block').before(block);
 		updateListOrder();
 	} else if($(e.target).closest('.listNav').length > 0) {
@@ -862,7 +862,6 @@ function promptListDelete(e) {
 		});
 	});
 	$('#promptDeleteYes').click(function(event) {
-		console.log($(event.target).closest('.promptDelete').attr('data-listid'));
 		$.ajax({
 			url: "/deleteList",
 		    type: "post",
@@ -961,30 +960,14 @@ function deleteSong(e) {
 	e.stopPropagation();
 	e.preventDefault();
 	e.cancelBubble = true;
-	var song_ID = $(e.target).closest('.block').attr('id').replace('s','');
 	$(e.target).closest('.block').remove();
-	var lid = $('#listBanner').attr('data-lid');
-	console.log(lid);
-	var order = songOrderer();
-	unlikeSong(vid);
-	$.ajax({
-		url: "/deleteSong",
-	    type: "post",
-	    dataType: "json",
-        data: JSON.stringify({song_ID: song_ID, lid: lid, order: order}),
-        contentType: "application/json",
-        cache: false,
-        timeout: 5000,
-        success:function(res) {
-        	console.log('sucess');
-        }
-	});
+	updateListOrder(e);
 }
 
 function songOrderer() {
-	var order = '';
+	var order = [];
 	$('.block').each(function() {
-		order += $(this).attr('id').replace('s','') + ',';
+		order.push($(this).attr('data-id'));
 	});
 	return order;
 }
@@ -1232,9 +1215,20 @@ function chillSearch() {
 	var params = ["","","pop_week",0,"",['songs.loudness','songs.loudness<-12'],[0,75]];
 	searchDB(params);
 }
-function partySearch() {
-	var params = ["","","pop_week",0,"",['songs.energy','songs.energy>0.8'],[0,75]];
-	searchDB(params);
+function playlistsSearch() {
+	$.ajax({
+		url: "/playlistsSearch",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({sort: 'trending'}),
+	    contentType: "application/json",
+	    cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	var time = transition();
+        	pageEnter(res.html, time);
+	    }
+	});
 }
 
 function spotifyIDUpdate() {
@@ -1333,4 +1327,15 @@ function playlistSongDelete(e) {
 	    	$(e.target).closest('.playSong').remove();
 	    }
 	});
+}
+
+function playlistBack(e) {
+	if($(e.target).closest('#listBanner').attr('data-back') == 'all') {
+		playlistsSearch();
+	} else {
+		$.get('/myLists', function(res) {
+			var time = transition();
+        	pageEnter(res.html, time);
+		});
+	}
 }

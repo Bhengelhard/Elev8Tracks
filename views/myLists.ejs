@@ -1,7 +1,7 @@
 <div id="userLists">
-<div id="myListsBanner">Add, Edit, and Delete Video Lists</div>
+<div id="myListsBanner" data-type="user"><div id="myListsBannerTitle">Add, Edit, and Delete Video Lists</div></div>
 <% lists.forEach(function(list) { %>
-	  <div class="block list" data-lid="<%=list.id %>" data-order="<%=list.order %>" onclick="showList(this)">
+	  <div class="block list" data-lid="<%=list.id %>" data-user="<%= list.userid %>" data-order="<%=list.order %>" onclick="showList(this)">
 	  	<% if(list.thumbnail) { %>
 	    	<img src="http://img.youtube.com/vi/<%=list.thumbnail %>/0.jpg" class="list song"/>
 	    <% } %>

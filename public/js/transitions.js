@@ -1,5 +1,5 @@
 function transition() {
-	if($('#videos').length > 0) {
+	if($('.block').length > 0) {
 		var time = videoExit();
 	} else {
 		var time = pageExit();
