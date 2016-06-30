@@ -98,6 +98,8 @@ app.post('/updateListOrder', routes.updateListOrder);
 app.post('/updateListName', routes.updateListName);
 // app.post('/likeSong', routes.likeSong);
 app.post('/updateListName', routes.updateListName);
+app.post('/updateBlogText', routes.updateBlogText);
+app.post('/updateInterviewText', routes.updateInterviewText);
 // app.post('/unlikeSong', routes.unlikeSong);
 app.post('/staffAdd', routes.staffAdd);
 app.post('/staffRemove', routes.staffRemove);

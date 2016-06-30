@@ -2154,6 +2154,10 @@ position: absolute;
     display: inline-block;
     overflow: hidden;
     padding-right:50px;
+} textarea.blogEntryText {
+	margin-bottom: 10px;
+    height: 200px;
+    width: 100%;
 } .blogEntryArtist {
 	position: relative;
     display: inline-block;

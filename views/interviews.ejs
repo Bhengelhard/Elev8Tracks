@@ -2,14 +2,18 @@
 <% var n = 0;
 blogs.forEach(function(blog) { 
 	if(n%2 == 0) { %>
-  <div class="blogEntry">
+  <div class="blogEntry" data-id="<%= blog.id %>">
   	<div class="imgWrapper playSong" data-name="<%=blog.name%>" data-vid="<%=blog.vid%>">
     <img src="/images/<%= blog.image %>">
     <span class="glyphicon glyphicon-play"></span>
     </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
-      <div class="blogEntryText"><%= blog.text %></div>
+      <% if(admin) { %>
+        <textarea id="InterviewEntryTextInput" class="blogEntryText"><%= blog.text %></textarea>
+      <% } else { %>
+        <div class="blogEntryText"><%= blog.text %></div>
+      <% } %>
     </div>
   </div>
 <% }
@@ -21,14 +25,18 @@ n += 1;
 <% var n = 0;
 blogs.forEach(function(blog) { 
 	if(n%2 == 1) { %>
-  <div class="blogEntry">
+  <div class="blogEntry" data-id="<%= blog.id %>">
   	<div class="imgWrapper playSong" data-name="<%=blog.name%>" data-vid="<%=blog.vid%>">
     <img src="/images/<%= blog.image %>">
     <span class="glyphicon glyphicon-play"></span>
     </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
-      <div class="blogEntryText"><%= blog.text %></div>
+      <% if(admin) { %>
+        <textarea id="InterviewEntryTextInput" class="blogEntryText"><%= blog.text %></textarea>
+      <% } else { %>
+        <div class="blogEntryText"><%= blog.text %></div>
+      <% } %>
     </div>
   </div>
 <% }

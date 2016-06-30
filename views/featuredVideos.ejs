@@ -2,7 +2,7 @@
 <% var n = 0;
 blogs.forEach(function(blog) { 
   if(n%2 == 0) { %>
-  <div class="blogEntry">
+  <div class="blogEntry" data-id="<%= blog.id %>">
     <div class="imgWrapper playSong" data-name="<%=blog.name%>" data-artist="<%=blog.artist%>" data-vid="<%=blog.vid%>">
       <img class="blogImg" src="/images/<%=blog.vid%>.jpg" onerror="replaceImg(event)"/>
       <span class="glyphicon glyphicon-play"></span>
@@ -12,7 +12,11 @@ blogs.forEach(function(blog) {
       <br>
       <div class="blogEntryArtist"><%= blog.artist %></div>
       <br>
-      <div class="blogEntryText"><%= blog.text %></div>
+      <% if(admin) { %>
+        <textarea id="blogEntryTextInput" class="blogEntryText"><%= blog.text %></textarea>
+      <% } else { %>
+        <div class="blogEntryText"><%= blog.text %></div>
+      <% } %>
       <% if(blog.artist && blog.artistLink) { %>
           <div class="artistLink" onclick="window.open('<%=blog.artistLink %>','artistpage');"><%=blog.artist %></div>
       <% } %>
@@ -40,7 +44,11 @@ blogs.forEach(function(blog) {
       <br>
       <div class="blogEntryArtist"><%= blog.artist %></div>
       <br>
-      <div class="blogEntryText"><%= blog.text %></div>
+      <% if(admin) { %>
+        <textarea id="blogEntryTextInput" class="blogEntryText"><%= blog.text %></textarea>
+      <% } else { %>
+        <div class="blogEntryText"><%= blog.text %></div>
+      <% } %>
       <% if(blog.artist && blog.artistLink) { %>
           <div class="artistLink" onclick="window.open('<%=blog.artistLink %>','artistpage');"><%=blog.artist %></div>
       <% } %>

@@ -80,7 +80,7 @@ $(document).ready(function() {
     $('#controls #playerExpand').click(function() {
     	if($('#player').attr('data-vid') != '-')
     		$('#player').addClass('active');
-    	$('.playerControls').addClass('active');
+    	$('.playerOptions').addClass('active');
     	setTimeout(function() {
 			$('.playerOptions').removeClass('active');
 			$('#videoPlayer').css('pointer-events','none');
@@ -108,6 +108,16 @@ $(document).ready(function() {
     	var name = $('#listNameInput').val();
     	var lid = $('#listBanner').attr('data-lid');
     	updateListName(name, lid);
+    });
+    $('body').on('change', '#blogEntryTextInput', function(event) {
+    	var name = $('#blogEntryTextInput').val();
+    	var bid = $(event.target).closest('.blogEntry').attr('data-id');
+    	updateBlogText(name, bid);
+    });
+    $('body').on('change', '#InterviewEntryTextInput', function(event) {
+    	var name = $('#InterviewEntryTextInput').val();
+    	var bid = $(event.target).closest('.blogEntry').attr('data-id');
+    	updateInterviewText(name, bid);
     });
 
 
@@ -271,7 +281,7 @@ function nav(e) {
 		case 'blog':
 			$.get('/blogs/d', function(res) {
 				$('#genreBar .searched').removeClass('searched');
-				refreshGenres($('#genreBar .gItem:first'));
+				$('#genreBarSelect').css('opacity',0);
 				var time = transition();
         		pageEnter(res, time);
 			});
@@ -287,7 +297,7 @@ function nav(e) {
 				var time = transition();
 				$('#navbar').addClass('home');
 				$('#genreBar .searched').removeClass('searched');
-				refreshGenres($('#genreBar .gItem:first'));
+				$('#genreBarSelect').css('opacity',0);
         		pageEnter(res, time);
 			});
 			break;
@@ -989,6 +999,34 @@ function updateListName(name, lid) {
         timeout: 5000,
         success:function(res) {
         	loginNav();
+        }
+	});
+}
+
+function updateBlogText(name, bid) {
+	$.ajax({
+		url: "/updateBlogText",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({name: name, bid: bid}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        }
+	});
+}
+
+function updateInterviewText(name, bid) {
+	$.ajax({
+		url: "/updateInterviewText",
+	    type: "post",
+	    dataType: "json",
+        data: JSON.stringify({name: name, bid: bid}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
         }
 	});
 }

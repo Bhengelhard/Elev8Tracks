@@ -11,13 +11,13 @@ exports.index = function(req, res) {
 						if(req.session.imported) {
 							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
 							.then(function(spotifyLists) {
-								res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0, user_id: req.session.userid});
+								res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0, user_id: req.session.userid, admin: req.session.admin});
 							});
 						} else {
-							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0, user_id: req.session.userid});
+							res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0, user_id: req.session.userid, admin: req.session.admin});
 						}
 					} else {
-						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid});
+						res.render('index', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid, admin: req.session.admin});
 					}
 				});
 			});
@@ -443,6 +443,18 @@ exports.updateListName = function(req, res) {
 		res.send(200,{});
 	});
 }
+exports.updateBlogText = function(req, res) {
+	Knex('blogs').where('id',req.body.bid).update('text', req.body.name)
+	.then(function() {
+		res.send(200,{});
+	});
+}
+exports.updateInterviewText = function(req, res) {
+	Knex('interviews').where('id',req.body.bid).update('text', req.body.name)
+	.then(function() {
+		res.send(200,{});
+	});
+}
 
 exports.addSong = function(req, res) {
 	console.log(req.body.lid);
@@ -563,7 +575,7 @@ exports.staffRemove = function(req, res) {
 exports.blogVideos = function(req, res) {
 	Knex('blogs').orderBy('date', 'desc')
 	.then(function(blogs) {
-		res.render('featuredVideos', {blogs: blogs}, function(err, m) {
+		res.render('featuredVideos', {blogs: blogs, admin: req.session.admin}, function(err, m) {
 			res.send(200,{html: m});
 		});
 	});
@@ -572,7 +584,7 @@ exports.blogVideos = function(req, res) {
 exports.blogInterviews = function(req, res) {
 	Knex('interviews')
 	.then(function(blogs) {
-		res.render('interviews', {blogs: blogs}, function(err, m) {
+		res.render('interviews', {blogs: blogs, admin: req.session.admin}, function(err, m) {
 			res.send(200,{html: m});
 		});
 	});
