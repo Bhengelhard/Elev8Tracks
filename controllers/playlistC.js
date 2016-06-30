@@ -81,7 +81,7 @@ exports.blogs = function(req, res) {
 		.then(function(m) {
 			Knex('genres').distinct('genre_1','genre_1_id').select()
 			.then(function(genres) {
-				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres});
+				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres, admin: req.session.admin});
 			});
 		});
 }
