@@ -460,14 +460,15 @@ exports.addSong = function(req, res) {
 			.then(function(n) {
 				if(n[0]) {n=n[0]}
 				else if(n.rows) {n = n.rows}
-				console.log(n.id);
 				if(n.id)
 					var orderNo = n.entry + 1;
 				else
 					var orderNo = 0;
-
+				console.log('ADDING');
+				console.log(orderNo);
 				Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid, entry: orderNo})
 				.then(function() {
+					console.log('ADDED');
 					res.send(200,{});
 				});
 			});
