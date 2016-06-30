@@ -234,7 +234,6 @@ exports.removeBlock = function(req, res) {
 }
 
 exports.showList = function(req, res) {
-	if(req.session.user) {
 		Knex('songs').join('songs_playlists', 'songs_playlists.song_id','=','songs.id').where('songs_playlists.playlist_id','=',req.body.lid).orderBy('songs_playlists.entry','asc')
 		.then(function(songs) {
 			console.log(songs);
@@ -248,7 +247,6 @@ exports.showList = function(req, res) {
 				});
 			});
 		});
-	}
 }
 
 exports.artistSearch = function(req, res) {
