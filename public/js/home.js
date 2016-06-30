@@ -109,13 +109,13 @@ $(document).ready(function() {
     	var lid = $('#listBanner').attr('data-lid');
     	updateListName(name, lid);
     });
-    $('body').on('change', '#blogEntryTextInput', function(event) {
-    	var name = $('#blogEntryTextInput').val();
+    $('body').on('change', '.blogEntryTextInput', function(event) {
+    	var name = $(event.target).closest('.blogEntry').find('.blogEntryTextInput').val();
     	var bid = $(event.target).closest('.blogEntry').attr('data-id');
     	updateBlogText(name, bid);
     });
-    $('body').on('change', '#InterviewEntryTextInput', function(event) {
-    	var name = $('#InterviewEntryTextInput').val();
+    $('body').on('change', '.InterviewEntryTextInput', function(event) {
+    	var name = $(event.target).closest('.blogEntry').find('.InterviewEntryTextInput').val();
     	var bid = $(event.target).closest('.blogEntry').attr('data-id');
     	updateInterviewText(name, bid);
     });
