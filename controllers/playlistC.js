@@ -450,16 +450,22 @@ exports.addSong = function(req, res) {
 	console.log(req.body.song_ID);
 	Knex('playlists').where('id',req.body.lid)
 	.then(function(m) {
-		var thumbnail = (m[0].thumbnail.length == 0 ? req.body.vid : m[0].thumbnail);
-		var order = (m[0].the_order.length == 0 ? req.body.song_ID : m[0].the_order + ',' + req.body.song_ID);
+		if(m[0]) {m=m[0]}
+		else if(m.rows) {m = m.rows}
+		var thumbnail = (m.thumbnail.length == 0 ? req.body.vid : m.thumbnail);
+		var order = (m.the_order.length == 0 ? req.body.song_ID : m.the_order + ',' + req.body.song_ID);
 		Knex('playlists').where('id',req.body.lid).update({thumbnail: thumbnail, the_order: order})
 		.then(function() {
 			Knex('songs_playlists').where({playlist_id: req.body.lid}).orderBy('entry', 'desc')
 			.then(function(n) {
-				if(n.length > 0)
-					var orderNo = n[0].entry + 1;
+				if(n[0]) {n=n[0]}
+				else if(n.rows) {n = n.rows}
+				console.log(n.id);
+				if(n.id)
+					var orderNo = n.entry + 1;
 				else
 					var orderNo = 0;
+
 				Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid, entry: orderNo})
 				.then(function() {
 					res.send(200,{});
