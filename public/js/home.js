@@ -1137,12 +1137,12 @@ function searchCriteriaToggle(e) {
     		$(e.target).closest('.criteria').toggleClass('searched');
     		break;
     	case 'genreBar':
-    		if($(e.target).closest('.criteria').hasClass('searched')) {
-    			$(e.target).closest('.criteria').removeClass('searched');
-    			$(e.target).closest('.criteria').nextAll().removeClass('searched');
-    		} else {
-    			$(e.target).closest('.criteria').addClass('searched');
-    		}
+    		// if($(e.target).closest('.criteria').hasClass('searched')) {
+    		// 	$(e.target).closest('.criteria').removeClass('searched');
+    		// 	$(e.target).closest('.criteria').nextAll().removeClass('searched');
+    		// } else {
+    		// 	$(e.target).closest('.criteria').addClass('searched');
+    		// }
     		refreshGenres($(e.target).closest('.gItem'));
     		break;
     	default:
@@ -1159,32 +1159,47 @@ function searchCriteriaToggle(e) {
 }
 
 function refreshGenres($el) {
-	var genre = $('#genreBar').find('.searched:last');
-	if(genre.length) {
-		genre = genre.attr('data-search');
+	if(!$el.hasClass('searched')) {
+		var left = $el.offset().left;
+		var width = $el.width()+10;
+		$('#genreBarSelect').css('left',left);
+		$('#genreBarSelect').css('width',width);
+		$('#genreBarSelect').css('opacity', 1);
+		$('.gItem').removeClass('searched');
+		$el.addClass('searched');
 	} else {
-		genre = '*';
-	}
-	var count = $('#genreBar').find('.searched').length;
-	if($('.gItem:not(.searched)').length > 0) {
-		$.ajax({
-			url: "/refreshGenres",
-		    type: "post",
-		    dataType: "json",
-		    data: JSON.stringify({genre: genre, count: count}),
-		    contentType: "application/json",
-		    cache: false,
-	        timeout: 5000,
-	        success:function(res) {
-	        	$el.nextAll('.genreCarrot').remove();
-	        	$('.gItem:not(.searched)').remove();
-	        	$('#genreBar').append(res.html);
-	        	if($el.nextAll().length > 0) 
-	        		$('#genreBar').find('.searched:last').after('<div class="genreCarrot">></div>');
-		    }
-		});
+		$('#genreBarSelect').css('opacity',0);
+		$('.gItem').removeClass('searched');
 	}
 }
+
+// function refreshGenres($el) {
+// 	var genre = $('#genreBar').find('.searched:last');
+// 	if(genre.length) {
+// 		genre = genre.attr('data-search');
+// 	} else {
+// 		genre = '*';
+// 	}
+// 	var count = $('#genreBar').find('.searched').length;
+// 	if($('.gItem:not(.searched)').length > 0) {
+// 		$.ajax({
+// 			url: "/refreshGenres",
+// 		    type: "post",
+// 		    dataType: "json",
+// 		    data: JSON.stringify({genre: genre, count: count}),
+// 		    contentType: "application/json",
+// 		    cache: false,
+// 	        timeout: 5000,
+// 	        success:function(res) {
+// 	        	$el.nextAll('.genreCarrot').remove();
+// 	        	$('.gItem:not(.searched)').remove();
+// 	        	$('#genreBar').append(res.html);
+// 	        	if($el.nextAll().length > 0) 
+// 	        		$('#genreBar').find('.searched:last').after('<div class="genreCarrot">></div>');
+// 		    }
+// 		});
+// 	}
+// }
 
 function genreUpdate() {
 	console.log('in');
