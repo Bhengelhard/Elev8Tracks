@@ -453,9 +453,11 @@ exports.addSong = function(req, res) {
 		console.log('FOUND');
 		if(m[0]) {m=m[0]}
 		else if(m.rows) {m = m.rows}
-		console.log(m);
+		console.log(m.thumbnail.length);
 		var thumbnail = (m.thumbnail.length == 0 ? req.body.vid : m.thumbnail);
 		var order = (m.the_order.length == 0 ? req.body.song_ID : m.the_order + ',' + req.body.song_ID);
+		console.log(thumbnail);
+		console.log(the_order);
 		Knex('playlists').where('id',req.body.lid).update({thumbnail: thumbnail, the_order: order})
 		.then(function() {
 			Knex('songs_playlists').where({playlist_id: req.body.lid}).orderBy('entry', 'desc')
