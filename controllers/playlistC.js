@@ -240,7 +240,7 @@ exports.showList = function(req, res) {
 			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
 				console.log(songs);
-				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back}, function(err, model) {
+				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back, public: list[0].public}, function(err, model) {
 					console.log(err);
 					console.log(model);
 					res.send({html: model});
@@ -661,5 +661,18 @@ exports.playlistsSearch = function(req, res) {
 			console.log(m);
 			res.send(200,{html: m});
 		});
+	});
+}
+
+exports.makePublic = function(req, res) {
+	Knex('playlists').where('id', req.body.lid).update('public',1)
+	.then(function() {
+		res.send(200,{});
+	});
+}
+exports.makePrivate = function(req, res) {
+	Knex('playlists').where('id', req.body.lid).update('public',0)
+	.then(function() {
+		res.send(200,{});
 	});
 }

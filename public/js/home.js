@@ -1392,3 +1392,38 @@ function playlistBack(e) {
 		});
 	}
 }
+
+function makePublic() {
+	if($('#listPublic').hasClass('active')) {
+		$.ajax({
+			url: "/makePublic",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
+		    contentType: "application/json",
+		    cache: false,
+		    timeout: 5000,
+		    success:function(res) {
+		    	$('#listPublic').removeClass('active');
+		    	$('#listPrivate').addClass('active');
+		    }
+		});
+	}
+}
+function makePrivate() {
+	if($('#listPrivate').hasClass('active')) {
+		$.ajax({
+			url: "/makePrivate",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
+		    contentType: "application/json",
+		    cache: false,
+		    timeout: 5000,
+		    success:function(res) {
+		    	$('#listPublic').addClass('active');
+		    	$('#listPrivate').removeClass('active');
+		    }
+		});
+	}
+}

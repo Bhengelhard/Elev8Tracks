@@ -2169,7 +2169,7 @@ position: absolute;
     width: 500px;
     position: relative;
     left: 50%;
-    margin-left: -600px;
+    margin-left: -625px;
     display: inline-block;
     padding: 0px 0px 0px 90px;
     vertical-align: top;
@@ -2634,4 +2634,28 @@ position: absolute;
 	width: 50px;
 	background-color:#ff4400;
 	opacity: 0;
+}
+
+#listPublic {
+	position: absolute;
+    right: 200px;
+    color: #fff;
+    top: 15%;
+    padding: 8px;
+    line-height: 1;
+    font-size: 15px;
+    cursor: default;
+}
+#listPrivate {
+	position: absolute;
+    right: 50px;
+    color: #fff;
+    top: 15%;
+    padding: 8px;
+    line-height: 1;
+    font-size: 15px;
+    cursor: default;
+}
+#listPublic.active, #listPrivate.active {
+	border: 1px solid #fff;
 }
