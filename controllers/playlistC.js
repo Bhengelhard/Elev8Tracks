@@ -357,13 +357,10 @@ exports.login = function(req, res) {
 		req.session.admin = decodeURIComponent(model[0].admin);
 		Knex('playlists').where('userid', req.session.userid)
 		.then(function(m1) {
-			console.log(m1);
 			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
 				Knex('followed_playlists').where({user_id: req.session.userid}).join('playlists', 'playlists.id', '=', 'followed_playlists.playlist_id')
 				.then(function(followed) {
-					if(followed[0]) {followed=followed[0]}
-					else if(followed.rows) {followed = followed.rows}
 					res.render('myLists', {session: req.session, lists: m1, genres: genres, spotify: req.session.spotifyID, followed: followed}, function(err, m) {
 						res.send({html: m, ses: req.session});
 					});
@@ -413,6 +410,7 @@ exports.signUp = function(req, res) {
 		if(model.length != 0) {
 			res.send(400, {});
 		} else {
+			console.log(req.body.user);
 			Knex('users').insert({username: req.body.user, password: req.body.password, email: req.body.email})
 			.then(function(m) {
 				console.log(m);

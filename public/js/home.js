@@ -588,7 +588,7 @@ function accountSignUp(e) {
 						url: "/signUp",
 				        type: "post",
 				        dataType: "json",
-				        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()).replace, password: encodeURIComponent($('#account #password').val()), email: encodeURIComponent($('#account #email').val())}),
+				        data: JSON.stringify({user: encodeURIComponent($('#account #user').val()), password: encodeURIComponent($('#account #password').val()), email: encodeURIComponent($('#account #email').val())}),
 				        contentType: "application/json",
 				        cache: false,
 				        timeout: 5000,
@@ -616,6 +616,7 @@ function accountSignUp(e) {
 }
 
 function accountLogin(e) {
+	console.log('hello???');
 	if($(e.target).hasClass('active')) {
 		$.ajax({
 			url: "/login",
@@ -626,11 +627,13 @@ function accountLogin(e) {
 	        cache: false,
 	        timeout: 5000,
 	        success:function(res) {
+	        	console.log(res);
 		       	var time = transition();
         		pageEnter(res.html, time);
         		loginNav();
 		    },
 		    error: function(res) {
+		    	console.log('what???');
 		    	alert('User Not Found.');
 		       	$('#account #user').val('');
 		       	$('#account #password').val('');
