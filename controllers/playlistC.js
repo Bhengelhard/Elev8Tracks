@@ -405,15 +405,12 @@ exports.logout = function(req, res) {
 exports.signUp = function(req, res) {
 	Knex('users').where({username: req.body.user, password: req.body.password})
 	.then(function(model) {
-		console.log(model);
-		console.log(model.length);
 		if(model.length != 0) {
 			res.send(400, {});
 		} else {
 			console.log(req.body.user);
 			Knex('users').insert({username: req.body.user, password: req.body.password, email: req.body.email})
 			.then(function(m) {
-				console.log(m);
 				Knex('users').where({username: req.body.user, password: req.body.password})
 				.then(function(user) {
 					console.log('-----');

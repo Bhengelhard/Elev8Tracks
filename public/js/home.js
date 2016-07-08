@@ -616,7 +616,7 @@ function accountSignUp(e) {
 }
 
 function accountLogin(e) {
-	console.log('hello???');
+	console.log(encodeURIComponent($('#account #user').val()));
 	if($(e.target).hasClass('active')) {
 		$.ajax({
 			url: "/login",
