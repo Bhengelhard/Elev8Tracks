@@ -94,6 +94,10 @@ function pageEnter(res, time) {
 			console.log('test');
 			listEnter();
 		}
+		$('#content > div:not(.block)').animate({
+			opacity: '1',
+			left: 0
+		},200);
 	},time);
 }
 
