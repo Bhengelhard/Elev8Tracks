@@ -112,7 +112,8 @@ app.get('/blogVideos', routes.blogVideos);
 app.post('/refreshGenres', routes.refreshGenres);
 app.post('/playlistsSearch', routes.playlistsSearch);
 app.post('/makePublic', routes.makePublic);
-app.post('/makePrivate', routes.makePrivate);
+app.post('/followList', routes.followList);
+app.post('/unfollowList', routes.unfollowList);
 
 var stateKey = 'spotify_auth_state';
 

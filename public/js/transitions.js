@@ -64,6 +64,19 @@ function videoEnter(res, time, page, banner) {
 	},time);
 }
 
+function listEnter() {
+	var n = 0, t;
+	$('.block').css('display','block');
+	$('.block').each(function(event) {
+		t = (n%5)*50 + Math.floor(n/5)*50;
+		var $block = $(this);
+		setTimeout(function() {
+			$block.removeClass('inactive');
+		},t);
+		n++;
+	});
+}
+
 function pageExit() {
 	$('#content > div').animate({
 		opacity: '0',
@@ -77,9 +90,10 @@ function pageEnter(res, time) {
 		$('#content').empty();
 		$('#content').scrollTop(0);
 		$('#content').append(res);
-		$('#content > div').animate({
-			opacity: '1'
-		},200);
+		if($('.list').length > 0) {
+			console.log('test');
+			listEnter();
+		}
 	},time);
 }
 

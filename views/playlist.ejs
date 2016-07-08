@@ -3,14 +3,19 @@
 <% if(user_id == session.userid) { %>
   <input type="text" id="listNameInput" value="<%= name %>"/>
   <% if(public) { %>
-    <div id="listPublic" onclick="makePublic()">Make Public</div>
-    <div id="listPrivate" class="active" onclick="makePrivate()">Make Private</div>
+    <div id="listPublic" data-public="1" onclick="makePublic()">Make Private</div>
   <% } else { %>
-    <div id="listPublic" class="active" onclick="makePublic()">Make Public</div>
-    <div id="listPrivate" onclick="makePrivate()">Make Private</div>
+    <div id="listPublic" data-public="0" class="active" onclick="makePublic()">Make Public</div>
   <% } %>
 <% } else { %>
   <div id="myListsBannerTitle"><%= name %></div>
+  <% if(session.userid) { %>
+    <% if(follow) { %>
+      <div id="followList" data-follow="1" onclick="changeFollow()">Unfollow Playlist</div>
+    <% } else { %>
+      <div id="followList" data-follow="0" onclick="changeFollow()">Follow Playlist</div>
+    <% } %>
+  <% } %>
 <% } %>
 </div>
     <% list.forEach(function(song) { %>

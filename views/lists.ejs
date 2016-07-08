@@ -2,7 +2,7 @@
 <div id="myListsBanner" data-type="all">
 <div id="myListsBannerTitle" data-type="all">Most Popular Playlists</div></div>
 <% lists.forEach(function(list) { %>
-    <div class="block list" data-lid="<%=list.id %>" data-user="<%= list.userid %>"  onclick="showList(this)">
+    <div class="block inactive list" data-lid="<%=list.id %>" data-user="<%= list.userid %>"  onclick="showList(this)">
       <% if(list.thumbnail) { %>
         <img src="http://img.youtube.com/vi/<%=list.thumbnail %>/0.jpg" class="list song"/>
       <% } %>

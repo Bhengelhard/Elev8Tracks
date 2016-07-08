@@ -91,8 +91,11 @@ exports.myLists = function(req, res) {
 		.then(function(lists) {
 			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
-				res.render('myLists', {session: req.session, lists: lists, genres: genres, spotify: req.session.spotifyID}, function(err, m) {
-					res.send({html: m, ses: req.session});
+				Knex('followed_playlists').where({user_id: req.session.userid}).join('playlists', 'playlists.id', '=', 'followed_playlists.playlist_id')
+				.then(function(followed) {
+					res.render('myLists', {session: req.session, lists: lists, genres: genres, spotify: req.session.spotifyID, followed: followed}, function(err, m) {
+						res.send({html: m, ses: req.session});
+					});
 				});
 			});
 		}).catch(function(e) {
@@ -240,11 +243,28 @@ exports.showList = function(req, res) {
 			Knex('playlists').where('id', req.body.lid)
 			.then(function(list) {
 				console.log(songs);
-				res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back, public: list[0].public}, function(err, model) {
-					console.log(err);
-					console.log(model);
-					res.send({html: model});
-				});
+				if(req.session.userid) {
+					Knex('followed_playlists').where({user_id: req.session.userid, playlist_id: req.body.lid})
+					.then(function(n) {
+						if(n[0]) {n=n[0]}
+						else if(n.rows) {n = n.rows}
+						if(n.user_id)
+							var follow = 1;
+						else
+							var follow = 0;
+						res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back, public: list[0].public, follow: follow}, function(err, model) {
+							console.log(err);
+							console.log(model);
+							res.send({html: model});
+						});
+					});
+				} else {
+					res.render('playlist', {list: songs, name: list[0].name, playlist_id: req.body.lid, session: req.session, user_id: req.body.user_id, back: req.body.back, public: list[0].public, follow: 0}, function(err, model) {
+						console.log(err);
+						console.log(model);
+						res.send({html: model});
+					});
+				}
 			});
 		});
 }
@@ -340,8 +360,13 @@ exports.login = function(req, res) {
 			console.log(m1);
 			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
 			.then(function(genres) {
-				res.render('myLists', {session: req.session, lists: m1, genres: genres, spotify: req.session.spotifyID}, function(err, m) {
-					res.send({html: m, ses: req.session});
+				Knex('followed_playlists').where({user_id: req.session.userid}).join('playlists', 'playlists.id', '=', 'followed_playlists.playlist_id')
+				.then(function(followed) {
+					if(followed[0]) {followed=followed[0]}
+					else if(followed.rows) {followed = followed.rows}
+					res.render('myLists', {session: req.session, lists: m1, genres: genres, spotify: req.session.spotifyID, followed: followed}, function(err, m) {
+						res.send({html: m, ses: req.session});
+					});
 				});
 			});
 		}).catch(function(e) {
@@ -665,14 +690,34 @@ exports.playlistsSearch = function(req, res) {
 }
 
 exports.makePublic = function(req, res) {
-	Knex('playlists').where('id', req.body.lid).update('public',1)
+	Knex('playlists').where('id', req.body.lid).update('public',req.body.public)
 	.then(function() {
 		res.send(200,{});
 	});
 }
-exports.makePrivate = function(req, res) {
-	Knex('playlists').where('id', req.body.lid).update('public',0)
-	.then(function() {
-		res.send(200,{});
-	});
+
+exports.followList = function(req, res) {
+	if(req.session.user) {
+		Knex('followed_playlists').insert({user_id: req.session.userid, playlist_id: req.body.lid})
+		.then(function() {
+			res.send(200,{});
+		});
+	} else {
+		res.render('login', {}, function(err, m) {
+			res.send({html: m});
+		});
+	}
+}
+
+exports.unfollowList = function(req, res) {
+	if(req.session.user) {
+		Knex('followed_playlists').where({user_id: req.session.userid, playlist_id: req.body.lid}).del()
+		.then(function() {
+			res.send(200,{});
+		});
+	} else {
+		res.render('login', {}, function(err, m) {
+			res.send({html: m});
+		});
+	}
 }

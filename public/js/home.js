@@ -282,12 +282,14 @@ function nav(e) {
 			$.get('/blogs/d', function(res) {
 				$('#genreBar .searched').removeClass('searched');
 				$('#genreBarSelect').css('opacity',0);
+				clearSearch();
 				var time = transition();
         		pageEnter(res, time);
 			});
 			break;
 		case 'myLists':
 				$.get('/myLists/d', function(res) {
+					clearSearch();
 					var time = transition();
         			pageEnter(res.html, time);
 				});
@@ -296,8 +298,7 @@ function nav(e) {
 			$.get('/blogs/d', function(res) {
 				var time = transition();
 				$('#navbar').addClass('home');
-				$('#genreBar .searched').removeClass('searched');
-				$('#genreBarSelect').css('opacity',0);
+				clearSearch();
         		pageEnter(res, time);
 			});
 			break;
@@ -1394,36 +1395,83 @@ function playlistBack(e) {
 }
 
 function makePublic() {
-	if($('#listPublic').hasClass('active')) {
+	if($('#listPublic').attr('data-public') == 1) {
+		var public = 0;
+	} else {
+		var public = 1;
+	}
 		$.ajax({
 			url: "/makePublic",
 		    type: "post",
 		    dataType: "json",
-		    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
+		    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid'), public: public }),
 		    contentType: "application/json",
 		    cache: false,
 		    timeout: 5000,
 		    success:function(res) {
-		    	$('#listPublic').removeClass('active');
-		    	$('#listPrivate').addClass('active');
+		    	if($('#listPublic').attr('data-public') == 1) {
+		    		$('#listPublic').html('Make Public');
+		    		$('#listPublic').attr('data-public', 0); 
+		    	} else {
+		    		$('#listPublic').html('Make Private');
+		    		$('#listPublic').attr('data-public', 1); 
+		    	}
 		    }
 		});
+}
+
+function changeFollow() {
+	if($('#followList').attr('data-follow') == 0) {
+		followList();
+	} else {
+		unfollowList();
 	}
 }
-function makePrivate() {
-	if($('#listPrivate').hasClass('active')) {
-		$.ajax({
-			url: "/makePrivate",
-		    type: "post",
-		    dataType: "json",
-		    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
-		    contentType: "application/json",
-		    cache: false,
-		    timeout: 5000,
-		    success:function(res) {
-		    	$('#listPublic').addClass('active');
-		    	$('#listPrivate').removeClass('active');
-		    }
-		});
-	}
+
+function followList() {
+	$.ajax({
+		url: "/followList",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$('#followList').attr('data-follow',1);
+	    	$('#followList').html('Unfollow Playlist');
+	    	if(res.html) {
+	    		var time = transition();
+        		pageEnter(res.html, time);
+	    	}
+	    }
+	});
+}
+
+function unfollowList() {
+	$.ajax({
+		url: "/unfollowList",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ lid: $('#listBanner').attr('data-lid') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$('#followList').attr('data-follow',0);
+	    	$('#followList').html('Follow Playlist');
+	    	if(res.html) {
+	    		var time = transition();
+        		pageEnter(res.html, time);
+	    	}
+	    }
+	});
+}
+
+function clearSearch() {
+	$('#genreBarSelect').css('opacity',0);
+	$('#genreBar .searched').removeClass('searched');
+	console.log('testing');
+	$('#vfilter .searched').removeClass('searched');
+	$('#vfilter').removeClass('filtered');
 }
