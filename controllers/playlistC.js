@@ -418,11 +418,14 @@ exports.signUp = function(req, res) {
 				console.log(m);
 				Knex('users').where({username: req.body.user, password: req.body.password})
 				.then(function(user) {
+					console.log('-----');
+					console.log(user);
 					if(user[0]) {
 		                user = user[0];
 		              } else if(user.rows) {
 		                user = user.rows;
 		              }
+		            console.log(user);
 					req.session.user = decodeURIComponent(req.body.user);
 					req.session.userid = decodeURIComponent(user.id);
 					req.session.admin = decodeURIComponent(user.admin);
