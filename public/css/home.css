@@ -627,7 +627,7 @@ body {
 	line-height: 0px;
 }
 #videos {
-	line-height: 0px;
+	/*line-height: 0px;*/
 }
 .block {
 	box-sizing:border-box;
@@ -1635,8 +1635,9 @@ position: absolute;
     -o-transition: right .2s ease;
     transition: right .2s ease;
 	font-size: 7vw;
-  position: absolute;
-  padding: 30px 30px 15px 30px;
+	position: absolute;
+    padding: 40px 40px 0px 40px;
+    border-radius: 80px;
   top: 40%;
   right: -150px;
   color: #fff;
@@ -1654,7 +1655,8 @@ position: absolute;
     -o-transition: left .2s ease;
     transition: left .2s ease;
 	font-size: 7vw;
-	padding: 30px 30px 15px 30px;
+	padding: 40px 40px 0px 40px;
+    border-radius: 80px;
   position: absolute;
   top: 40%;
   left: -150px;
@@ -1702,6 +1704,10 @@ position: absolute;
 } #songArtist {
 	position: absolute;
     width: 200px;
+    padding: 5px 0px 0px 0px;
+    vertical-align: middle;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 15px;
     left: 100px;
     top: 215px;
     font-size: 20px;
@@ -1837,11 +1843,22 @@ position: absolute;
     top: 0%;
 } 
 
+#followedArtistsBanner {
+	position: relative;
+	display: inline-block;
+    width: 100%;
+    height: 50px;
+    background-color: #0066ff;
+    margin-top:100px;
+}
+
 #listBanner {
 	position: relative;
     width: 100%;
     height: 50px;
     background-color: #ff4400;
+} #listBanner.artist {
+	background-color: #0080FF;;
 } #listName {
 	position: absolute;
     left: 40px;
@@ -2177,9 +2194,17 @@ position: absolute;
 } .blogEntryArtist {
 	position: relative;
     display: inline-block;
-    font-size: 20px;
+    background-color: rgba(0,0,0,.1);
+    padding: 5px 16px 0px 16px;
+    border-radius: 15px;
+    font-size: 16px;
     font-weight: 100;
     top: -5px;
+    cursor: default;
+    color: #888;
+} .blogEntryArtist:hover {
+	background-color: rgba(0,0,0,.5);
+	color: #fff;
 }
 .blogStream1 {
     width: 500px;
@@ -2345,6 +2370,19 @@ position: absolute;
     color: #fff;
     left: 50%;
     margin-left: -75px;
+    margin-bottom: 50px;
+}
+
+#spotifyArtistMatch {
+	position: relative;
+	top: 400px;
+    width: 200px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -100px;
     margin-bottom: 50px;
 }
 
@@ -2656,12 +2694,15 @@ position: absolute;
 	position: absolute;
     right: 50px;
     color: #fff;
-    top: 15%;
-    padding: 8px;
+    top: 23%;
+    padding: 8px 12px 5px 12px;
+    background-color: rgba(0,0,0,.2);
+    border-radius: 15px;
     line-height: 1;
     font-size: 15px;
     cursor: default;
-    border: 1px solid #fff;
+} #listPublic:hover {
+	background-color: rgba(0,0,0,0.4);
 }
 #listPublic:active {
 	background-color: rgba(255,255,255,0.5);
@@ -2671,10 +2712,22 @@ position: absolute;
 	position: absolute;
     right: 50px;
     color: #fff;
-    top: 15%;
-    padding: 8px;
+    top: 23%;
+    padding: 8px 12px 5px 12px;
+    background-color: rgba(0,0,0,.2);
+    border-radius: 15px;
     line-height: 1;
     font-size: 15px;
     cursor: default;
-    border: 1px solid #fff;
+} #followList:hover {
+	background-color: rgba(0,0,0,0.4);
+}
+#followList:active {
+	background-color: rgba(255,255,255,0.5);
+}
+.siteSubtitle {
+	color: #fff;
+    font-size: 24px;
+    position: relative;
+    top: -10px;
 }

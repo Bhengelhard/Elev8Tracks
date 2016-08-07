@@ -481,6 +481,9 @@ function insertSong() {
 			var artist = $('.spotifyMatchEntry.active').attr('data-spotifyartist');
 			var spotify_id = $('.spotifyMatchEntry.active').attr('data-spotifyid');
 			var pop = $('.spotifyMatchEntry.active').attr('data-spotifypop');
+			var artist_id = $('.spotifyMatchEntry.active').attr('data-artist_id');
+			var album = $('.spotifyMatchEntry.active').attr('data-album');
+			var album_id = $('.spotifyMatchEntry.active').attr('data-album_id');
 			var energy = $('.spotifyMatchEntry.active').attr('data-energy');
 			var danceability = $('.spotifyMatchEntry.active').attr('data-danceability');
 			var key = $('.spotifyMatchEntry.active').attr('data-key');
@@ -497,6 +500,9 @@ function insertSong() {
 			var artist = $('#inputArtist').val();
 			var spotify_id = 0;
 			var pop = 0;
+			var artist_id = 0;
+			var album = '';
+			var album_id = 0;
 			var energy = 0;
 			var danceability = 0;
 			var key = 0;
@@ -520,7 +526,7 @@ function insertSong() {
 			url: "/storeSong",
 	        type: "post",
 	        dataType: "json",
-	        data: JSON.stringify({vid: vid, name: name, artist: artist, genre: genre, director: $('#inputDirector').val(), spotify_id: spotify_id, spotify_ids: spotify_ids, pop: pop, energy: energy, danceability: danceability, key: key, loudness: loudness, mode: mode, speechiness: speechiness, acousticness: acousticness, instrumentalness: instrumentalness, liveness: liveness, valence: valence, tempo: tempo}),
+	        data: JSON.stringify({vid: vid, name: name, artist: artist, genre: genre, director: $('#inputDirector').val(), spotify_id: spotify_id, spotify_ids: spotify_ids, pop: pop, artist_id: artist_id, album: album, album_id: album_id, energy: energy, danceability: danceability, key: key, loudness: loudness, mode: mode, speechiness: speechiness, acousticness: acousticness, instrumentalness: instrumentalness, liveness: liveness, valence: valence, tempo: tempo}),
 	        contentType: "application/json",
 	        cache: false,
 	        timeout: 5000,
@@ -1348,18 +1354,22 @@ function spotifyDataUpdate() {
 	});
 }
 
+function artistBlockClick(e) {
+	artistSearch($(e.target).closest('.block').attr('data-artist_id'), $(e.target).closest('.block').find('.name').html());
+}
+
 function artistSearch(artist_id, artist) {
 	$.ajax({
 		url: "/artistSearch",
 	    type: "post",
 	    dataType: "json",
-	    data: JSON.stringify({ artist: artist }),
+	    data: JSON.stringify({ artist: artist, artist_id: artist_id }),
 	    contentType: "application/json",
 	    cache: false,
 	    timeout: 5000,
 	    success:function(res) {
-			var time = transition();
-        	videoEnter(res.html, time, 0, {name: artist, class: 'listBanner'});
+	    	var time = transition();
+			videoEnter(res.html, time);
 	    }
 	});
 }
@@ -1430,6 +1440,13 @@ function changeFollow() {
 		unfollowList();
 	}
 }
+function changeArtistFollow() {
+	if($('#followList').attr('data-follow') == 0) {
+		followArtist();
+	} else {
+		unfollowArtist();
+	}
+}
 
 function followList() {
 	$.ajax({
@@ -1471,10 +1488,59 @@ function unfollowList() {
 	});
 }
 
+function followArtist() {
+	$.ajax({
+		url: "/followArtist",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ artist_id: $('#listBanner').attr('data-artist_id') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$('#followList').attr('data-follow',1);
+	    	$('#followList').html('Unfollow Artist');
+	    	if(res.html) {
+	    		var time = transition();
+        		pageEnter(res.html, time);
+	    	}
+	    }
+	});
+}
+
+function unfollowArtist() {
+	$.ajax({
+		url: "/unfollowArtist",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ artist_id: $('#listBanner').attr('data-artist_id') }),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	$('#followList').attr('data-follow',0);
+	    	$('#followList').html('Follow Artist');
+	    	if(res.html) {
+	    		var time = transition();
+        		pageEnter(res.html, time);
+	    	}
+	    }
+	});
+}
+
 function clearSearch() {
 	$('#genreBarSelect').css('opacity',0);
 	$('#genreBar .searched').removeClass('searched');
 	console.log('testing');
 	$('#vfilter .searched').removeClass('searched');
 	$('#vfilter').removeClass('filtered');
+}
+function blogEntryArtistSearch(e) {
+	artistSearch($(e.target).closest('.blogEntryArtist').attr('data-artist-id'), $(e.target).closest('.blogEntryArtist').html());
+}
+
+function spotifyArtistMatch() {
+	$.get('/spotifyArtistMatch', function(res) {
+		console.log(res);
+	});
 }

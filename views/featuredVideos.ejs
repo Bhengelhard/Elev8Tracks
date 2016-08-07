@@ -10,7 +10,7 @@ blogs.forEach(function(blog) {
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
       <br>
-      <div class="blogEntryArtist"><%= blog.artist %></div>
+      <div class="blogEntryArtist" data-artist-id="<%= blog.artist_id %>" onclick="blogEntryArtistSearch(event)"><%= blog.artist %></div>
       <br>
       <% if(admin) { %>
         <textarea class="blogEntryText blogEntryTextInput"><%= blog.text %></textarea>
@@ -42,7 +42,7 @@ blogs.forEach(function(blog) {
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
       <br>
-      <div class="blogEntryArtist"><%= blog.artist %></div>
+      <div class="blogEntryArtist" data-artist-id="<%= blog.artist_id %>" onclick="blogEntryArtistSearch(event)"><%= blog.artist %></div>
       <br>
       <% if(admin) { %>
         <textarea class="blogEntryText blogEntryTextInput"><%= blog.text %></textarea>

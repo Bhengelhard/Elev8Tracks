@@ -411,7 +411,7 @@ exports.matchSearch = function(req, res) {
         var searchResults = [];
         response.tracks.items.forEach(function(track) {
           query += track.id + ',';
-          searchResults.push({id: track.id, name: track.name, artist: track.artists[0].name, pop: track.popularity})
+          searchResults.push({id: track.id, name: track.name, artist: track.artists[0].name, artist_id: track.artists[0].id, album: track.album.name, album_id: track.album.id, pop: track.popularity})
         });
         query = query.slice(0, -1);
         var audio_url = {
@@ -515,5 +515,39 @@ exports.dataUpdate = function(req, res) {
       });
     }
     res.send(200);
+  });
+}
+
+exports.artistMatch = function() {
+  Knex('artists')
+  .then(function(m) {
+    if(m.rows) {
+      m = m.rows;
+    } 
+    m.forEach(function(artist) {
+      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist.name) + '&limit=10&type=artist';
+      Knex('songs').where('artist_id', artist.id).limit(1)
+        .then(function(song) {
+          if(song[0] && song[0].vid) {
+            Knex('artists').where('id', artist.id).update({thumbnail: song[0].vid})
+            .then(function() {
+            });
+          }
+        });
+      request.get(url, function(error, data, body) {
+        var response = JSON.parse(body);
+        if(response.artists && response.artists.items && response.artists.items[0]) {
+              Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
+              .then(function() {
+
+              });
+              // var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
+              // request.get(url, function(error, data, body) {
+              //   var response = JSON.parse(body);
+
+              // });
+        }
+      });
+    });
   });
 }

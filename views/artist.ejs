@@ -1,0 +1,29 @@
+<div id="listBanner" class="artist" data-artist_id="<%= artist_id %>">
+  <div id="myListsBannerTitle"><%= name %></div>
+  <% if(session.userid) { %>
+    <% if(follow) { %>
+      <div id="followList" data-follow="1" onclick="changeArtistFollow()">Unfollow Artist</div>
+    <% } else { %>
+      <div id="followList" data-follow="0" onclick="changeArtistFollow()">Follow Artist</div>
+    <% } %>
+  <% } %>
+</div>
+    <% list.forEach(function(song) { %>
+        <div id="s<%= song.song_id %>" data-id="<%= song.song_id %>" class="block inactive playSong edit" data-name="<%= song.name %>" data-artist="<%=song.artist %>" data-vid="<%=song.vid %>">
+          <img src="http://img.youtube.com/vi/<%=song.vid %>/0.jpg" class="list song"/>
+          <div class="description">
+            <span class="name"><%=song.name %></span>
+            <span class="artist"><%=song.artist %></span>
+            <span class="glyphicon glyphicon-play"></span>
+            <% if(session.admin == 1) { %>
+              <div class="remove" data-click="0" onclick="removeBlock(event)">-</div>
+              <% if(parseInt(song.staff) == 1) { %>
+                <div class="staffRemove" onclick="staffRemove(event)">-</div>
+              <% } else { %>
+                <div class="staffAdd-List" onclick="staffAdd(event)">+</div>
+              <% } %>
+            <% } %>
+          </div>
+        </div>
+    <% }); %>
+  <div id="pageSelection"><div id="pageNumber">1</div></div>

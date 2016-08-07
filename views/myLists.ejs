@@ -29,6 +29,19 @@
     </div>
   <% }); %>
 </div>
+<div id="followedArtists">
+<div id="followedArtistsBanner"><div class="listNames">Followed Artists</div></div>
+  <% followed_artists.forEach(function(artist) { %>
+    <div class="block inactive artist" data-artist_id="<%=artist.id %>" data-user="<%= artist.user_id %>" onclick="artistBlockClick(event)">
+      <% if(artist.thumbnail) { %>
+        <img src="http://img.youtube.com/vi/<%=artist.thumbnail %>/0.jpg" class="artist song"/>
+      <% } %>
+      <div class="description">
+        <span class="name"><%=artist.name %></span>
+      </div>
+    </div>
+  <% }); %>
+</div>
 
 <% if(session.admin == 1) { %>
 <div id="songInput">
@@ -75,5 +88,6 @@ Login to Spotify to match songs
 <div id="adminGenreUpdate" onclick="genreUpdate()">Update Genres</div>
 <div id="adminSpotifyID" onclick="spotifyIDUpdate()">Update Spotify ID</div>
 <div id="adminSpotifySongData" onclick="spotifyDataUpdate()">Update Spotify Song Attributes</div>
+<div id="spotifyArtistMatch" onclick="spotifyArtistMatch()">Match Spotify Artists</div>
 <% } %>
 <div class="spotifyData"></div>
