@@ -300,10 +300,12 @@ exports.showList = function(req, res) {
 }
 
 exports.artistSearch = function(req, res) {
+	console.log('artist search');
 	Knex('songs').where('artist', req.body.artist)
 	.then(function(m) {
 		if(req.session.userid) {
 			console.log(req.body.artist_id);
+			console.log(req.session.userid);
 			Knex('followed_artists').where({user_id: req.session.userid, artist_id: req.body.artist_id})
 			.then(function(n) {
 				console.log(n);
