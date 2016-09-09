@@ -223,13 +223,13 @@ body {
 
 #MobileSite {
 	font-family: "Helvetica-Thin";
-	position: absolute;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
     color: #fff;
     text-align: center;
     font-size: 10vw;
-    margin-top: 70%;
+    margin-top: 60%;
 }
 #MobileSite span {
 	font-size: 200%;
