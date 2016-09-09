@@ -207,3 +207,30 @@ body {
 .mobilePlayerOptions.active {
 	opacity: 1;
 }
+
+@font-face {
+	font-family: "Neou-Thin";
+	src: url("../Neou-Thin.otf");
+}
+@font-face {
+	font-family: "Benton-Thin";
+	src: url("../BentonSans-Light.otf");	
+}
+@font-face {
+	font-family: "Helvetica-Thin";
+	src: url("../HelveticaNeueLTStd-Th.otf");	
+}
+
+#MobileSite {
+	font-family: "Helvetica-Thin";
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    text-align: center;
+    font-size: 200%;
+    margin-top: 70%;
+}
+#MobileSite span {
+	font-size: 200%;
+}
