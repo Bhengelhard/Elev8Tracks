@@ -1831,7 +1831,7 @@ position: absolute;
 	position: relative;
     width: 100%;
     height: 50px;
-    background-color: #0066ff;
+    background-color: #FF8900;
     margin-top:100px;
 } .listNames {
 	position: absolute;
@@ -1858,7 +1858,11 @@ position: absolute;
     height: 50px;
     background-color: #ff4400;
 } #listBanner.artist {
-	background-color: #0080FF;;
+	background-color: #0080FF;
+} #listBanner.related {
+    background-color: #FF0080;
+    display: inline-block;
+    margin-top: 100px;
 } #listName {
 	position: absolute;
     left: 40px;
@@ -2362,7 +2366,7 @@ position: absolute;
 }
 #adminGenreUpdate {
 	position: relative;
-	top: 400px;
+	top: 300px;
     width: 150px;
     padding: 10px;
     background-color: #ff4400;
@@ -2375,7 +2379,20 @@ position: absolute;
 
 #spotifyArtistMatch {
 	position: relative;
-	top: 400px;
+	top: 300px;
+    width: 200px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -100px;
+    margin-bottom: 50px;
+}
+
+#spotifyRelatedArtists {
+	position: relative;
+	top: 300px;
     width: 200px;
     padding: 10px;
     background-color: #ff4400;
@@ -2388,7 +2405,7 @@ position: absolute;
 
 #adminSpotifyID {
 	position: relative;
-	top: 400px;
+	top: 300px;
     width: 150px;
     padding: 10px;
     background-color: #ff4400;
@@ -2401,7 +2418,7 @@ position: absolute;
 
 #adminSpotifySongData {
 	position: relative;
-	top: 400px;
+	top: 300px;
     width: 250px;
     padding: 10px;
     background-color: #ff4400;
@@ -2730,4 +2747,14 @@ position: absolute;
     font-size: 24px;
     position: relative;
     top: -10px;
+}
+
+#MobileSite {
+	position: absolute;
+	width:100%;
+	height: 100%;
+	color: #fff;
+	text-align: center;
+	background-color: #444;
+	font-size: 20%;
 }
