@@ -1544,3 +1544,9 @@ function spotifyArtistMatch() {
 		console.log(res);
 	});
 }
+
+function spotifyRelatedArtists() {
+	$.get('/spotifyRelatedArtists', function(res) {
+		console.log(res);
+	});
+}

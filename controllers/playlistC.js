@@ -55,7 +55,7 @@ exports.songsViewTrending = function(req, res) {
 			.then(function(lists) {
 				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
-					res.render('indexSongs', {songs: songs, session: req.session, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+					res.render('indexSongs', {songs: songs, session: req.session, user: req.session.user, user_id: req.session.userid, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 				});
 			});
 		});
@@ -70,7 +70,7 @@ exports.songsViewTrendingPlay = function(req, res) {
 				.then(function(lists) {
 					Knex('genres').distinct('genre_1','genre_1_id').select()
 					.then(function(genres) {
-						res.render('indexSongsPlay', {songs: songs, play: play, session: req.session, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
+						res.render('indexSongsPlay', {songs: songs, play: play, session: req.session, user: req.session.user, user_id: req.session.userid, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 					});
 				});
 			});
@@ -217,6 +217,8 @@ function updateSongArtist(artist_id, vid) {
 exports.storeBlog = function(req, res) {
 	Knex('songs').where('vid', req.body.vid)
 	.then(function(song) {
+		console.log('******');
+		console.log(song);
 		if(song[0]) {song = song[0]}
 		else if(song.rows) {song = song.rows}
 		Knex('blogs').where('vid',req.body.vid)
@@ -308,21 +310,40 @@ exports.artistSearch = function(req, res) {
 			console.log(req.session.userid);
 			Knex('followed_artists').where({user_id: req.session.userid, artist_id: req.body.artist_id})
 			.then(function(n) {
-				console.log(n);
 				if(n[0]) {n=n[0]}
 				else if(n.rows) {n = n.rows}
 				if(n.user_id)
 					var follow = 1;
 				else
 					var follow = 0;
-				res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: follow}, function(err, model) {
-					res.send({html: model});
+				Knex('artists').where('id',req.body.artist_id)
+				.then(function(artist) {
+					if(artist[0]) {artist=artist[0]}
+					else if(artist.rows) {artist = artist.rows}
+					console.log(artist);
+					Knex('related_artists').join('artists','artists.spotify_id','=','related_artists.artist_id2').where('related_artists.artist_id1','=',artist.spotify_id)
+					.then(function(related) {
+						console.log(related);
+						res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: follow, related: related}, function(err, model) {
+							res.send({html: model});
+						});
+					});
 				});
 			})
 		} else {
-			res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: 0}, function(err, model) {
-				res.send({html: model});
-			});
+			Knex('artists').where('id',req.body.artist_id)
+				.then(function(artist) {
+					if(artist[0]) {artist=artist[0]}
+					else if(artist.rows) {artist = artist.rows}
+					console.log(artist);
+					Knex('related_artists').join('artists','artists.spotify_id','=','related_artists.artist_id2').where('related_artists.artist_id1','=',artist.spotify_id)
+					.then(function(related) {
+						console.log(related);
+						res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: 0, related: related}, function(err, model) {
+							res.send({html: model});
+						});
+					});
+				});
 		}
 	})
 }

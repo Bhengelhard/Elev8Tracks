@@ -133,6 +133,7 @@ app.get('/spotifyDataUpdate', spotify.dataUpdate);
 app.post('/showSpotifyList', spotify.showList);
 app.post('/spotifyMatchSearch', spotify.matchSearch);
 app.get('/spotifyArtistMatch', spotify.artistMatch);
+app.get('/spotifyRelatedArtists', spotify.relatedArtists);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

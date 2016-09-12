@@ -3,13 +3,13 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
 //for local development
-// var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
-// var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
-// var redirect_uri = 'http://localhost:8888/callback';
+var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
+var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
+var redirect_uri = 'http://localhost:8888/callback';
 
-var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
-var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
-var redirect_uri = 'http://elevatemore.com/callback';
+// var client_id = '5950480cce6844a6bb8c6bb7a12127f9';
+// var client_secret = '07dfa62b2b66491aa4bf452bc1fef529';
+// var redirect_uri = 'http://elevatemore.com/callback';
 
 var Knex = require('../init/knex');
 var imported = 1;
@@ -524,30 +524,57 @@ exports.artistMatch = function() {
     if(m.rows) {
       m = m.rows;
     } 
+    var n = 0;
     m.forEach(function(artist) {
-      var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist.name) + '&limit=10&type=artist';
-      Knex('songs').where('artist_id', artist.id).limit(1)
-        .then(function(song) {
-          if(song[0] && song[0].vid) {
-            Knex('artists').where('id', artist.id).update({thumbnail: song[0].vid})
-            .then(function() {
-            });
+      setTimeout(function() {
+        var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist.name) + '&limit=10&type=artist';
+        Knex('songs').where('artist_id', artist.id).limit(1)
+          .then(function(song) {
+            if(song[0] && song[0].vid) {
+              Knex('artists').where('id', artist.id).update({thumbnail: song[0].vid})
+              .then(function() {
+              });
+            }
+          });
+        request.get(url, function(error, data, body) {
+          var response = JSON.parse(body);
+          if(response.artists && response.artists.items && response.artists.items[0]) {
+                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
+                .then(function() {
+
+                });
+                console.log(response.artists.items[0].id);
+                var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
+                request.get(url, function(error, data, b) {
+                  var res = JSON.parse(b);
+                  if(res.artists && res.artists.items) {
+                    res.artists.items.forEach(function(artist) {
+                      Knex('related_artists').insert({artist_id1: response.artists.items[0].id, artist_id2: artist.id})
+                      .then(function(){
+
+                      });
+                    });
+                  }
+                });
           }
         });
-      request.get(url, function(error, data, body) {
-        var response = JSON.parse(body);
-        if(response.artists && response.artists.items && response.artists.items[0]) {
-              Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
-              .then(function() {
-
-              });
-              // var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
-              // request.get(url, function(error, data, body) {
-              //   var response = JSON.parse(body);
-
-              // });
-        }
-      });
+      }, n);
+      n += 1000;
     });
   });
+}
+
+exports.relatedArtists = function() {
+  // Knex('artists')
+  // .then(function(m) {
+  //   if(m.rows) {
+  //     m = m.rows;
+  //   } 
+  //   m.forEach(function(artist) {
+  //     var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
+  //     request.get(url, function(error, data, body) {
+  //       var response = JSON.parse(body);
+
+  //     });
+  //   });
 }
