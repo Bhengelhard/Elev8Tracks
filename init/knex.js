@@ -1,7 +1,7 @@
 var Knex = require('knex');
 
 var knex = Knex.initialize({
-	client: 'mysql',
+	client: 'postgresql',
 	connection: {
 		host     : 'ec2-174-129-1-179.compute-1.amazonaws.com',
 	    user     : 'imggxboqaxmptt',
