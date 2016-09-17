@@ -1,12 +1,12 @@
 var Knex = require('knex');
 
 var knex = Knex.initialize({
-	client: 'postgresql',
+	client: 'mysql',
 	connection: {
-		host     : 'ec2-54-243-218-37.compute-1.amazonaws.com',
-	    user     : 'ktnkvwfvkbgwnb',
-	    password : 'mmhtn8vNbOggjVcKsm8BJx2Q-A',
-	    database : 'd4mo9hmb7qm1gd',
+		host     : '127.0.0.1',
+	    user     : 'root',
+	    password : 'scooter2',
+	    database : 'mvideos',
 	    charset  : 'utf8'
 	}
 });
