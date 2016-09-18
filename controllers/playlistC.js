@@ -677,7 +677,7 @@ exports.blogVideos = function(req, res) {
 }
 
 exports.blogInterviews = function(req, res) {
-	Knex('interviews')
+	Knex('interviews').orderBy('created_at', 'desc')
 	.then(function(blogs) {
 		res.render('interviews', {blogs: blogs, admin: req.session.admin}, function(err, m) {
 			res.send(200,{html: m});
