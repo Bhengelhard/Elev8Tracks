@@ -1,0 +1,104 @@
+<div id="homePage">
+<div id="vidPlayer">
+    <video loop muted autoplay preload="auto">
+      <source src="images/flyinglotus2.mp4" type="video/mp4">
+    </video>
+  <div id="vidPlayerCover"></div>
+</div>
+<div id="finder">
+<div class="siteTitle">E L E V A T E</div>
+<div class="siteSubtitle">M U S I C &nbsp;&nbsp; V I D E O S</div>
+<div class="searchBlocks">
+<div class="searchBlock" onclick="thisWeeksVideos()">
+  <span class="glyphicon glyphicon-fire"></span><br>
+  <div class="searchBlockName">TRENDING</div>
+</div>
+<div class="searchBlock" onclick="recentStaffPicks()">
+  <span class="glyphicon glyphicon-user"></span><br>
+  <div class="searchBlockName">STAFF PICKS</div>
+</div>
+<div class="searchBlock" onclick="danceSearch()">
+  <span class="glyphicon glyphicon-music"></span><br>
+  <div class="searchBlockName">DANCE</div>
+</div>
+<div class="searchBlock" onclick="chillSearch()">
+  <span class="glyphicon glyphicon-sunglasses"></span><br>
+  <div class="searchBlockName">CHILL</div>
+</div>
+<div class="searchBlock" onclick="playlistsSearch()">
+  <span class="glyphicon glyphicon-cd"></span><br>
+  <div class="searchBlockName">PLAYLISTS</div>
+</div>
+</div>
+<!--<div id="findVideosBestNewVideos" onclick="thisWeeksVideos()">Week's Best Videos</div>
+<div id="findVideosStaffPicks" onclick="recentStaffPicks()">Recent Staff Picks</div>-->
+<!--<input style="text" id="findVideosText" placeholder="Search Song, Artist, Director, etc."/>-->
+<!--<% if(spotify) { %>
+  <div id="spotifyLogin">Change Spotify</div>
+<% } else { %>
+  <div id="spotifyLogin">Sync Spotify</div>
+<% } %>-->
+<!--<div id="searchCriteria">
+        <div id="genreDrop" class="criteriaType">
+        <div class="vtitle">GENRE:</div>
+        <% genres.forEach(function(genre) { %>
+          <div id="d<%= genre.genre_1 %>" class="vItem criteria" data-search="<%= genre.genre_1 %>" data-id="<%= genre.genre_1_ID %>">
+            <div class="itemName"><%= genre.genre_1 %></div>
+          </div>
+        <% }); %>
+        </div>
+        <br>
+  <div id="sortDrop" class="criteriaType">
+          <div class="vtitle">SORT BY:</div>
+          <div id="vitemPopular" class="vItem criteria searched" data-search="likes">
+            <div class="itemName">Popularity</div>
+          </div>
+          <div id="vitemNewest" class="vItem criteria" data-search="created_at">
+            <div class="itemName">Newest</div>
+          </div>
+        </div>
+        <div id="filterDrop" class="criteriaType">
+          <div class="vtitle">FILTER:</div>
+          <div id="vitemStaff" class="vItem criteria" data-search="staff">
+            <div class="itemName">Staff Picks</div>
+          </div>
+          <% if(spotify) { %>
+            <div id="vitemSpotifyArtists" class="vItem criteria spotify" data-search="spotifyArtists">
+              <div class="itemName">Spotify Artists</div>
+            </div>
+          <% } %>
+        </div>
+        <div id="searchDrop" class="criteriaType">
+          <div class="vtitle">SEARCH:</div>
+          <div id="vitemSongs" class="vItem criteria searched" data-search="name">
+            <div class="itemName">Songs</div>
+          </div>
+          <div id="vitemArtists" class="vItem criteria" data-search="artist">
+            <div class="itemName">Artists</div>
+          </div>
+          <div id="vitemTags" class="vItem criteria" data-search="tags">
+            <div class="itemName">Playlists</div>
+          </div>
+        </div>
+        <br>
+        <div id="searchVideos">Search Videos</div>
+</div>
+<div id="blogMenuUpWrapper">
+<div id="blogMenuUp"></div>
+</div>-->
+<!--<div id="sotdWrapper">
+  <div id="sotdTitle" class="playSong" data-name="Girl" data-artist="Mura Masa" data-vid="XEcKhamKyW4">Mura Masa: Girl</div>
+</div>-->
+</div>
+<div id="blogsContent">
+  <div id="blogsTitleContainer">
+    <div id="blogsTitleMove">
+      <div id="blogsTitleInterviews" class="active" onclick="blogsInterviews()">Exclusive Interviews</div>
+      <div id="blogsTitleVideos" onclick="blogsVideos()">Featured Videos</div>
+    </div>
+  </div>
+  <div id="blogsType">
+      <% include interviews %>
+  </div>
+</div>
+</div>

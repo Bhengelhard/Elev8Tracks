@@ -846,3 +846,28 @@ exports.unfollowArtist = function(req, res) {
 		});
 	}
 }
+
+exports.indexInterviews = function(req, res) {
+	Knex('interviews').orderBy('created_at', 'desc')
+		.then(function(blogs) {
+			Knex('playlists').where('userid', req.session.userid)
+			.then(function(lists) {
+				Knex('genres').distinct('genre_1','genre_1_id').select()
+				.then(function(genres) {
+					console.log(blogs);
+					if(req.session.spotifyID) {
+						if(req.session.imported) {
+							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
+							.then(function(spotifyLists) {
+								res.render('indexInterviews', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0, user_id: req.session.userid, admin: req.session.admin});
+							});
+						} else {
+							res.render('indexInterviews', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0, user_id: req.session.userid, admin: req.session.admin});
+						}
+					} else {
+						res.render('indexInterviews', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid, admin: req.session.admin});
+					}
+				});
+			});
+		});
+}

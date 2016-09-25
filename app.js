@@ -78,6 +78,8 @@ app.get('/songs/trending', routes.songsViewTrending);
 app.get('/songs', routes.songsViewTrending);
 app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
 
+app.get('/interviews', routes.indexInterviews);
+
 app.get('/myLists/d', routes.myLists);
 app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);

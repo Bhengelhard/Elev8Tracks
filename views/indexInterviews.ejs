@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/css/jquery-ui.min.css" rel="stylesheet">
+  	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src='/js/spotify.js'></script>
+    <script src='/js/transitions.js'></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src='/js/google.js'></script>
+    <script src='/js/jquery.easing.compatibility.js'></script>
+    <script src='/js/videoPlayer.js'></script>
+    <script src='/js/search.js'></script>
+    <script src='/js/admin.js'></script>
+    <script src='/js/home.js'></script>
+    <title>E L E V A T E</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css" rel="stylesheet">
+  </head>
+  <body>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-74777106-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    <div id="navbar" class="home">
+      <div id="mainBar">
+      <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
+      <div id="title" class="nav selected active"><div class="navSelection"></div>E L E V A T E</div>
+      <div id="videoSearcherWrapper">
+        <input type="text" id="videoSearcher" placeholder="S e a r c h">
+        <div id="vgenre" class="criteriaType">
+          <div class="dtitle">GENRE</div>
+
+        </div>
+        <div id="vsort" class="criteriaType">
+          <div class="dtitle">SORT</div>
+          <div id="vitemPopular" class="dItem criteria query" data-search="pop_trending">
+            <div class="itemName">Trending</div>
+          </div>
+          <div id="vitemPopular" class="dItem criteria query" data-search="pop_week">
+            <div class="itemName">Week Pop.</div>
+          </div>
+          <div id="vitemPopular" class="dItem criteria query" data-search="pop_1">
+            <div class="itemName">All Time Pop.</div>
+          </div>
+          <div id="vitemNewest" class="dItem criteria searched query" data-search="created_at">
+            <div class="itemName">Newest</div>
+          </div>
+        </div>
+        <div id="vfilter" class="criteriaType">
+          <div class="dtitle">FILTER</div>
+          <div id="vitemStaff" class="dItem criteria query" data-search="staff">
+            <div class="itemName">Staff Picks</div>
+          </div>
+        </div>
+        <!-- <div id="vsearch" class="criteriaType">
+          <div class="dtitle">SEARCH</div>
+          <div id="vitemSongs" class="dItem criteria searched query" data-search="name">
+            <div class="itemName">Songs</div>
+          </div>
+          <div id="vitemArtists" class="dItem criteria searched query" data-search="artist">
+            <div class="itemName">Artists</div>
+          </div>
+          <div id="vitemTags" class="dItem criteria query" data-search="tags">
+            <div class="itemName">Tags</div>
+          </div>
+        </div> -->
+        <div class="navSelection"></div>
+      </div>
+        <% include myListsNav %>
+      </div>
+      <div id="genreBar" class="criteriaType">
+        <% include genres %>
+      </div>
+    </div>
+    <div id="spotifyControls">
+      <div class="spotifyTitle">Spotify</div>
+      <% include spotifyLists %>
+    </div>
+    <div id="content">
+      <% include homeInterviews %>
+    </div>
+    <div id="listDetails" class="hidden">
+      <div id="listTitle"></div>
+      <div id="overlay"></div>
+      <div id="cover" class="play"></div>
+      <div id="prevPlayer"></div>
+      <div id="songList">
+        <div id="songSelector"></div>
+        <div id='buffer'></div>
+      </div>
+    </div>
+    <div id="player" data-vid="-" data-id="-" data-vidno="-" data-lid=""><div id="videoPlayer"></div>
+      <div id="controls" class="home">
+        <div id="fullScreenWrapper">
+          <span class="glyphicon glyphicon-resize-full"></span>
+        </div>
+        <div id="playerExpand">
+          <div class="controls-menu-up"></div>
+          <div id="playingName"></div>
+        </div>
+        <div id="playToggleSelection"></div>
+        <div id="playToggle">
+          <div id="playTogglePauseLeft"></div>
+          <div id="playTogglePauseRight"></div>
+          <span class="glyphicon glyphicon-play"></span>
+        </div>
+      </div>
+      <div id="playercover" class="playerOptions">
+        <div id="songPlaylist">Show Playlist</div>
+        <div id="songTitle"></div>
+        <div id="songArtist" data-artist-id=''></div>
+        <div id="shuffle"><span class="glyphicon glyphicon-random"></span></div>
+        <div id="repeat" class="active"><span class="glyphicon glyphicon-repeat"></span></div>
+      </div>
+      <div id="playerCollapse" class="playerOptions"><span class="glyphicon glyphicon-menu-down"></span></div>
+      <!-- <div id="likeSong" class="playerOptions" onclick="playerLikeSong(event)"><span class="glyphicon glyphicon-heart-empty"></span></div> -->
+      <div id="nextSong" class="playerOptions"><span class="glyphicon glyphicon-menu-right"></span></div>
+      <div id="previousSong" class="playerOptions"><span class="glyphicon glyphicon-menu-left"></span></div>
+    </div>
+    <div id="userSaveLists"></div>
+    <!-- <div id="constructionBlock">
+      <span class="glyphicon glyphicon-wrench"></span>
+      <div id="constructionTitle">The Site is under Construction. Login to Help.</div>
+      <input type="password" id="inputPassword" placeholder="Password">
+    </div> -->
+</html>
