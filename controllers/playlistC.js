@@ -157,7 +157,31 @@ exports.storeSong = function(req, res) {
 			} else {
 				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, created_at: time, energy: req.body.energy, danceability: req.body.danceability, key: req.body.key, loudness: req.body.loudness, mode: req.body.mode, speechiness: req.body.speechiness, acousticness: req.body.acousticness, instrumentalness: req.body.instrumentalness, liveness: req.body.liveness, valence: req.body.valence, tempo: req.body.tempo})
 				.then(function() {
-					createArtist(req.body.artist, req.body.artist_id, req.body.vid);
+					//createArtist(req.body.artist, req.body.artist_id, req.body.vid);
+
+
+					Knex('artists').where('spotify_id', req.body.artist_id)
+						.then(function(oldArtist) {
+							console.log(oldArtist);
+							if(oldArtist[0]) {oldArtist=oldArtist[0]}
+							else if(oldArtist.rows) {oldArtist = oldArtist.rows}
+							if(oldArtist.length != 0) {
+								var artist_id = oldArtist.id;
+								updateSongArtist(artist_id, req.body.vid);
+							} else {
+								console.log('--new artist');
+								Knex('artists').insert({name: req.body.artist, spotify_id: req.body.artist_id, thumbnail: req.body.vid})
+								.then(function() {
+									Knex('artists').where({spotify_id: req.body.artist_id})
+									.then(function(newArtist) {
+										var artist_id = newArtist.id;
+										updateSongArtist(artist_id, req.bodyvid);
+									});
+								});
+							}
+					});
+
+
 					Knex('popularity').insert({vid: req.body.vid})
 					.then(function() {
 						Knex('songs').where('vid', req.body.vid)
@@ -193,6 +217,8 @@ function createArtist(artist, spotify_id, vid) {
 	Knex('artists').where('spotify_id', spotify_id)
 		.then(function(oldArtist) {
 			console.log(oldArtist);
+			if(oldArtist[0]) {oldArtist=oldArtist[0]}
+			else if(oldArtist.rows) {oldArtist = oldArtist.rows}
 			if(oldArtist.length != 0) {
 				var artist_id = oldArtist.id;
 				updateSongArtist(artist_id, vid);
