@@ -192,10 +192,12 @@ exports.storeSong = function(req, res) {
 function createArtist(artist, spotify_id, vid) {
 	Knex('artists').where('spotify_id', spotify_id)
 		.then(function(oldArtist) {
+			console.log(oldArtist);
 			if(oldArtist.length != 0) {
 				var artist_id = oldArtist.id;
 				updateSongArtist(artist_id, vid);
 			} else {
+				console.log('--new artist');
 				Knex('artists').insert({name: artist, spotify_id: spotify_id, thumbnail: vid})
 				.then(function() {
 					Knex('artists').where({spotify_id: spotify_id})

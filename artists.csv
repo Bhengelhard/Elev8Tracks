@@ -1,1 +1,368 @@
-id,artist,spotify_id1,Mike Posner,2,A$AP Rocky,3,2 Chainz,4,Action Bronson,5,Adrian Lux,6,AfroJack and Steve Aoki,7,Alt-J,8,AlunaGeorge,9,Ambassadeurs,10,Andrew Rayel,11,Animal Collective,12,Anna Lunoe ,13,Arcade Fire,14,Arctic Monkeys,15,Aer,16,AronChupa,17,ASAP Ferg,18,ASAP Rocky,19,Asher Roth,20,Avicii,21,Azealia Banks,22,B.o.B,23,Bag Raiders,24,Band of Horses,25,Basement Jaxx,26,Beach House,27,Bear's Den,28,Beat Culture,29,Ben Howard,30,Beyonce,31,Big Sean,32,Big Tymers,33,Blockhead,34,Blood Diamond,35,Blood Diamonds and Grimes,36,Bondax,37,Breach,38,Breathe Carolina,39,Brothertiger,40,Cajoline ,41,Calvin Harris,42,Carnage,43,Casey Veggies,44,Charli XCX,45,Cherub,46,Chet Faker,47,Chief WaKil,48,Childish Gambino,49,Chordashian,50,Chris Brown,51,Chris Malinchak,52,Cleavage,53,Coconut Records,54,Cults,55,Daft Punk,56,Danny Brown,57,David Guetta,58,David Hasselhoff,59,Dawn Golden,60,Death Cab For Cutie,61,DIE ANTWOOD,62,Dirty Projectors,63,Disclosure,64,Pell ft.Dent May,65,G-Eazy,66,Ghost Loft,67,Gigamesh,68,Giraffage,69,Giraffage ,70,Goldroom,71,Gotye,72,Great Good Fine OK,73,Grizzly Bear,74,Duck Sauce,75,Flight Facilities,76,Garden City Movement,77,Drake,78,Earl Sweatshirt,79,Ed Sheeran ,80,Edward Maya,81,Edward Sharpe,82,Foster The People,83,Fyfe,84,Grimes,85,INTUITION ,86,J. Cole,87,Jay-Z,88,Jessy Lanza,89,Jonas Rathsman,90,Juicy J.,91,Justice,92,Kanye West,93,Kavinsky,94,Kazy Lambist,95,Kendrick Lamar,96,Kid Cudi feat. Ratatat,97,"Kid Cudi ft. Kanye West, Common",98,Kiesza,99,Kilo Kish,100,King Krule,101,Klingande,102,Kreayshawn,103,Kygo feat. Parson James,104,KYLE,105,Lana Del Rey,106,Late Night Alumni,107,Le Youth,108,Lil Dicky,109,Lil Wayne,110,Lips,111,Little Jackie,112,Logic,113,Lupe Fiasco,114,Lykke Li,115,M Machine,116,M.I.A.,117,M83,118,Mac DeMarco,119,Mac Miller feat. Casey Veggies ,120,Moon Boots,121,Macklemore x Ryan Lewis,122,Maddslinky,123,Madeon,124,MAGIC!,125,Major Lazer feat. Amber,126,Martin Garrix,127,Martin Garrix feat. Usher,128,Mat Zo & Arty,129,Matt ,130,MAX feat. Hoodie Allen,131,Meghan Trainor,132,Melody's Echo Chamber,133,Metronomy,134,MGK ft. WAKA FLOCKA FLAME,135,MGMT,136,Miguel,137,Miles Fisher,138,Miley Cyrus,139,Milky Chance,140,Missy Elliot,141,MO,142,Moosh ,143,Mount Kimbie feat. King Krule,144,Mr. Lies,145,Mt. Eden,146,Naughty Boy feat. Sam Smith,147,Nervo,148,Nosaj Thing,149,Nosaj Thing and Pretty Lights,150,Nosaj Thing feat. Toro Y Moi,151,O.T. Genesis,152,Odesza,153,Of Monsters and Men,154,OneRepublic,155,Panama,156,Passion Pit,157,Pogo,158,Pretty Lights,159,Pumped Up Kicks,160,Purity Ring,161,QuESt,162,RAC feat. Matthew Koma,163,RAC feat. Penguin Prison,164,Rad Omen,165,Radical Something,166,Radical Something feat. Kinetics,167,Rae Sremmurd feat. Nicki Minaj and Young Thug,168,Red Hot Chili Peppers,169,Rhye,170,Rich Boy,171,Rihanna feat. Jay-Z,172,Rizzle Kicks,173,Robin Thicke,174,Robin Thicke feat. Pharrell Williams,175,Robots Don't Sleep,176,Rock U Tonight,177,Royal Blood,178,Royksopp,179,Rustie,180,Ryan Hemsworth,181,San Cisco,182,Santigold,183,Sasha Keeble,184,SBTRKT,185,SchoolBoy Q ft. Kendrick Lamar,186,Shlomo,187,Shlomo feat. Jeremih,188,Shlomo fet. Jeremih,189,Shwayze,190,Sinead Harnett ft. Snakehips,191,SKRILLEX,192,Slow Magic,193,Snakehips,194,"Snoop Dogg, Pharrell Williams",195,SOHN,196,Sombear,197,Phantogram,198,St. Lucia,199,Sun Glitters,200,Sylvan Esso,201,T. Williams feat. TALA,202,T. Williams ft. Tendai,203,T.I.,204,Tame Impala,205,Taylor Swift,206,The Japanese Popstars,207,The Killers,208,The Knocks feat. Powers,209,The Lumineers,210,The Maccabees,211,The Magician,212,The Neighborhood,213,The Shins,214,The Weeknd,215,Theophilus London,216,Theophilus London feat. Sara Quin,217,Toro Y Moi,218,Vic Mensa,219,Son Lux,220,Years ,221,Yeasayer,222,YONAS,223,Young Dreams,224,Young Wonder,225,Zedd,226,Blackjack Billy,227,Pell,228,Flume,229,Odesza feat. Zyra,230,Fever the Ghost,231,C2C,232,The Kooks,233,XXYYXX,234,Yeah Yeah Yeahs,235,Tyler The Creator,236,Valentino Khan,237,OMI,238,Mac Miller Ft. Miguel,239,Yo Gotti,240,Daye Jack,241,Silento,242,Jakubi,243,Galantis,244,BORNS,245,NoMBe,246,Connan Mockasin,247,Klangkarussell,248,The Chemical Brothers,249,Tei Shi,250,Mura Masa,251,ABRA,252,Lorn,253,Major Lazer,254,Miami Horror,255,Twenty One Pilots,256,Gorillaz,257,Gnarls Barkley,258,Chance the Rapper,259,Thundercat,260,Cyril Hahn,261,20syl,262,Alice Russell,263,Andrea Balency,264,Benny Benassi,265,Kimbra,266,Dada Life,267,Daughter,268,Enur,269,DJ Ele,270,Eric Prydz,271,Fetty Wap,272,FKA twigs,273,Flatbush Zombies,274,Flux Pavilion,275,Flying Lotus,276,Nomadic Firs,277,Action Bronson feat. Chance The Rapper,278,Ground Up,279,Guru Josh Project,280,HAIM,281,Henry Krinkle,282,Hoodie Allen,283,Hozier,284,Ibeya,285,Iggy Azalea,286,Phoebe Ryan,287,Hayden James,288,James Blake,289,KYGO,290,Luke Million,291,Madeon feat. Passion Pit,292,Matt Easton,293,Mount Kimbie,294,Shura,295,Swedish House Mafia,296,The Flaming Lips,297,the Postal Service,298,The Wombats,299,Tycho,300,Washed Out,301,Touch Sensitive,302,Trinidad James,303,Two Door Cinema,304,Two Door Cinema Club,305,Tyga ft. Lil Wayne,306,Vince Staples,307,Wale ft. Gucci Mane,308,Weezer,309,Woodkid,310,Ohana Bam,311,Wes Walker & Dyl,312,Joey Bada$$,313,Nyck Caution,314,Kirk Knight,315,Casey Derhak,316,G-Eazy x Bebe Rexha,317,Glass Animals,318,Sevdaliza,319,ZHU,320,Major Laser,321,Miami Horror ft. Sarah Chernoff,322,Never Say Never,323,New Navy,324,RAC feat. Kele and MNDR,325,Ratatat,326,Schoolboy Q,327,Years and Years,328,Jasmine Thompson,329,Florrie,330,D.R.A.M.,331,Marian Hill,332,Photay,333,ILoveMakonnen,334,Capital Cities,335,Jamie xx,336,Julio Bashmore,337,Faul & Wad Ad,338,2Pac,339,Cashmere Cat,340,Bahamas,341,Skee-Lo,342,T-Pain,343,KAYTRANADA,
+id,name,spotify_id,thumbnail
+1,Tame Impala,5INjqkS1o8h1imAzPqGZBb,_opF2Dn6Fk4
+8,The Notorious B.I.G.,5me0Irg2ANcsgc93uaYrpb,_JZom_gVfuw
+22,Lawrence,5rwUYLyUq8gBsVaOUcUxpE,WwxZi_ZK0mw
+120,Moon Boots,,
+140,Missy Elliot,,
+25,Basement Jaxx,4YrKBkKSVeqDamzBPWVnSJ,Ucm-O93w91A
+27,Bear's Den,0nJaMZM8paoA5HEUTUXPqi,q1MmYVcDyMs
+69,Giraffage ,4kubsO16bEfCADaVUyoYb6,OrpXSly9gHY
+28,Beat Culture,0BZ3BHzfYwpd3k5TDnvAz8,OhvH1pyVLzw
+29,Ben Howard,5schNIzWdI9gJ1QRK8SBnc,x8ccDb6n5Wg
+88,Jessy Lanza,4b99uGDv75xD1n2QHuPRDN,ZF2lZesYZo0
+30,Beyonce,6vWDO969PvNqNYHIOW5v0m,2XY3AvVgDns
+31,Big Sean,0c173mlxpT3dSFRgMO8XPh,cZaJYDPY-YQ
+94,Kazy Lambist,41Ue54Vb6iWx2dcdRCM6oH,KLdriwU4mxk
+40,Cajoline ,3oUnbJhEXJwswBJoZScors,U9UTyX-qqVY
+41,Calvin Harris,7CajNmpbOovFoOoasH2HaY,cl3b7dDBLpo
+91,Justice,2OTfr6S2kuHRYStjt1IkY6,Gxu248aD6PY
+47,Chief WaKil,0eNpwvw4gRmgVDjx3uIqfR,5idPxzDg0VI
+44,Charli XCX,25uiPmTg16RbhZWAqwLBy5,cHuRtBA5Esg
+87,Jay-Z,3nFkdlSjzX9mRTtwJOzDYB,
+48,Childish Gambino,73sIBHcqh3Z3NyqHKZ7FOL,dwUug-ucBLc
+49,Chordashian,557CpM84Dx90EAXTDqDj9H,hZf_xexzN74
+133,Metronomy,54QMjE4toDfiCryzYWCpXX,9PnOG67flRA
+50,Chris Brown,7bXgB6jMjp9ATFy66eO08Z,zKCrSN9oXgQ
+56,Danny Brown,7aA592KWirLsnfb5ulGWvU,NHfWY0is3rE
+139,Milky Chance,1hzfo8twXdOegF3xireCYs,r8BsuT0PWdI
+57,David Guetta,1Cs0zKBU1kc0i8ypK3B9ai,JRfuAukYTKg
+65,G-Eazy,02kJSzxNuaWGqwubyUba0Z,UI9WCl4Cd8E
+156,Passion Pit,7gjAu1qr5C2grXeQFFOGeh,T0RvPYRRRbE
+59,Dawn Golden,6MzxeKydmXufvX7HYPknFW,qwyzdWVDGZ4
+71,Gotye,2AsusXITU8P25dlRNhcAbG,8UVNT4wvIGY
+164,Rad Omen,2jmSHT5SGq5qAFWQ62kphd,Jl0G3uH71B8
+76,Garden City Movement,3HrczLBDJXJu6dJWEMbKHa,vm3JMC2HiWc
+99,Kilo Kish,7lsnwlX6puQ7lcpSEpJbZE,N385ebYi3Sw
+124,MAGIC!,0DxeaLnv6SyYk2DOqkLO8c,PIh2xe4jnpk
+70,Goldroom,4eZebkMFU3xelF8mbZYXyl,l35GTSbKMpY
+100,King Krule,4wyNyxs74Ux8UIDopNjIai,hvZJI8rerWA
+72,Great Good Fine OK,422RLznpwUa5FsQgnTlgUH,SyTchswHxhY
+109,Lil Wayne,55Aa2cqylxrFIXC767Z865,_y_Xpps46Uc
+111,Little Jackie,2TBPRVLhhMpMPwXL1MXMmv,129pN3dobGM
+128,Mat Zo & Arty,6svjZqxAUnDpZc4QVFK22q,AwLzZoB6y8A
+136,Miguel,360IAlyVv4PCEVjgyMZrxK,s-BW2gKnVz8
+6,AfroJack and Steve Aoki,,ksocjhxX_DQ
+145,Mt. Eden,3YAy9OUnnRsk2JLTaOLcw2,j37SniohwFA
+147,Nervo,4j5KBTO4tk7up54ZirNGvK,NQq7tmwvjr8
+35,Blood Diamonds and Grimes,,_GiEoLXC9nk
+148,Nosaj Thing,0IVapwlnM3dEOiMsHXsghT,aPAkcB5JgYc
+158,Pretty Lights,4iVhFmG8YCCEHANGeUUS9q,_Afy5B-rWoc
+54,Cults,,c-jKfLXYQqw
+137,Miles Fisher,70IDktZT57OWuwK0nOrJms,G29d6RDSK1c
+77,Drake,3TVXtAsR1Inumwj472S9r4,hN-HKyBivTk
+80,Edward Maya,,Or-GhD9nZkg
+107,Le Youth,1Zz6NBe8UIZjm88TvehFtx,MGBj3LD-nko
+75,Flight Facilities,,JI6fDb6IBmU
+66,Ghost Loft,,WhmyWYmO3uA
+81,Edward Sharpe,,4306i99LMXo
+63,Disclosure,,ySqBdoS0Xo0
+61,DIE ANTWOOD,,uMK0prafzw0
+97,"Kid Cudi ft. Kanye West, Common",,Xt22KvnRSL4
+103,Kygo feat. Parson James,,BgfcToAjfdc
+149,Nosaj Thing and Pretty Lights,,cxa1Y71Lgyg
+162,RAC feat. Matthew Koma,,37RYC5aZlRo
+166,Radical Something feat. Kinetics,,SfIBy2I13CQ
+36,Bondax,4qobOrZpdUri80gScwsHfs,isQlpw57L1M
+38,Breathe Carolina,53M4Iv2RkzzxFFvW2B1jhC,h2S3RvIHwGs
+64,Pell ft.Dent May,,HdfgiIBzsBM
+60,Death Cab For Cutie,0YrtvWJMgSdVrk3SfNjTbx,pq-yP7mb8UE
+84,Grimes,,JtH68PJIQLE
+86,J. Cole,,vHU6ZRQJ50Q
+90,Juicy J.,,URbDgvXiGfg
+96,Kid Cudi feat. Ratatat,,7xzU9Qqdqww
+102,Kreayshawn,51xJF4OqJPHWop1fv0VVyd,6WJFjXtHcy4
+92,Kanye West,,Jg5wkZ-dJXA
+104,KYLE,,bqMpt1Ye79A
+118,Mac DeMarco,,wIuBcb2T55Q
+112,Logic,,eIGh4Nc1fAM
+119,Mac Miller feat. Casey Veggies ,,1nZKwreCVtU
+117,M83,,a8Iqskd_Vq8
+121,Macklemore x Ryan Lewis,,fvDQy53eldY
+125,Major Lazer feat. Amber,,ytIfSuy_mOA
+126,Martin Garrix,,gCYcHz2k5x0
+127,Martin Garrix feat. Usher,,nJSdYlAFKqA
+129,Matt ,,WgBeu3FVi60
+134,MGK ft. WAKA FLOCKA FLAME,,A_J7kEhY9sM
+130,MAX feat. Hoodie Allen,,s2_YDtKmsVA
+138,Miley Cyrus,,LrUvu1mlWco
+142,Moosh ,52lUXCmpmAIVsgNd1uADOy,p6QPwByNxlc
+144,Mr. Lies,,xc1u9X4HFAE
+143,Mount Kimbie feat. King Krule,,aVBH1qIqe7Y
+160,Purity Ring,,2dN9K8XoDm4
+163,RAC feat. Penguin Prison,,yju0tRxfGGY
+165,Radical Something,,wPNa9YddRqs
+167,Rae Sremmurd feat. Nicki Minaj and Young Thug,,fwrY0D2ACNk
+12,Anna Lunoe ,7d96RW5Vix23AiCHr3mf3D,KxJdMhfn9g4
+13,Arcade Fire,3kjuyTCjPG1WMFCiyc5IuB,NuSbELCNloc
+16,AronChupa,5vCOdeiQt9LyzdI87kt5Sh,Bznxx12Ptl0
+18,ASAP Rocky,13ubrt8QOOCPljQ2FL1Kca,r6I2Ek_j_Xc
+2,Mac Miller,4LLpKhyESsyAXpc4laK94U,LR3GQfryp9M
+9,Will Smith,41qil2VaGbD194gaEcmmyx,IwBS6QGsH_4
+23,Toro y Moi,6O4EGCCb6DoIiR6B1QCQgp,W4J6bFDvvwY
+187,Shlomo feat. Jeremih,,
+215,Theophilus London,4EMtGVFvfCSrEmWaGV0roE,2WRuDAasz-8
+218,Vic Mensa,27w1NoOLMX7tJMYqcetPyG,gbcyfRztHmw
+328,Jasmine Thompson,2TL8gYTNgD6nXkyuUdDrMg,fyG9La0PAsM
+224,Young Wonder,2KJf05insFdCPlIlnYCrfn,iTkuJenFdPU
+228,Flume,6nxWCVXbOlEVRexSbLsTer,IfLqsNRkBIo
+329,Florrie,2fkmfYw1KeOiDLA6MHDwU8,S9lkxJFLZ5w
+241,Silento,7juKTDFlPesGeWQ1GmjmOv,vjW8wmF5VWc
+209,The Lumineers,16oZKvXb6WkQlVAjwo2Wbg,zvCBSSwgtg4
+171,Rihanna feat. Jay-Z,,CvBfHwUxHIk
+254,Miami Horror,0Z5pcmXDCKTrFWLnDChC37,jna2r56EXTg
+258,Chance the Rapper,1anyVhU62p31KFi8MEzkbf,i4ooH8frBWg
+285,Iggy Azalea,5yG7ZAZafVaAlMTeBybKAL,_zR6ROjoOX0
+249,Tei Shi,1xcMOgFUM1IYZE22YjCvsL,zZ7PVig8qyA
+278,Ground Up,0p1CrPBclXVis7VD4gtFri,0UjAf6ubC5M
+290,Luke Million,1khu4DLsGK5MWLbUlfKkgz,qJdMjRHRLfg
+192,Slow Magic,3htNAy3vYWWYV8RZFeyRMT,fT50k14Rc9A
+314,Kirk Knight,,JJGgdIB_m4c
+300,Washed Out,5juOkIIy18sFw9L30syt1Z,HEBb3GxubAc
+274,Flux Pavilion,,RRNqRuyFSXk
+185,SchoolBoy Q ft. Kendrick Lamar,,_L2vJEb6lVE
+177,Royal Blood,2S5hlvw4CMtMGswFtfdK15,
+250,Mura Masa,,fyv5CBCnx6Q
+261,20syl,,65oZD-7gJYE
+266,Dada Life,,KJRaKhURMEA
+270,Eric Prydz,,ioq_t_GHBtg
+283,Hozier,,MYSVMgRr6pw
+275,Flying Lotus,29XOeO6KIWxGthejQqn793,2uCyv05SG1g
+288,James Blake,,5S6U_krabrk
+304,Two Door Cinema Club,,sKyK1Mme9Sc
+315,Casey Derhak,,#NAME?
+316,G-Eazy x Bebe Rexha,,bSfpSOBD30U
+327,Years and Years,,H3T2RnTBp_4
+330,D.R.A.M.,,jzMhcP7ab3k
+196,Sombear,4utnV0ZxDPidklLpyc4JAC,aSjCJdRFbpk
+234,Yeah Yeah Yeahs,3TNt4aUIxgfy9aoaft5Jj2,oIIxlgcuQRU
+172,Rizzle Kicks,2ajhZ7EA6Dec0kaWiKCApF,8ip8OsExLJs
+174,Robin Thicke feat. Pharrell Williams,,_VTY8ftr1vY
+176,Rock U Tonight,,_FD5u2TO-f8
+183,Sasha Keeble,,OcAMZmph6j8
+186,Shlomo,,tv8Se8xSMiw
+188,Shlomo fet. Jeremih,,K0YgU75_ZG0
+189,Shwayze,,_sDflY5UfRo
+190,Sinead Harnett ft. Snakehips,,FnIoZsD2X84
+193,Snakehips,,EWb8oUwubWg
+195,SOHN,,C6zv_5zGEso
+200,Sylvan Esso,,Qr5AIKRPIHo
+201,T. Williams feat. TALA,,_3ZI_TGTJ0g
+202,T. Williams ft. Tendai,,SPXWK_7nXuc
+205,Taylor Swift,,e-ORhEE9VVg
+204,Tame Impala,,BgK_Er7WZVg
+208,The Knocks feat. Powers,,emOKaGi8u5U
+213,The Shins,,RoLTPcD1S4Q
+217,Toro Y Moi,,ILvMOC4H9EM
+219,Son Lux,,yRyMoyRPrr8
+221,Yeasayer,,JyBl5ZgnEr4
+223,Young Dreams,,2CAF26JV9qs
+226,Blackjack Billy,,74UWc5EJJQI
+229,Odesza feat. Zyra,,QMssNXBCCl0
+232,The Kooks,,3tUh-x-fp8Q
+235,Tyler The Creator,,XIqVCJWSoeE
+242,Jakubi,,uX8yoT9ct6k
+244,BORNS,,L4GrDOOIIbk
+247,Klangkarussell,,79YDgv_zWA4
+253,Major Lazer,738wLrAtLtCtFOLvQBXOXp,iNPqddkkcI4
+255,Twenty One Pilots,,pXRviuL6vMY
+256,Gorillaz,,H8Qp38qT-xI
+257,Gnarls Barkley,5SbkVQYYzlw1kte75QIabH,bd2B6SjMh_w
+264,Benny Benassi,,JPtQ4K-evBo
+267,Daughter,,2QT5eGHCJdE
+268,Enur,1BQaZSq1KsLOZGzjG5QxRC,WL1hlzLsUaU
+271,Fetty Wap,,i_kF4zLNKio
+272,FKA twigs,6nB0iY1cjSY1KyhYyuIIKH,3yDP9MKVhZc
+273,Flatbush Zombies,,kfzRXseSBIM
+276,Nomadic Firs,,GQpz7mT1aYw
+280,HAIM,,AIjVpRAXK18
+281,Henry Krinkle,,1Rv6KCBI3vg
+284,Ibeya,,nAzjmDZD4aY
+289,KYGO,,sYLufX5nC30
+291,Madeon feat. Passion Pit,,bQweR2QH1Io
+292,Matt Easton,,ktIgwt92WNA
+293,Mount Kimbie,,GRVwtSmgKP8
+295,Swedish House Mafia,,PDboaDrHGbA
+296,The Flaming Lips,,ZdDHi5SSIlM
+298,The Wombats,,9MHmx9nvHqU
+302,Trinidad James,,NK2FqPNIT_U
+305,Tyga ft. Lil Wayne,,LbouTdwOrVw
+307,Wale ft. Gucci Mane,,j8YxSzXnZ40
+306,Vince Staples,68kEuyFKyqrdQQLLsmiatm,NJLfCBBcZAo
+310,Ohana Bam,,v__NaQ8xMLc
+317,Glass Animals,,IIA1XQnAv5s
+318,Sevdaliza,,koAtzvSBvfE
+319,ZHU,28j8lBWDdDSHSSt5oPlsX2,5_ARibfCMhw
+320,Major Laser,,GZSsOEqgm0c
+321,Miami Horror ft. Sarah Chernoff,,dDIJ-jqYulI
+322,Never Say Never,4mvYS48EvFYVwkE8zeGJa6,U0eS3zC3Jco
+323,New Navy,,c3BFUVzRtMo
+331,Marian Hill,1xHQO9GJIW9OXHxGBISYc5,upEX2JMp3c0
+332,Photay,,Mw6-1zGM4wM
+333,ILoveMakonnen,,avFq9errZCk
+197,Phantogram,1l9d7B8W0IHy3LqWsxP2SH,RsQjC5zVnt8
+212,The Neighborhood,0jjswMR8vw4qzdzPdVfcIm,GCdwKhTtNNw
+3,Kanye West,5K4W6rqBFWDnAN6FQUkS6x,6vwNcNOTVzY
+10,Bone Thugs-N-Harmony,5spEJXLwD1sKUdC2bnOHPg,PArF9k2SbQk
+24,D.R.A.M.,5M0lbkGluOPXLeFjApw8r8,0cDmBByFekQ
+342,T-Pain,,dBrRBZy8OTs
+9,Ambassadeurs,6BKSRVMfQ6Aeux4rKG1h9H,qYqjOcsXjMI
+7,Alt-J,3XHO7cRUPCLOr6jwp8vsx5,npvNPORFXpc
+34,Blood Diamond,4yuvRDaF5kWkFLq6q1Fev4,nIk0ztHU3yU
+154,OneRepublic,5Pwc4xIPtQLFEnJriah9YJ,dLa_ryRjC7M
+155,Panama,4Cjsh7anKDaMnQ3YHB1Xwq,YMKZIaIN7O4
+45,Cherub,00dwwnz3V4kRfu3UFYpJLz,8h3t2h4NKPY
+23,Bag Raiders,6fXEqmGQEt6ONuqVmwrN46,feA64wXhbjo
+68,Giraffage,4kubsO16bEfCADaVUyoYb6,3Hv1DElPXV0
+22,B.o.B,5ndkK3dpZLKtBklKjxNQwT,IoBP24I2lwA
+74,Duck Sauce,0q8J3Yj810t5cpAYEJ7gxt,J2ouQMCcOz4
+78,Earl Sweatshirt,3A5tHz1SfngyOZM2gItYKu,FCbWLSZrZfw
+83,Fyfe,1xkxEEm60IyknT2Eh469mX,oLGnR0UldCM
+89,Jonas Rathsman,0evBopfnhhbHzmHebWTDx7,llYWjltBUPU
+95,Kendrick Lamar,2YZyLoL8N0Wb9xBt1NhZWg,Z-48u_uWMHY
+105,Lana Del Rey,00FQb4jTyendYWaN8pK0wa,4knuoIAWweA
+113,Lupe Fiasco,01QTIT5P1pFP3QnnFSdsJf,S77zUWqawag
+110,Lips,,C169fjEBC3o
+123,Madeon,4pb4rqWSoGUgxm63xmJ8xc,B496Qv0CuOQ
+132,Melody's Echo Chamber,,v29I0srhPwg
+135,MGMT,0SwO7SWeDHJijQ3XNS7xEE,MmZexg8sxyk
+131,Meghan Trainor,6JL8zeS1NmiOftqZTRgdTz,7PCkvCPvDXk
+146,Naughty Boy feat. Sam Smith,,3O1_3zBUKM8
+151,O.T. Genesis,3fK1mffLpVDraqC0rPa017,6vYnas6q3Sg
+150,Nosaj Thing feat. Toro Y Moi,,GK8mtokmoaQ
+152,Odesza,,Z7enjMpDggk
+153,Of Monsters and Men,,ghb6eDopW8I
+159,Pumped Up Kicks,2pKTcdQZmt4EHGV4QIqdn0,SDTZ7iX4vTQ
+14,Arctic Monkeys,7Ln80lUS6He07XvHI8qqHH,H8tLS_NOWLs
+17,ASAP Ferg,5dHt1vcEm9qb8fCyLcB3HL,iXZxipry6kE
+19,Asher Roth,1wgY8huggK60P5nvYrwcYT,qYx7YG0RsFY
+20,Avicii,1vCWHaC5f2uS3yhpwWbIA6,UtF6Jej8yb4
+32,Big Tymers,4jWGfUCFeTu5e0wprRhHXR,9iCd6UHR-3I
+39,Brothertiger,2MaMzvFmtu68r9zpdJ4tLE,flNm0uy98eI
+43,Casey Veggies,0uFc6StTmJBvdHPZFDkdJy,30RLLTGrgxU
+62,Dirty Projectors,5VF0YkVLeVD4ytyiyVSIiF,vncbG-QJlng
+1,Mike Posner,2KsP6tYLJlTBvSUxnwlVWa,foE1mO2yM04
+79,Ed Sheeran ,6eUKZXaKkcviH0Ku9w2n3V,Orq_75kFi8I
+191,SKRILLEX,,YJVmu6yttiw
+220,Years ,5vBSrE1xujD2FXYRarbAXc,BrjhkRIsAiw
+225,Zedd,2qxJFvFYMEDqd7ui6kSAcq,IxxstCcJlsc
+238,Mac Miller Ft. Miguel,,N29-54dhVHg
+245,NoMBe,,yjcS674AgOQ
+246,Connan Mockasin,247AfC9pLuqwgpH8Mo96oA,Teyy1A_AJso
+263,Andrea Balency,,Fdtv3vNhuMM
+282,Hoodie Allen,382aq8Pij5V2nE2JMHMoxl,vQDqpxFw4LU
+297,the Postal Service,5yV1qdnmxyIYiSFB02wpDj,0wrsZog8qXg
+299,Tycho,,k9F9fuJLZoM
+303,Two Door Cinema,536BYVgOnRky0xjsPT96zl,YXwYJyrKK5A
+325,Ratatat,57dN52uHvrHOxijzpIgu3E,KhrteSZXFzM
+203,T.I.,4OBJLual30L7gRl5UkeRcT,U6z_cilnJzg
+336,Julio Bashmore,,RnGCoQe-hzU
+337,Faul & Wad Ad,,6_tyPKUZumw
+341,Skee-Lo,,ryDOy3AosBw
+340,Bahamas,4C50EbCS11M0VbGyH3OfLt,BPkMh7bR4PE
+15,Aer,25hbSOMmbhgqvonjC876UJ,FFhs6_b8tzs
+11,Animal Collective,4kwxTgCKMipBKhSnEstNKj,zol2MJf6XNE
+10,Andrew Rayel,1UtBjqMZBAmqIPlDrKu7Tr,93HWMspjxqI
+21,Azealia Banks,7gRhy3MIPHQo5CXYfWaw9I,i3Jv9fNPjgk
+26,Beach House,56ZTgzPBDge0OvCGgMO3OY,OS6duOoxctw
+33,Blockhead,7bHm3B3jJju0q9FUdOgp3b,NhheiPTdZCw
+37,Breach,2MMkuQE0f6CDaamJdWXaCC,m0EiujcV3Tg
+46,Chet Faker,2Q0MyH5YMI5HPQjFjlq5g3,aP_-P_BS6KY
+42,Carnage,7CCjtD0hCK005Bvg2WG1a7,ZJQO_228-UA
+51,Chris Malinchak,5UVzX8pQe6bb5ueNdfViih,KrMl32cuC2A
+52,Cleavage,5HzqFA4TAMCMIyyx4pdRNr,16yiEXhOukg
+67,Gigamesh,1Bo8Afb2Qbjs4x6kJHyjle,nVnNGDWJDKg
+73,Grizzly Bear,2Jv5eshHtLycR6R8KQCdc4,OJpC9JqSnJk
+82,Foster The People,7gP3bB2nilZXLfPHJhMdvc,ABzh6hTYpb8
+93,Kavinsky,0UF7XLthtbSF2Eur7559oV,TEFKZ-7x7xU
+98,Kiesza,4zxvC7CRGvggq9EWXOpwAo,kwxIFk3tZSI
+108,Lil Dicky,1tqhsYv8yBBdwANFNzHtcr,LlU4FuIJT2k
+116,M.I.A.,0QJIPDAEDILuo8AIq3pMuU,ewRjZoRtu0Y
+169,Rhye,2AcUPzkVWo81vumdzeLLRN,sng_CdAAw8M
+170,Rich Boy,6mXlDbi03T8wXYwWYew0Ut,pudIZbCRq_c
+168,Red Hot Chili Peppers,0L8ExT028jH3ddEcZwqJJ5,YlUKcNNmywk
+173,Robin Thicke,0ZrpamOxcZybMHGg1AYtHP,sAHR5AIAzAc
+175,Robots Don't Sleep,4J4MSynCpeuNCLIoxttRUP,jhKJ7TYugXE
+179,Rustie,6YGu0Rv2120wkc4AXZSGgl,tSOUR7fi0eE
+182,Santigold,6Jrxnp0JgqmeUX1veU591p,mIMMZQJ1H6E
+206,The Japanese Popstars,5F8v5xSIGtfukNxq0Jqgwh,LQ_LUoLTKLo
+210,The Maccabees,0vW8z9pZMGCcRtGPGtyqiB,Rcp8SE_FxBg
+214,The Weeknd,1Xyo4u8uXC1ZmMpatF05PJ,ZXBcwyMUrcU
+240,Daye Jack,0LSjb1pZ3uHwuvIaVzhdyT,v6TFe9qzErI
+269,DJ Ele,1n7gOqJytpvTmOsWMSGVkX,ViPQ-RIPmKk
+287,Hayden James,4csQIMQm6vI2A2SCVDuM2z,MfttyNSCI-g
+313,Nyck Caution,1ZyUXvaBXUsIZ3JD6jYGkt,#NAME?
+326,Schoolboy Q,5IcR3N7QB1j6KBL8eImZ8m,rEMsjeq43_U
+101,Klingande,1L9i6qZYIGQedgM9QLSyzb,b6vSf0cA9qY
+236,Valentino Khan,0deIjoDjl9g9Zpw0sCIOHh,1wl5BbUg05M
+251,ABRA,6g4q7DPLaVqWGnfMpAb2Yd,CI1g4dnDtao
+343,KAYTRANADA,6qgnBH6iDM91ipVXv28OMu,KZnou4zthz4
+248,The Chemical Brothers,1GhPHrq36VKCY3ucVaZCfo,BC2dRkm8ATU
+85,INTUITION ,1KliMuvrUp7XhKu7vVeex3,VzjQ8-dU3W8
+194,"Snoop Dogg, Pharrell Williams",,SIQihN--98Y
+207,The Killers,0C0XlULifJtAgn6ZNCW2eu,Wv2AQahZwMc
+262,Alice Russell,1ga4lWS7NtKo4r9jNSWumc,oLpswbCMtKU
+286,Phoebe Ryan,4N874uPqBka1QiCvnCVOtr,2fsdNJAzLuU
+309,Woodkid,44TGR1CzjKBxSHsSEy7bi9,vSkb0kDacjs
+227,Pell,2O2dI9lY9PnWtAa4OlrgMi,6IBKpJ7sy4k
+8,AlunaGeorge,2VAnyOxzJuSAj7XIuEOT38,cmXZuv5BaHg
+53,Coconut Records,2YKp8Odp8GGbAkVU60Yk2Y,mTzEp4CeWT8
+106,Late Night Alumni,6JtFllJR7nhh8fa6oGefSj,a0BEDnYkGmc
+4,Milk & Bone,4fmvA5uVlZUNsje29D1PaW,BPb3j7Dkn5o
+5,Isaiah Rashad,6aaMZ3fcfLv4tEbmY7bjRM,QJksTRgY8-c
+11,Greg Street,3q83BMJ3Mx2NSrEcqWA3A1,hjPLkPsLxc4
+157,Pogo,1ng3xz2dyz57Z1WpnzM2G7,pAwR6w2TgxY
+277,Action Bronson feat. Chance The Rapper,,bVP_w1rQweE
+211,The Magician,4WUGQykLBGFfsl0Qjl6TDM,TFXlWfzW9Uo
+181,San Cisco,0Ou0138wEd8XWebhc4j7O0,cLCaVZ3fmU0
+4,Action Bronson,7BMccF0hQFBpP6417k1OtQ,58RSC7HO9aU
+237,OMI,5MouCg6ta7zAxsfMEbc1uh,jGflUbPQfW8
+6,Her,1T2WeXEi0XlZiPpjjDAY0L,9lRrg5DlUu8
+12,OutKast,1G9G7WwrXka3Z1r7aIDjI7,gWju37TZfo0
+13,Mase,1wiBLzTI7z9RUwEpNPdFT6,adg6iEz3-Ow
+161,QuESt,09hVIj6vWgoCDtT03h8ZCa,AgueBRR8yLk
+243,Galantis,4sTQVOfp9vEMCemLw50sbu,4jBDnYE1WjI
+259,Thundercat,,GNCd_ERZvZM
+339,Cashmere Cat,,be-LbSaEzZQ
+7,ursa major,0,6iZutqM8CwE
+14,DVBBS,5X4LWwbUFNzPkEas04uU82,I41CX0RdmPQ
+141,MO,0bdfiayQAKewqEvaU6rXCv,ALFu4D5NGbg
+199,Sun Glitters,4KEI2PqhlvbAdqlolRTTrp,LgzBM7EeR7o
+216,Theophilus London feat. Sara Quin,7DUuTYrlor8Jc21q3qrbvE,HChafej1nbo
+233,XXYYXX,1iqXhsjGeWi2Gje5q0mFYb,T-UIlx65E58
+2,A$AP Rocky,13ubrt8QOOCPljQ2FL1Kca,nAQVGx1vzrk
+15,The Chainsmokers,69GGBxA162lTqCwzJG5jLp,Io0fBr1XBUA
+178,Royksopp,,mpKVXTMGWEc
+198,St. Lucia,,7HPMK9Uxq3I
+239,Yo Gotti,,fKurEvAW4O0
+294,Shura,1qpR5mURxk3d8f6mww6uKT,x2AOjb9HW2E
+222,YONAS,6gWsNpg9lhVbimwQ8bP5K1,xvGStAFxXfs
+122,Maddslinky,2x0dOrL0VF03TCmuYWC0jp,GjeM73Kx8nk
+16,Fifth Harmony,1l8Fu6IkuTP0U5QetQJ5Xt,5GL9JoH4Sws
+180,Ryan Hemsworth,,Y7y0iEQ_4iE
+279,Guru Josh Project,4ME85YvMUi1hdqhbind7gy,jzy2dgEUOhY
+301,Touch Sensitive,,1uXrXTSASK0
+312,Joey Bada$$,2P5sC9cVZDToPxyomzF1UH,stoLqWXsIOY
+324,RAC feat. Kele and MNDR,,SeXBiXcEBkY
+184,SBTRKT,1O10apSOoAPjOu6UhUNmeI,_x6DmYxnBaI
+55,Daft Punk,4tZwfgrHOc3mvqYlEYSvVi,LKYPYj2XX80
+252,Lorn,6dU7gPN2BhEPfO5QHLt7es,nxg4C365LbQ
+17,Coldplay,4gzpq5DPGxSnKTe4SA8HAU,BPNTC7uZYrI
+230,Fever the Ghost,02Bl8I5jXlMRfDSL5swBOm,9RHFFeQ2tu4
+3,2 Chainz,17lzZA2AlOHwCwFALHttmp,2reEeG2Ho_g
+18,Jeremih,3KV3p5EY4AvKxOlhGHORLg,vYMxOzxKYYo
+265,Kimbra,6hk7Yq1DU9QcCCrz9uc0Ti,elyk9MBY72U
+311,Wes Walker & Dyl,,oy4n88CjiBY
+260,Cyril Hahn,4EFMHRFpgrpfp0AVEBp4m2,NGBeLPJTLzE
+58,David Hasselhoff,0cfSfyq03Uj5lVX9jcJw1m,ZTidn2dBYbY
+19,Adele,4dpARuHxo51G3z768sgnrY,YQHsXMglC9A
+308,Weezer,,erG5rgNYSdk
+335,Jamie xx,7A0awCXkE1FtSU8B0qwOJQ,BjLBB-TMa84
+338,2Pac,,mVObfpaR2_I
+24,Band of Horses,0OdUWJ0sBjDrqHygGUXeCF,cuZo7pLnL7c
+114,Lykke Li,6oBm8HB0yfrIc9IHbxs6in,nskaoVf8PPM
+231,C2C,28INUgyzTTRbvSphrJbgZ2,2b03hoW0TKc
+20,20syl,6mA4csYsYvf4Mq02PleZEV,Mqbw7CUVWhM
+334,Capital Cities,4gwpcMTbLWtBUlOijbVpuu,CJinWua98NA
+5,Adrian Lux,5kp9Qhzri9LrDkzrtjt5Sh,86vDxRr2ELA
+115,M Machine,62rW7FjQy7clhBDHuumg22,RZNvjaJZVMg
+21,Vulfpeck,7pXu47GoqSYRajmBCjxdD6,d5K3UgrPdbQ
