@@ -565,16 +565,40 @@ exports.artistMatch = function() {
 }
 
 exports.relatedArtists = function() {
-  // Knex('artists')
-  // .then(function(m) {
-  //   if(m.rows) {
-  //     m = m.rows;
-  //   } 
-  //   m.forEach(function(artist) {
-  //     var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
-  //     request.get(url, function(error, data, body) {
-  //       var response = JSON.parse(body);
-
-  //     });
-  //   });
+  Knex('songs')
+  .then(function(songs) {
+    songs.forEach(function(song) {
+      if(song.artist_id == null) {
+        Knex('artists').where({name: song.artist}).limit(1)
+        .then(function(artist) {
+          if(artist[0]) {artist = artist[0]}
+          else if(artist.rows) {artist = artist.rows}
+          if(artist.length) {
+            console.log('artist');
+            Knex('songs').where({id: song.id}).update({artist_id: artist.id})
+            .then(function(){});
+          } else {
+              console.log('no artist');
+              var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(song.artist) + '&limit=10&type=artist';
+              request.get(url, function(error, data, body) {
+                var response = JSON.parse(body);
+                if(response.artists && response.artists.items && response.artists.items[0]) {
+                  Knex('artists').insert({name: song.artist, spotify_id: response.artists.items[0].id, thumbnail: song.vid})
+                  .then(function() {
+                    Knex('artists').where({spotify_id: response.artists.items[0].id})
+                    .then(function(newArtist) {
+                      if(newArtist[0]) {newArtist = newArtist[0]}
+                      else if(newArtist.rows) {newArtist = newArtist.rows}
+                      var artist_id = newArtist.id;
+                      Knex('songs').where({id: song.id}).update({artist_id: artist_id})
+                      .then(function(){});
+                    });
+                  });
+                }
+              });
+          }
+        })
+      }
+    })
+  })
 }
