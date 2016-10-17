@@ -2152,7 +2152,7 @@ position: absolute;
     display: inline-block;
 } .blogEntry .glyphicon {
 	position: absolute;
-	top: 100px;
+	margin-top: 60%;
     font-size: 50px;
     color: #fff;
     left: 50%;
@@ -2749,12 +2749,3 @@ position: absolute;
     top: -10px;
 }
 
-#MobileSite {
-	position: absolute;
-	width:100%;
-	height: 100%;
-	color: #fff;
-	text-align: center;
-	background-color: #444;
-	font-size: 20%;
-}
