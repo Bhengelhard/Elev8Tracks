@@ -61,7 +61,7 @@ function playSong(e) {
 	$('#controls').removeClass('home');
 	//get video id
 	var vid = $(e.target).closest('.playSong').attr('data-vid');
-
+	if(vid.length > 0) {
 	//return to video if the selected song is playing, otherwise load a different video
 	// if($(e.target).closest('.playSong').find('.description').hasClass('active')) {
 	// 	player.playVideo();
@@ -79,6 +79,7 @@ function playSong(e) {
 	//}
 	$('#player').addClass('active');
 	//history.pushState({},'','/songs/trending/'+vid);
+	}
 }
 
 //changes name, artist, etc. on player

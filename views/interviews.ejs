@@ -5,7 +5,7 @@ blogs.forEach(function(blog) {
   <div class="blogEntry" data-id="<%= blog.id %>">
   	<div class="imgWrapper playSong" data-name="<%=blog.name%>" data-vid="<%=blog.vid%>">
     <img src="/images/<%= blog.image %>">
-    <span class="glyphicon glyphicon-play"></span>
+   <% if(blog.vid.length > 0) { %><span class="glyphicon glyphicon-play"></span><% } %>
     </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
@@ -28,7 +28,7 @@ blogs.forEach(function(blog) {
   <div class="blogEntry" data-id="<%= blog.id %>">
   	<div class="imgWrapper playSong" data-name="<%=blog.name%>" data-vid="<%=blog.vid%>">
     <img src="/images/<%= blog.image %>">
-    <span class="glyphicon glyphicon-play"></span>
+    <% if(blog.vid.length > 0) { %><span class="glyphicon glyphicon-play"></span><% } %>
     </div>
     <div class="blogEntryBody">
       <div class="blogEntryName"><%= blog.name %></div>
