@@ -2187,6 +2187,8 @@ position: absolute;
     font-size: 40px;
     padding: 10px 0px 0px 0px;
 } .blogEntryText {
+	font-family: arial;
+	font-size:16px;
  	position: relative;
     display: inline-block;
     overflow: hidden;
