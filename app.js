@@ -75,10 +75,10 @@ app.get('/songs/d', routes.songs);
 app.get('/blogs/d', routes.blogs);
 app.get('/getLoginNav', routes.getLoginNav);
 
-app.get('/songs/trending', routes.songsViewTrending);
-app.get('/songs', routes.songsViewTrending);
-app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
-app.get('/blog/:vid', routes.blogPlay);
+app.get('/songs/trending', checkForMobile, routes.songsViewTrending);
+app.get('/songs', checkForMobile, routes.songsViewTrending);
+app.get('/songs/trending/:vid', checkForMobile, routes.songsViewTrendingPlay);
+app.get('/blog/:vid', checkForMobile, routes.blogPlay);
 
 app.get('/interviews', routes.indexInterviews);
 
