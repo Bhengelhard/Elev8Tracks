@@ -82,7 +82,7 @@ exports.blogPlay = function(req, res) {
 		.then(function(blogs) {
 			Knex('blogs').where('blogs.vid', '=', req.params.vid).join('songs','songs.vid', '=', 'blogs.vid')
 			.then(function(play) {
-				var description = play[0].text.substring(0,100) + "...";
+				var description = play[0].text.substring(0,200) + "...";
 				Knex('playlists').where('userid', req.session.userid)
 				.then(function(lists) {
 					Knex('genres').distinct('genre_1','genre_1_id').select()
