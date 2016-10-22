@@ -77,7 +77,7 @@ app.get('/getLoginNav', routes.getLoginNav);
 app.get('/songs/trending', routes.songsViewTrending);
 app.get('/songs', routes.songsViewTrending);
 app.get('/songs/trending/:vid', routes.songsViewTrendingPlay);
-app.get('/blog/:vid', routes.index);
+app.get('/blog/', routes.index);
 
 app.get('/interviews', routes.indexInterviews);
 
