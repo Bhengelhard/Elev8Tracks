@@ -67,6 +67,7 @@ var spotify = require('./controllers/spotifyC.js');
 var mobile = require('./controllers/mobileC.js');
 
 app.get('/blog', checkForMobile, routes.index);
+app.get('/', checkForMobile, routes.index);
 app.get('/mobile', mobile.mobile);
 app.get('/index2', routes.index2);
 app.get('/playlists/d', routes.playlists);
