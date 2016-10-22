@@ -77,6 +77,34 @@ exports.songsViewTrendingPlay = function(req, res) {
 	});
 }
 
+exports.blogPlay = function(req, res) {
+	Knex('blogs').orderBy('date', 'desc').join('songs','songs.vid', '=', 'blogs.vid')
+		.then(function(blogs) {
+			Knex('blogs').where('blogs.vid', '=', req.params.vid).join('songs','songs.vid', '=', 'blogs.vid')
+			.then(function(play) {
+				var description = play[0].text.substring(0,100) + "...";
+				Knex('playlists').where('userid', req.session.userid)
+				.then(function(lists) {
+					Knex('genres').distinct('genre_1','genre_1_id').select()
+					.then(function(genres) {
+						if(req.session.spotifyID) {
+							if(req.session.imported) {
+								Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
+								.then(function(spotifyLists) {
+									res.render('indexBlogsPlay', {play: play, description: description, blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: spotifyLists, count: 0, user_id: req.session.userid, admin: req.session.admin});
+								});
+							} else {
+								res.render('indexBlogsPlay', {play: play, description: description, blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 1, count: 0, user_id: req.session.userid, admin: req.session.admin});
+							}
+						} else {
+							res.render('indexBlogsPlay', {play: play, description: description, blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid, admin: req.session.admin});
+						}
+					});
+				});
+			});
+		});
+}
+
 exports.blogs = function(req, res) {
 	Knex('blogs').orderBy('date', 'desc').join('songs','songs.vid', '=', 'blogs.vid')
 		.then(function(m) {
