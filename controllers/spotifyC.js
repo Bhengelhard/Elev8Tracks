@@ -545,7 +545,7 @@ exports.artistMatch = function() {
                   Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
                   .then(function(){});
                 })
-                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id, genres: genres})
+                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
                 .then(function() {
 
                 });
