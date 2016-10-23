@@ -539,13 +539,19 @@ exports.artistMatch = function() {
         request.get(url, function(error, data, body) {
           var response = JSON.parse(body);
           if(response.artists && response.artists.items && response.artists.items[0]) {
-                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
+                var genres = '';
+                console.log(response.artists.items);
+                response.artists.items[0].genres.forEach(function(genre) {
+                  Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
+                  .then(function(){});
+                })
+                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id, genres: genres})
                 .then(function() {
 
                 });
                 console.log(response.artists.items[0].id);
                 var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
-                request.get(url, function(error, data, b) {
+                request.get(artistUrl, function(error, data, b) {
                   var res = JSON.parse(b);
                   if(res.artists && res.artists.items) {
                     res.artists.items.forEach(function(artist) {
