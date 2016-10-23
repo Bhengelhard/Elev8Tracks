@@ -1668,6 +1668,26 @@ position: absolute;
 } #previousSong:active {
 	background-color: #777CFF;
 }
+#relatedSongs {
+	-webkit-transition: right .2s ease;
+    -moz-transition: right .2s ease;
+    -ms-transition: right .2s ease;
+    -o-transition: right .2s ease;
+    transition: right .2s ease;
+	position: absolute;
+    bottom: 60px;
+    right: -200px;
+    font-size: 16px;
+    padding: 10px 15px 10px 15px;
+    color: #fff;
+    border-radius: 20px;
+} #relatedSongs.active {
+	right:10px;
+} #relatedSongs:hover {
+	background-color: rgba(255,255,255,0.5);
+	color: #fff;
+	font-weight: 200;
+}
 
 #songPlaylist {
 	position: absolute;

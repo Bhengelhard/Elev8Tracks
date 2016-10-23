@@ -1550,3 +1550,24 @@ function spotifyRelatedArtists() {
 		console.log(res);
 	});
 }
+
+function findRelatedSongs() {
+	var artist_id = $('#songArtist').attr('data-artist-id');
+	$.ajax({
+		url: "/findRelatedSongs",
+	    type: "post",
+	    dataType: "json",
+	    data: JSON.stringify({ artist_id: artist_id}),
+	    contentType: "application/json",
+	    cache: false,
+	    timeout: 5000,
+	    success:function(res) {
+	    	console.log('back');
+        	$('.selected').removeClass('selected');
+    		$('#videoSearcherWrapper').addClass('selected');
+    		$('#player').removeClass('active');
+        	var time = transition();
+        	videoEnter(res.html, time);
+	    }
+	});
+}

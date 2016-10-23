@@ -120,6 +120,7 @@ app.post('/followList', routes.followList);
 app.post('/unfollowList', routes.unfollowList);
 app.post('/followArtist', routes.followArtist);
 app.post('/unfollowArtist', routes.unfollowArtist);
+app.post('/findRelatedSongs', routes.findRelatedSongs);
 
 var stateKey = 'spotify_auth_state';
 
@@ -138,6 +139,7 @@ app.post('/showSpotifyList', spotify.showList);
 app.post('/spotifyMatchSearch', spotify.matchSearch);
 app.get('/spotifyArtistMatch', spotify.artistMatch);
 app.get('/spotifyRelatedArtists', spotify.relatedArtists);
+
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

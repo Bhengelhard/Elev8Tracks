@@ -1,4 +1,5 @@
 var Knex = require('../init/knex');
+var request = require('request'); // "Request" library
 
 exports.index = function(req, res) {
 	Knex('blogs').orderBy('date', 'desc').join('songs','songs.vid', '=', 'blogs.vid')
@@ -195,15 +196,17 @@ exports.storeSong = function(req, res) {
 							else if(oldArtist.rows) {oldArtist = oldArtist.rows}
 							if(oldArtist.length != 0) {
 								var artist_id = oldArtist.id;
-								updateSongArtist(artist_id, req.body.vid);
+								updateSongArtist(artist, artist_id, req.body.vid);
 							} else {
 								console.log('--new artist');
 								Knex('artists').insert({name: req.body.artist, spotify_id: req.body.artist_id, thumbnail: req.body.vid})
 								.then(function() {
 									Knex('artists').where({spotify_id: req.body.artist_id})
 									.then(function(newArtist) {
+										console.log(newArtist);
+										if(newArtist[0]) {newArtist=newArtist[0]}
 										var artist_id = newArtist.id;
-										updateSongArtist(artist_id, req.bodyvid);
+										updateSongArtist(req.body.artist, artist_id, req.body.vid);
 									});
 								});
 							}
@@ -249,24 +252,36 @@ function createArtist(artist, spotify_id, vid) {
 			else if(oldArtist.rows) {oldArtist = oldArtist.rows}
 			if(oldArtist.length != 0) {
 				var artist_id = oldArtist.id;
-				updateSongArtist(artist_id, vid);
+				updateSongArtist(artist, artist_id, vid);
 			} else {
-				console.log('--new artist');
 				Knex('artists').insert({name: artist, spotify_id: spotify_id, thumbnail: vid})
 				.then(function() {
 					Knex('artists').where({spotify_id: spotify_id})
 					.then(function(newArtist) {
+						if(newArtist[0]) {newArtist=newArtist[0]}
 						var artist_id = newArtist.id;
-						updateSongArtist(artist_id, vid);
+						updateSongArtist(artist, artist_id, vid);
 					});
 				});
 			}
 	});
 }
-function updateSongArtist(artist_id, vid) {
-	Knex('songs').where({vid: vid}).update({artist_id: artist_id})
+function updateSongArtist(artist, artist_id, vid) {
+	console.log(vid);
+	console.log(artist_id);
+	Knex('songs').where('vid', vid).update({artist_id: artist_id})
 	.then(function() {
-		console.log('updated');
+		var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist) + '&limit=10&type=artist';
+              request.get(url, function(error, data, body) {
+		          var response = JSON.parse(body);
+		          if(response.artists && response.artists.items && response.artists.items[0]) {
+		                var genres = '';
+		                response.artists.items[0].genres.forEach(function(genre) {
+		                  Knex('artists_genres').insert({artist_id: artist_id, genre: genre})
+		                  .then(function(){});
+		                });
+		          }
+          	  });
 	});
 }
 
@@ -896,6 +911,21 @@ exports.indexInterviews = function(req, res) {
 						res.render('indexInterviews', {blogs: blogs, user: req.session.user, spotify: req.session.spotifyID, lists: lists, genres: genres, spotifyLists: 0, count: 0, user_id: req.session.userid, admin: req.session.admin});
 					}
 				});
+			});
+		});
+}
+
+exports.findRelatedSongs = function(req, res) {
+		console.log(req.body.artist_id);
+		var sql = "SELECT * FROM artists_genres a INNER JOIN artists_genres b ON a.genre = b.genre INNER JOIN songs ON b.artist_id = songs.artist_id WHERE a.artist_id = " + req.body.artist_id + " GROUP BY songs.name";
+		Knex.raw(sql).then(function(m) {
+			if(m[0]) {
+				m = m[0];
+			} else {
+				m = m.rows;
+			}
+			res.render('songs', {songs: m, session: req.session}, function(err, model) {
+				res.send({html: model, m: m});
 			});
 		});
 }
