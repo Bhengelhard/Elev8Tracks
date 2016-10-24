@@ -331,14 +331,14 @@ body {
 	pointer-events: all;
 } #player #playerCollapse {
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 70px;
-	height: 70px;
-	font-size: 30px;
-	color: #fff;
-	text-align: center;
-	opacity: 0;
+    top: 0px;
+    left: 0px;
+    width: 100px;
+    height: 100px;
+    font-size: 55px;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
 } #player #playerCollapse .glyphicon {
 	padding-top: 15px;
 	pointer-events: none;
@@ -1677,16 +1677,18 @@ position: absolute;
 	position: absolute;
     bottom: 60px;
     right: -200px;
-    font-size: 16px;
-    padding: 10px 15px 10px 15px;
+    font-size: 24px;
+    padding: 10px 20px 10px 20px;
     color: #fff;
-    border-radius: 20px;
+    border-radius: 30px;
 } #relatedSongs.active {
 	right:10px;
 } #relatedSongs:hover {
 	background-color: rgba(255,255,255,0.5);
 	color: #fff;
-	font-weight: 200;
+} #relatedSongs:active {
+	background-color: #fff;
+	color: #000;
 }
 
 #songPlaylist {
