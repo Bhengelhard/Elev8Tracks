@@ -917,7 +917,7 @@ exports.indexInterviews = function(req, res) {
 
 exports.findRelatedSongs = function(req, res) {
 		console.log(req.body.artist_id);
-		var sql = "select c.*, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.name having count >= 6";
+		var sql = "select c.* from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.name";
 		Knex.raw(sql).then(function(m) {
 			if(m[0]) {
 				m = m[0];
