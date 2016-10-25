@@ -387,10 +387,8 @@ exports.artistSearch = function(req, res) {
 					var follow = 1;
 				else
 					var follow = 0;
-				console.log("---");
 				Knex('artists').where('id',req.body.artist_id)
 				.then(function(artist) {
-					console.log("------");
 					if(artist[0]) {artist=artist[0]}
 					else if(artist.rows) {artist = artist.rows}
 					console.log(req.body.artist_id);
@@ -413,9 +411,13 @@ exports.artistSearch = function(req, res) {
 					if(artist[0]) {artist=artist[0]}
 					else if(artist.rows) {artist = artist.rows}
 					console.log(artist);
-					Knex('related_artists').join('artists','artists.spotify_id','=','related_artists.artist_id2').where('related_artists.artist_id1','=',artist.spotify_id)
+					var sql = "select c.id, c.name, c.thumbnail, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join artists c on b.artist_id = c.id group by c.id, c.name, c.thumbnail having count(*) >= 6 order by count desc limit 16";
+					console.log(sql);
+					Knex.raw(sql)
 					.then(function(related) {
 						console.log(related);
+						if(related[0]) {related=related[0]}
+						if(related.rows) {related=related.rows}
 						res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: 0, related: related}, function(err, model) {
 							res.send({html: model});
 						});
