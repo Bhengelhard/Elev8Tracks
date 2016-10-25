@@ -387,8 +387,10 @@ exports.artistSearch = function(req, res) {
 					var follow = 1;
 				else
 					var follow = 0;
+				console.log("---");
 				Knex('artists').where('id',req.body.artist_id)
 				.then(function(artist) {
+					console.log("------");
 					if(artist[0]) {artist=artist[0]}
 					else if(artist.rows) {artist = artist.rows}
 					console.log(req.body.artist_id);
