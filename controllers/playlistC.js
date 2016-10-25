@@ -391,10 +391,11 @@ exports.artistSearch = function(req, res) {
 				.then(function(artist) {
 					if(artist[0]) {artist=artist[0]}
 					else if(artist.rows) {artist = artist.rows}
-					console.log(artist);
-					Knex('related_artists').join('artists','artists.spotify_id','=','related_artists.artist_id2').where('related_artists.artist_id1','=',artist.spotify_id)
+					console.log(req.body.artist_id);
+					var sql = "select c.id, c.name, c.thumbnail, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join artists c on b.artist_id = c.id group by c.id, c.name, c.thumbnail having count >= 4 order by count desc limit 16";
+					Knex.raw(sql)
 					.then(function(related) {
-						console.log(related);
+						if(related[0]) {related=related[0]}
 						res.render('artist', {list: m, name: req.body.artist, artist_id: req.body.artist_id, session: req.session, follow: follow, related: related}, function(err, model) {
 							res.send({html: model});
 						});
@@ -917,13 +918,14 @@ exports.indexInterviews = function(req, res) {
 
 exports.findRelatedSongs = function(req, res) {
 		console.log(req.body.artist_id);
-		var sql = "select c.* from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.name";
+		var sql = "select c.id, c.artist_id, c.artist, c.vid, c.name, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.id, c.artist_id, c.artist, c.name having count >= 4 order by count desc limit 50";
 		Knex.raw(sql).then(function(m) {
 			if(m[0]) {
 				m = m[0];
 			} else {
 				m = m.rows;
 			}
+			console.log(m);
 			res.render('songs', {songs: m, session: req.session}, function(err, model) {
 				res.send({html: model, m: m});
 			});
