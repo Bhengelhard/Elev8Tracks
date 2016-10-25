@@ -139,13 +139,13 @@
         <div id="songPlaylist">Show Playlist</div>
         <div id="songTitle"><%= play[0].name %></div>
         <div id="songArtist"><%= play[0].artist %></div>
+        <div id="relatedSongs" class="playerOptions" onclick="findRelatedSongs()">Related Songs</div>
         <div id="shuffle"><span class="glyphicon glyphicon-random"></span></div>
         <div id="repeat" class="active"><span class="glyphicon glyphicon-repeat"></span></div>
       </div>
       <div id="playerCollapse" class="playerOptions"><span class="glyphicon glyphicon-menu-down"></span></div>
       <div id="nextSong" class="playerOptions"><span class="glyphicon glyphicon-menu-right"></span></div>
       <div id="previousSong" class="playerOptions"><span class="glyphicon glyphicon-menu-left"></span></div>
-      <div id="relatedSongs" class="playerOptions" onclick="findRelatedSongs()">Related Songs<span class="glyphicon glyphicon-menu-right"></span></div>
     </div>
     <div id="userSaveLists"></div>
     <script>

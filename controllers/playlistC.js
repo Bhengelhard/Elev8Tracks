@@ -392,7 +392,7 @@ exports.artistSearch = function(req, res) {
 					if(artist[0]) {artist=artist[0]}
 					else if(artist.rows) {artist = artist.rows}
 					console.log(req.body.artist_id);
-					var sql = "select c.id, c.name, c.thumbnail, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join artists c on b.artist_id = c.id group by c.id, c.name, c.thumbnail having count >= 4 order by count desc limit 16";
+					var sql = "select c.id, c.name, c.thumbnail, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join artists c on b.artist_id = c.id group by c.id, c.name, c.thumbnail having count(*) >= 6 order by count desc limit 16";
 					Knex.raw(sql)
 					.then(function(related) {
 						if(related[0]) {related=related[0]}
@@ -918,7 +918,7 @@ exports.indexInterviews = function(req, res) {
 
 exports.findRelatedSongs = function(req, res) {
 		console.log(req.body.artist_id);
-		var sql = "select c.id, c.artist_id, c.artist, c.vid, c.name, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.id, c.artist_id, c.artist, c.name having count >= 4 order by count desc limit 50";
+		var sql = "select c.id, c.artist_id, c.artist, c.vid, c.name, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join songs c on b.artist_id = c.artist_id group by c.id, c.artist_id, c.artist, c.name having count(*) >= 6 order by count desc limit 50";
 		Knex.raw(sql).then(function(m) {
 			if(m[0]) {
 				m = m[0];
