@@ -1571,3 +1571,9 @@ function findRelatedSongs() {
 	    }
 	});
 }
+
+function thumbnails() {
+	$.get('/thumbnails', function(res) {
+		console.log("getting");
+	});
+}

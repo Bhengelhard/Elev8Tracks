@@ -938,3 +938,19 @@ exports.findRelatedSongs = function(req, res) {
 			});
 		});
 }
+
+exports.thumbnails = function(req, res) {
+  Knex('artists')
+  .then(function(artists) {
+    artists.forEach(function(artist) {
+      Knex('songs').where('artist', artist.name).limit(1)
+      .then(function(song) {
+          if(song[0]) {song = song[0]}
+          else if(song.rows) {song = song.rows}
+          Knex('artists').where({id: artist.id}).update({thumbnail: song.vid})
+          .then(function() {});
+      });
+    });
+  });
+  res.send(200,{});
+}

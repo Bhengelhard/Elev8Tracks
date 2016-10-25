@@ -85,6 +85,7 @@ app.get('/interviews', routes.indexInterviews);
 app.get('/myLists/d', routes.myLists);
 app.get('/myLists', routes.myLists);
 app.get('/playlistmodel', routes.playlistmodel);
+app.get('/thumbnails', routes.thumbnails);
 
 app.post('/showList', routes.showList);
 app.post('/addToList', routes.addSong);

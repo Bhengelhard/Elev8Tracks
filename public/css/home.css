@@ -2777,3 +2777,16 @@ position: absolute;
     top: -10px;
 }
 
+#thumbnails {
+	position: relative;
+    top: 300px;
+    width: 200px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -100px;
+    margin-bottom: 50px;
+}
+
