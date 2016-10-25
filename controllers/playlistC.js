@@ -393,6 +393,7 @@ exports.artistSearch = function(req, res) {
 					else if(artist.rows) {artist = artist.rows}
 					console.log(req.body.artist_id);
 					var sql = "select c.id, c.name, c.thumbnail, count(*) as count from (select distinct genre from artists_genres where artist_id = "+req.body.artist_id+") a join artists_genres b  on a.genre = b.genre join artists c on b.artist_id = c.id group by c.id, c.name, c.thumbnail having count(*) >= 6 order by count desc limit 16";
+					console.log(sql);
 					Knex.raw(sql)
 					.then(function(related) {
 						console.log(related);
