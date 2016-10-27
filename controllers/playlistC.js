@@ -483,6 +483,7 @@ exports.videoSearch = function(req, res) {
 		} else {
 			m = m.rows;
 		}
+		console.log(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
 			res.send({html: model, m: m});
 		});
