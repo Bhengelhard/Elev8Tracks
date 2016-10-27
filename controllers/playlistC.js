@@ -7,6 +7,7 @@ exports.index = function(req, res) {
 			console.log(blogs);
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
+				var sql = "Select genre, count(*) as count from artists_genres group by genre order by count(*) desc limit(5)";
 				Knex('genres').distinct('genre_1','genre_1_id').select()
 				.then(function(genres) {
 					if(req.session.spotifyID) {
@@ -196,7 +197,7 @@ exports.storeSong = function(req, res) {
 							else if(oldArtist.rows) {oldArtist = oldArtist.rows}
 							if(oldArtist.length != 0) {
 								var artist_id = oldArtist.id;
-								updateSongArtist(artist, artist_id, req.body.vid);
+								updateSongArtist(req.body.artist, artist_id, req.body.vid);
 							} else {
 								console.log('--new artist');
 								Knex('artists').insert({name: req.body.artist, spotify_id: req.body.artist_id, thumbnail: req.body.vid})
@@ -807,6 +808,10 @@ exports.newgenreUpdate = function(req, res) {
 			res.send(200,{});
 		});
 	});
+}
+
+exports.newGenreUpdate2 = function(req, res) {
+
 }
 
 exports.playlistSongDelete = function(req, res) {
