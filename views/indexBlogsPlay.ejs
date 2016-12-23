@@ -54,26 +54,19 @@
     <div id="navbar" class="home">
       <div id="mainBar">
       <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
-      <div id="title" class="nav selected active"><div class="navSelection"></div>E L E V A T E</div>
+      <div id="title" class="nav selected active"><div class="navSelection"></div>
+      <img src="../../Elevate logo small.png" alt="large logo">
+      </div>
       <div id="videoSearcherWrapper">
         <input type="text" id="videoSearcher" placeholder="S e a r c h">
-        <div id="vgenre" class="criteriaType">
-          <div class="dtitle">GENRE</div>
-
+        <div id="vgenre" class="criteriaType dItem">
+          <div class="dtitle">GENRE
+          <span class="glyphicon glyphicon-pushpin"></span>
+          </div>
         </div>
         <div id="vsort" class="criteriaType">
-          <div class="dtitle">SORT</div>
-          <div id="vitemPopular" class="dItem criteria query" data-search="pop_trending">
-            <div class="itemName">Trending</div>
-          </div>
-          <div id="vitemPopular" class="dItem criteria query" data-search="pop_week">
-            <div class="itemName">Week Pop.</div>
-          </div>
-          <div id="vitemPopular" class="dItem criteria query" data-search="pop_1">
-            <div class="itemName">All Time Pop.</div>
-          </div>
-          <div id="vitemNewest" class="dItem criteria searched query" data-search="created_at">
-            <div class="itemName">Newest</div>
+          <div class="dtitle">SORT
+            <span class="glyphicon glyphicon-pushpin"></span>
           </div>
         </div>
         <div id="vfilter" class="criteriaType">
@@ -98,9 +91,25 @@
       </div>
         <% include myListsNav %>
       </div>
+      <div id="sortBar" class="criteriaType">
+        <div id="sortBarSelect"></div>
+          <div id="vitemPopular" class="gItem criteria query" data-search="pop_trending">
+            <div class="itemName">TRENDING</div>
+          </div>
+          <div id="vitemPopular" class="gItem criteria query" data-search="pop_week">
+            <div class="itemName">POPULAR THIS WEEK</div>
+          </div>
+          <div id="vitemPopular" class="gItem criteria query" data-search="pop_1">
+            <div class="itemName">ALL TIME POPULAR</div>
+          </div>
+          <div id="vitemNewest" class="gItem criteria query" data-search="created_at">
+            <div class="itemName">NEWEST</div>
+          </div>
+      </div>
       <div id="genreBar" class="criteriaType">
         <% include genres %>
       </div>
+      
     </div>
     <div id="spotifyControls">
       <div class="spotifyTitle">Spotify</div>
