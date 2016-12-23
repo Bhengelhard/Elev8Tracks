@@ -1235,7 +1235,7 @@ function refreshGenres($el) {
 		$el.addClass('searched');
 	} else {
 		$('#genreBarSelect').css('opacity',0);
-		$('genreBar .gItem').removeClass('searched');
+		$('#genreBar .gItem').removeClass('searched');
 	}
 }
 
@@ -1251,7 +1251,7 @@ function refreshSort($el) {
 		$el.addClass('searched');
 	} else {
 		$('#sortBarSelect').css('opacity',0);
-		$('sortBar .gItem').removeClass('searched');
+		$('#sortBar .gItem').removeClass('searched');
 	}
 }
 
