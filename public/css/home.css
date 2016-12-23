@@ -1,3 +1,17 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul,
+li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th,
+td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+
 body {
 	background-color: #000;
 	font-family: "Helvetica-Thin";
@@ -321,6 +335,7 @@ body {
 	height: 100%;
 	pointer-events: none;
 	z-index:150;
+	background-color: #000;
 	-webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -442,7 +457,7 @@ body {
 	width: 100%;
 	height: 50px;
 	background-color: #222;
-	color: #fff;
+	color: #777;
 	z-index: 110;
 	min-width:700px;
 	border-bottom: 2px solid #000;
@@ -455,18 +470,20 @@ body {
 	font-family: "Neou-Thin";
 	font-size: 30px;
 	text-align: left;
-	height: 100%;
+	height: 50px;
+	line-height: 50px;
 	position: relative;
 	padding:0px 20px 0px 20px;
 	display: inline-block;
-	line-height: 2;
 	background-color: transparent;
 } #navbar #title:hover {
 	background-color: #444;
 } #navbar #title.selected {
 	/*color: #5E63FF;*/
+} #navbar #title img {
+	width: 28px;
 } .navSelection {
-	background-color: #fff;
+	background-color: transparent;
   width: 100%;
   height: 20px;
   position: absolute;
@@ -485,18 +502,14 @@ body {
 } #vsort {
 	position: relative;
 	overflow:hidden;
-	  float: right;
-  height: 100%;
-  font-weight: 100;
+	  float: left;
+  height: 48px;
   background-color: #222;
   -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
-} #vsort:hover {
-	height: auto;
-  padding-bottom: 15px;
 } #vsort:hover .vItem {
 	width: auto;
 }  #vsort:hover .vtitle {
@@ -504,35 +517,28 @@ body {
 } #vgenre {
 	position: relative;
     overflow: hidden;
-    float: right;
-    height: 100%;
-    font-weight: 100;
+    float: left;
+    height: 48px;
     background-color: #222;
     -webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
-} #vgenre.pinned {
-	height: auto;
-    padding-bottom: 8px;
-    background-color: #444;
+    width:100px;
+} #vgenre .glyphicon-pushpin {
+	display: inline-block;
+} #vgenre.pinned, #vsort.pinned, #dItem.pinned:hover {
     color: #ff4400;
-} #vgenre:hover {
-	height: auto;
-    padding-bottom: 8px;
-    background-color: #444;
-} #vgenre:hover .vItem {
-	width: auto;
 } #genre:hover .vtitle {
 	padding-bottom: 15px;
 } #vfilter {
 	position: relative;
 	overflow:hidden;
-	 float: right;
-  height: 100%;
-  font-weight: 100;
+	 float: left;
+  height: 48px;
   background-color: #222;
+  margin: 0px 10px 0px 10px;
   -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -540,6 +546,7 @@ body {
     transition: all .3s ease;
   } #vfilter:hover {
 	height: auto;
+	background-color: #000;
   padding-bottom: 15px;
 } #vfilter.filtered .dtitle {
 	color: #ff4400;
@@ -553,7 +560,6 @@ body {
   	overflow:hidden;
   	 float: right;
   height: 100%;
-  font-weight: 100;
   background-color: #222;
   -webkit-transition: all .4s ease;
     -moz-transition: all .4s ease;
@@ -595,6 +601,7 @@ body {
     transition: all .4s ease;
 } #userListsNav.active {
 	height: auto;
+	background-color:#000;
 } #userListsNav.blog {
 	background-color: transparent;
 }
@@ -774,10 +781,10 @@ body {
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
-} #content.genre {
+} #content.genre, #content.genrePinned, #content.sort, #content.sortPinned, #sortBar.genrePinned {
 	top:50px;
-} #content.genrePinned {
-	top:50px;
+} #sortBar.sort.genrePinned, #content.genre.sort, #content.genrePinned.sortPinned, #content.genre.sortPinned, #content.genrePinned.sort {
+	top:100px;
 }
 .vtitle {
 	padding: 10px;
@@ -791,21 +798,24 @@ body {
     cursor: default;
     display: inline-block;
 } .dtitle {
-	padding: 15px;
+	padding: 0px 5px 0px 10px;
 	text-align: center;
 	display:inline-block;
-	width: 100%;
-} .dtitle:hover {
-	background-color:#444;
+} .dtitle:hover, .dtitle:hover .glyphicon {
+	color:#fff;
+	cursor: default;
 } .dItem {
 	width: 100px;
+	height: 50px;
+	line-height: 50px;
 	position:relative;
-	padding: 10px 10px 10px 10px;
     background-color: transparent;
     cursor: default;
-    margin: 3px;
+} .dItem:hover{
+	color: #fff;
 } .dItem.listNav {
 	width: 100%;
+	padding-left:10px;
 } .vItem:hover, .vItem.active, .dItem:hover, .dItem.active {
 	background-color: rgba(255,255,255,.5);
 } .vItem.searched, .dItem.searched {
@@ -823,11 +833,7 @@ body {
     transition: all .2s ease;
 } .checkItemChecked {
 	display: inline-block;
-} .itemName {
-	display: inline-block;
-	font-size: 1.25vw;
-	padding: 0px 10px 0px 10px;
-}
+} 
 
 #blog {
 	float: right;
@@ -841,11 +847,10 @@ body {
 	position: relative;
 	padding: 15px;
 	height: 100%;
-	font-family: "Neou-Thin";
 	text-align: center;
 	background-color: transparent;
 } #myLists:hover {
-	background-color: #444;
+	color: #fff;
 } #myLists.selected {
 	/*color: #5E63FF;*/
 } #selector {
@@ -1056,12 +1061,10 @@ body {
 	border-top: 2px solid #303030;
 	border-bottom: 2px solid #303030;
 	color: #fff;
-	font-size: 24px;
 	border-left: none;
 	border-right: none;
 	padding-left: 20px;
 	padding-top: 5px;
-	font-family: "Neou-Thin";
 	line-height: 2px;
 } #videoSearch:focus {
 	outline: none;
@@ -1607,20 +1610,21 @@ body {
 #videoSearcherWrapper {
 position: absolute;
   display: inline-block;
-  height: 100%;
+  height: 50px;
+  line-height: 50px;
   right: 150px;
-  left: 275px;
+  left: 150px;
+  min-width:700px;
 }
 #videoSearcher {
-	position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
+	position: relative;
+  height: 60%;
+  width: 300px;
+  background-color: rgba(255,255,255,.2);
+  border-radius: 60px;
   border: none;
   color: #fff;
-  font-size: 20px;
-  font-weight: 100;
-  padding-left: 10px;
+  padding-left: 15px;
 } #videoSearcher:focus {
 	background-color: #444;
 	outline: none;
@@ -1958,11 +1962,11 @@ position: absolute;
 } 
 
 #vidPlayer {
-	position: fixed;
-    top: -25%;
+	position: absolute;
+    top: -5%;
     left: 0px;
     width: 100%;
-    height: 150%;
+    height: 100%;
 } #vidPlayer video {
 	position: absolute;
     left: 0%;
@@ -2348,19 +2352,24 @@ position: absolute;
 	position: relative;
     top: 0px;
     display: inline-block;
-    padding: 15px 5px 0px 5px;
+    padding: 0px 15px 0px 15px;
     cursor: default;
     height: 48px;
+    text-transform: capitalize;
+    font-family: "arial";
+    font-size: 12px;
 }.gItem:hover:not(.searched) {
-	background-color: #ccc;
+	background-color: #444;
 }
-#genreBar {
+#genreBar, #sortBar {
 	position: absolute;
     width: 100%;
     height: 50px;
-    background-color: #444;
+    background-color: #222;
     color: #fff;
-    font-weight: 100;
+    font-family: "arial";
+    font-size: 12px;
+    line-height: 50px;
     -moz-box-shadow: inset 1px 4px 9px -6px;
     -webkit-box-shadow: inset 1px 4px 9px -6px;
     box-shadow: inset 0 7px 9px -7px rgba(0,0,0,0.4);
@@ -2377,11 +2386,28 @@ position: absolute;
 	top: 50px;
 } #navbar #genreBar.pinned {
 	top: 50px;
+} 
+#navbar #sortBar.active {
+	top: 50px;
+} #navbar #sortBar.pinned {
+	top: 50px;
+} #navbar #sortBar.genre.active {
+	top: 100px;
+} #navbar #sortBar.genre.pinned {
+	top: 100px;
+} #navbar #sortBar.genrePinned.pinned {
+	top: 100px;
+} #navbar #sortBar.genrePinned.active {
+	top: 100px;
 }
 #mainBar {
 	position: relative;
     height: 50px;
     background-color: #222;
+    border-bottom: 2px solid #000;
+    font-family: 'arial';
+    font-width: 200;
+    font-size: 12px;
     z-index: 101;
 } 
 
@@ -2722,6 +2748,20 @@ position: absolute;
 }
 
 #genreBarSelect {
+	-webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -ms-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: 50px;
+	background-color:#ff4400;
+	opacity: 0;
+}
+
+#sortBarSelect {
 	-webkit-transition: all .2s ease;
     -moz-transition: all .2s ease;
     -ms-transition: all .2s ease;

@@ -4,8 +4,8 @@
   <% lists.forEach(function(list) { %>
     <div class="dItem listNav" data-lid="<%=list.id %>" data-user="<%= user_id %>" onclick="showList(this)"><%=list.name %></div>
   <% }); %>
-  <div id="logout" onclick="logout()">Logout</div>
+  <div id="logout" onclick="logout()">LOGOUT</div>
 <% } else { %> 
-    <div id="myLists" class="nav">Login</div>
+    <div id="myLists" class="nav">LOGIN</div>
 <% } %>
 </div>

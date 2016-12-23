@@ -255,6 +255,11 @@ function createArtist(artist, spotify_id, vid) {
 				var artist_id = oldArtist.id;
 				updateSongArtist(artist, artist_id, vid);
 			} else {
+				Knex('artists').orderBy('id','desc').limit(10)
+				.then(function(existing) {
+					if(oldArtist[0]) {oldArtist=oldArtist[0]}
+					else if(oldArtist.rows) {oldArtist = oldArtist.rows}
+				})
 				Knex('artists').insert({name: artist, spotify_id: spotify_id, thumbnail: vid})
 				.then(function() {
 					Knex('artists').where({spotify_id: spotify_id})
@@ -483,7 +488,6 @@ exports.videoSearch = function(req, res) {
 		} else {
 			m = m.rows;
 		}
-		console.log(m);
 		res.render('songs', {songs: m, session: req.session}, function(err, model) {
 			res.send({html: model, m: m});
 		});

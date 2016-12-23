@@ -24,18 +24,38 @@ $(document).ready(function() {
 		if(!$('#genreBar').hasClass('active')) {
 			$('#genreBar').toggleClass('active');
 			$('#content').toggleClass('genre');
+			$('#sortBar').toggleClass('genre');
+		}
+	});
+	$('#vsort').mouseenter(function() {
+		if(!$('#sortBar').hasClass('active')) {
+			$('#sortBar').toggleClass('active');
+			$('#content').toggleClass('sort');
 		}
 	});
 	$('#navbar').mouseleave(function() {
 		if($('#genreBar').hasClass('active')) {
 			$('#genreBar').toggleClass('active');
 			$('#content').toggleClass('genre');
+			$('#sortBar').toggleClass('genre');
+		}
+	});
+	$('#navbar').mouseleave(function() {
+		if($('#sortBar').hasClass('active')) {
+			$('#sortBar').toggleClass('active');
+			$('#content').toggleClass('sort');
 		}
 	});
 	$('#vgenre').click(function() {
 		$(this).toggleClass('pinned');
 		$('#genreBar').toggleClass('pinned');
 		$('#content').toggleClass('genrePinned');
+		$('#sortBar').toggleClass('genrePinned');
+	});
+	$('#vsort').click(function() {
+		$(this).toggleClass('pinned');
+		$('#sortBar').toggleClass('pinned');
+		$('#content').toggleClass('sortPinned');
 	});
 
 	$('#vfilter .dtitle').click(function() {
@@ -282,6 +302,7 @@ function nav(e) {
 			$.get('/blogs/d', function(res) {
 				$('#genreBar .searched').removeClass('searched');
 				$('#genreBarSelect').css('opacity',0);
+				$('#sortBarSelect').css('opacity',0);
 				clearSearch();
 				var time = transition();
         		pageEnter(res, time);
@@ -1179,18 +1200,15 @@ function blogInterviewshtml() {
 function searchCriteriaToggle(e) {
 	var criteria = $(e.target).closest('.criteriaType').attr('id');
     switch(criteria) {
-    	case 'sortDrop':
     	case 'vsort':
     		$(e.target).closest('.criteriaType').children().removeClass('searched');
     		$(e.target).closest('.criteria').toggleClass('searched');
     		break;
+    	case 'sortBar':
+    		console.log($(e.target).closest('.gItem'));
+    		refreshSort($(e.target).closest('.gItem'));
+    		break;
     	case 'genreBar':
-    		// if($(e.target).closest('.criteria').hasClass('searched')) {
-    		// 	$(e.target).closest('.criteria').removeClass('searched');
-    		// 	$(e.target).closest('.criteria').nextAll().removeClass('searched');
-    		// } else {
-    		// 	$(e.target).closest('.criteria').addClass('searched');
-    		// }
     		refreshGenres($(e.target).closest('.gItem'));
     		break;
     	default:
@@ -1209,15 +1227,31 @@ function searchCriteriaToggle(e) {
 function refreshGenres($el) {
 	if(!$el.hasClass('searched')) {
 		var left = $el.offset().left;
-		var width = $el.width()+10;
+		var width = $el.width()+30;
 		$('#genreBarSelect').css('left',left);
 		$('#genreBarSelect').css('width',width);
 		$('#genreBarSelect').css('opacity', 1);
-		$('.gItem').removeClass('searched');
+		$('#genreBar .gItem').removeClass('searched');
 		$el.addClass('searched');
 	} else {
 		$('#genreBarSelect').css('opacity',0);
-		$('.gItem').removeClass('searched');
+		$('genreBar .gItem').removeClass('searched');
+	}
+}
+
+function refreshSort($el) {
+	if(!$el.hasClass('searched')) {
+		var left = $el.offset().left;
+		var width = $el.width()+30;
+		console.log($el);
+		$('#sortBarSelect').css('left',left);
+		$('#sortBarSelect').css('width',width);
+		$('#sortBarSelect').css('opacity', 1);
+		$('#sortBar .gItem').removeClass('searched');
+		$el.addClass('searched');
+	} else {
+		$('#sortBarSelect').css('opacity',0);
+		$('sortBar .gItem').removeClass('searched');
 	}
 }
 
@@ -1530,8 +1564,9 @@ function unfollowArtist() {
 
 function clearSearch() {
 	$('#genreBarSelect').css('opacity',0);
+	$('#sortBarSelect').css('opacity',0);
 	$('#genreBar .searched').removeClass('searched');
-	console.log('testing');
+	$('#sortBar .searched').removeClass('searched');
 	$('#vfilter .searched').removeClass('searched');
 	$('#vfilter').removeClass('filtered');
 }

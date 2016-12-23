@@ -70,10 +70,15 @@ function searchParams() {
 	filterParams = filterParams.substring(0,filterParams.length-1);
 	params.push(filterParams);
 	var sortParams = '';
-	$('#vsort').find('.searched').each(function() {
+	$('#sortBar').find('.searched').each(function() {
 		sortParams += $(this).attr('data-search') + ',';
 	});
+	if(sortParams.length == 0) {
+		sortParams = 'created_at,';
+		refreshSort($('#vitemNewest'));
+	}
 	sortParams = sortParams.substring(0,sortParams.length-1);
+	console.log(sortParams);
 	params.push(sortParams);
 	if($('#genreBar').find('.searched:last').length == 0)
 		var genreParams = 0
