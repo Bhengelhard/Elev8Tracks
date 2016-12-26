@@ -1300,12 +1300,42 @@ body {
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
+    margin-bottom: 100px;
 } #account #email.inactive {
 	opacity: 0;
 } #account #accountTitle {
 	color: #fff;
     font-weight: 100;
     font-size: 50px;
+} #accountDescription {
+	font-family: "arial";
+    color: #999;
+    width: 100%;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+} #accountOr {
+	color: #999;
+    font-family: "Arial";
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+} #accountfbLogin {
+	margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    width: 250px;
+    background-color: #3b5998;
+    height: 40px;
+    line-height: 40px;
+    font-family: "arial";
+    font-size: 16px;
+    color: #fff;
+    cursor: default;
+} #accountfbLogin:hover {
+	background-color: #5781E2;
 } #account #accountLogin, #account #accountSignUp {
 	padding: 3px;
 	width: 250px;
@@ -1382,9 +1412,10 @@ body {
 } #createList:hover {
 	background-color: #444;
 }
-#userLists {
+#userLists, #followedLists, #followedArtists {
 	overflow: auto;
 	font-size: 18px;
+	padding-bottom:100px;
 }
 .saveToList {
 	-webkit-transition: opacity .2s ease;
@@ -1857,7 +1888,7 @@ position: absolute;
     margin-left: -10px;
     font-size: 20px;
 }
-#followedListsBanner {
+/*#followedListsBanner {
 	position: relative;
     width: 100%;
     height: 50px;
@@ -1880,7 +1911,7 @@ position: absolute;
     height: 50px;
     background-color: #0066ff;
     margin-top:100px;
-}
+}*/
 
 #listBanner {
 	position: relative;
@@ -2231,10 +2262,12 @@ position: absolute;
 	position: relative;
     display: inline-block;
     background-color: rgba(0,0,0,.1);
-    padding: 5px 16px 0px 16px;
+    padding: 0px 16px 0px 16px;
+    height:30px;
     border-radius: 15px;
+    font-family: "arial";
     font-size: 16px;
-    font-weight: 100;
+    line-height:30px;
     top: -5px;
     cursor: default;
     color: #888;
@@ -2351,6 +2384,7 @@ position: absolute;
 .gItem {
 	position: relative;
     top: 0px;
+    margin-top: -20px;
     display: inline-block;
     padding: 0px 15px 0px 15px;
     cursor: default;
@@ -2499,21 +2533,30 @@ position: absolute;
 	background-color: rgba(255,255,255,.5);
 }
 
-#myListsBanner {
+#myListsBanner, #followedListsBanner, #followedArtistsBanner {
 	color: #fff;
     position: relative;
     width: 100%;
     height: 50px;
-    background-color: #ff4400;
+    background-color: transparent;
+    border-bottom: 1px solid #ff4400;
+    margin: 10px;
     font-size: 24px;
     font-weight: 100;
 }
-#myListsBannerTitle {
+#myListsSpacer {
+	position: relative;
+    width: 100%;
+    height: 200px;
+}
+#myListsBannerTitle, .listNames {
 	display: inline-block;
-	color: #fff;
-	font-size: 24px;
+    font-family: arial;
+    height: 50px;
+    line-height: 50px;
+    color: #ff4400;
+    font-size: 20px;
     font-weight: 100;
-    padding:10px;
 }
 #listBanner span {
 	display: inline-block;
@@ -2728,6 +2771,7 @@ position: absolute;
 	position: relative;
     width: 100%;
     height: 200px;
+    line-height:200px;
     font-size: 140px;
     padding-top: 30px;
     color: #fff;
@@ -2828,5 +2872,16 @@ position: absolute;
     left: 50%;
     margin-left: -100px;
     margin-bottom: 50px;
+}
+
+#fbLogin {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #3B5998;
+    color: #fff;
+    cursor: default;
+} #fbLogin:hover {
+	background-color: #5781E2;
 }
 

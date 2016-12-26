@@ -8,7 +8,7 @@ exports.index = function(req, res) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
 				var sql = "Select genre, count(*) as count from artists_genres group by genre order by count(*) desc limit(5)";
-				Knex('genres').distinct('genre_1','genre_1_id').select()
+				Knex('genres_master').distinct('masterGenre','masterGenre_id').select()
 				.then(function(genres) {
 					if(req.session.spotifyID) {
 						if(req.session.imported) {
@@ -443,7 +443,7 @@ exports.videoSearch = function(req, res) {
 		var audioSearch = '';
 	}
 
-	var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs_genres.song_id, songs.likes, songs.artist_id, songs.created_at, songs.staff, pop_week, pop_trending, pop_1' + audio + ' FROM songs INNER JOIN songs_genres ON songs.id=songs_genres.song_id';
+	var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs.likes, songs.artist_id, songs.created_at, songs.staff, pop_week, pop_trending, pop_1' + audio + ' FROM songs INNER JOIN artists_genres ON songs.artist_id=artists_genres.artist_id';
 
 	sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
@@ -473,11 +473,12 @@ exports.videoSearch = function(req, res) {
 	sql += audioSearch;
 
 	if(req.body.genreParams > 0) {
-		if(req.body.genreParams < 200) {
-			sql += wherestatement + ' songs_genres.genre_1_id = ' + req.body.genreParams;
-		} else if (req.body.genreParams >= 200) {
-			sql += wherestatement + ' songs_genres.genre_2_id = ' + req.body.genreParams;
-		}
+		// if(req.body.genreParams < 200) {
+		// 	sql += wherestatement + ' songs_genres.genre_1_id = ' + req.body.genreParams;
+		// } else if (req.body.genreParams >= 200) {
+		// 	sql += wherestatement + ' songs_genres.genre_2_id = ' + req.body.genreParams;
+		// }
+		sql += wherestatement + ' artists_genres.masterGenre_id = ' + req.body.genreParams;
 	}
 
 	sql += ' ORDER BY ' + req.body.sortParams + ' DESC LIMIT 75 OFFSET ' + req.body.offset;
@@ -963,4 +964,65 @@ exports.thumbnails = function(req, res) {
     });
   });
   res.send(200,{});
+}
+
+exports.fbLogin = function(req, res) {
+	console.log(req.body.user_id);
+	var int_id = parseInt(req.body.user_id);
+	Knex('users').where('fb_id', req.body.user_id)
+	.then(function(model) {
+		console.log(model);
+		req.session.user = decodeURIComponent(model[0].username);
+		req.session.userid = decodeURIComponent(model[0].id);
+		req.session.admin = decodeURIComponent(model[0].admin);
+		res.send(200,{});
+	}).catch(function(e) {
+		res.send(400,{});
+	});
+}
+
+exports.fbCreateAccount = function(req, res) {
+	Knex('users').where('fb_id', req.body.user_id)
+	.then(function(model) {
+		req.session.user = req.body.username;
+		req.session.userid = decodeURIComponent(model[0].id);
+		req.session.admin = decodeURIComponent(model[0].admin);
+		res.send(200,{});
+	}).catch(function(e) {
+		Knex('users').insert({username: req.body.username, email: req.body.email, fb_id: req.body.user_id})
+		.then(function() {
+			Knex('users').where('fb_id', req.body.user_id)
+			.then(function(m) {
+				req.session.user = req.body.username;
+				req.session.userid = decodeURIComponent(m[0].id);
+				req.session.admin = decodeURIComponent(m[0].admin);
+				res.send(200,{});
+			});
+		});
+	});
+}
+
+exports.loginRedirect = function(req, res) {
+	if(req.session.userid) {
+		Knex('playlists').where('userid', req.session.userid)
+		.then(function(m1) {
+			Knex('genres').distinct('genre_4').orderBy('genre_4', 'asc')
+			.then(function(genres) {
+				Knex('followed_playlists').where({user_id: req.session.userid}).join('playlists', 'playlists.id', '=', 'followed_playlists.playlist_id').where({public: 1})
+				.then(function(followed) {
+					Knex('followed_artists').where({user_id: req.session.userid}).join('artists','artists.id', '=', 'followed_artists.artist_id')
+					.then(function(followed_artists) {
+						res.render('myLists', {session: req.session, lists: m1, genres: genres, spotify: req.session.spotifyID, followed: followed, followed_artists: followed_artists}, function(err, m) {
+							res.send({html: m, ses: req.session});
+						});
+					});
+				});
+			});
+		}).catch(function(e) {
+			res.send(400,{});
+		});
+	} else {
+		res.send(400,{});
+	}
+	
 }

@@ -95,6 +95,7 @@ app.post('/removeBlock', routes.removeBlock);
 app.post('/videoSearch', routes.videoSearch);
 app.post('/textVideoSearch', routes.textVideoSearch);
 app.post('/login', routes.login);
+app.get('/loginRedirect', routes.loginRedirect);
 app.get('/logout', routes.logout);
 app.post('/signUp', routes.signUp);
 app.post('/createList', routes.createList);
@@ -141,6 +142,8 @@ app.post('/spotifyMatchSearch', spotify.matchSearch);
 app.get('/spotifyArtistMatch', spotify.artistMatch);
 app.get('/spotifyRelatedArtists', spotify.relatedArtists);
 
+app.post('/fbLogin', routes.fbLogin); 
+app.post('/fbCreateAccount', routes.fbCreateAccount);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

@@ -269,6 +269,66 @@ function checkImportStatus() {
 	});
 }
 
+function FacebookLoginCheck() {
+	console.log('check');
+	FB.getLoginStatus(function(response) {
+		console.log(response);
+	    fbLoginRedirect(response);
+	});
+}
+
+function fbLoginRedirect(res) {
+	if(res.status == 'connected') {
+		console.log(res.authResponse.userID);
+		$.ajax({
+			url: "/fbLogin",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({ user_id: res.authResponse.userID}),
+		    contentType: "application/json",
+		    cache: false,
+		    timeout: 5000,
+	        success:function(res) {
+				loginRedirect();
+		    }
+		});
+	}
+}
+
+function fbCreateAccountRedirect(res) {
+	console.log(res);
+	FB.api('/me', {fields: 'first_name, email'}, function(response) {
+	  console.log(response);
+		if(res.status == 'connected') {
+			$.ajax({
+				url: "/fbCreateAccount",
+			    type: "post",
+			    dataType: "json",
+			    data: JSON.stringify({ user_id: response.id, username: response.first_name, email: response.email}),
+			    contentType: "application/json",
+			    cache: false,
+			    timeout: 5000,
+		        success:function(res) {
+					loginRedirect();
+			    }
+			});
+		}
+	});
+}
+
+function fbLogin() {
+	FB.login(function(response){
+	  if (response.status === 'connected') {
+	    fbCreateAccountRedirect(response);
+	  } else if (response.status === 'not_authorized') {
+	    // The person is logged into Facebook, but not your app.
+	  } else {
+	    // The person is not logged into Facebook, so we're not sure if
+	    // they are logged into this app or not.
+	  }
+	}, {scope: 'public_profile,email', return_scopes: true});
+}
+
 function nav(e) {
 	$('.selected').removeClass('selected');
 	var $button = $(e.target).closest('.nav');
@@ -660,7 +720,6 @@ function accountLogin(e) {
         		loginNav();
 		    },
 		    error: function(res) {
-		    	console.log('what???');
 		    	alert('User Not Found.');
 		       	$('#account #user').val('');
 		       	$('#account #password').val('');
@@ -695,6 +754,8 @@ function logout() {
 		$.get('/myLists', function(res) {
 			var time = transition();
         	pageEnter(res.html, time);
+        	FB.logout(function(response) {
+			});
         	loginNav();
 		});
 	});
@@ -777,7 +838,7 @@ function blockClick(e) {
 		return;
 	} else {
 		if($(e.target).closest('.listDelete').length == 0) {
-			var block = $(e.target).closest('.block');
+			var block = $(e.target).closest('.playSong');
 			var count = 0;
 			var $e = e;
 			$('body').on("mousemove",function(e) {
@@ -833,8 +894,8 @@ function handleDrop(e, block) {
 		updateListOrder();
 	} else if($(e.target).closest('.listNav').length > 0) {
 		console.log($(e.target).closest('.listNav').attr('data-lid'));
-		addToPlaylist(block.attr('data-vid'), block.attr('id').replace('s',''), $(e.target).closest('.listNav').attr('data-lid'));
-		likeSong(block.attr('data-vid'));
+		addToPlaylist(block.attr('data-vid'), block.attr('data-id'), $(e.target).closest('.listNav').attr('data-lid'));
+		//likeSong(block.attr('data-vid'));
 	}
 }
 
@@ -1611,4 +1672,12 @@ function thumbnails() {
 	$.get('/thumbnails', function(res) {
 		console.log("getting");
 	});
+}
+
+function loginRedirect() {
+	$.get("/loginRedirect", function(res) {
+		var time = transition();
+        pageEnter(res.html, time);
+        loginNav();
+	})
 }

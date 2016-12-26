@@ -1,16 +1,6 @@
 <div id="genreBarSelect"></div>
-<% genres.forEach(function(genre) { 
-    if(count == 0) { %>
-      <div id="d<%= genre.genre_1 %>" class="gItem query criteria" data-search="<%= genre.genre_1 %>" data-id="<%= genre.genre_1_id %>">
-        <div class="itemName"><%= genre.genre_1 %></div>
+<% genres.forEach(function(genre) { %>
+      <div id="d<%= genre.masterGenre %>" class="gItem query criteria" data-search="<%= genre.masterGenre %>" data-id="<%= genre.masterGenre_id %>">
+        <div class="itemName"><%= genre.masterGenre %></div>
       </div>
-    <% } else if(count == 1) { %>
-      <div id="d<%= genre.genre_2 %>" class="gItem query criteria" data-search="<%= genre.genre_2 %>" data-id="<%= genre.genre_2_id %>">
-        <div class="itemName"><%= genre.genre_2 %></div>
-      </div>
-    <% } else if(count == 2) { %>
-      <div id="d<%= genre.genre_3 %>" class="gItem query criteria" data-search="<%= genre.genre_3 %>">
-        <div class="itemName"><%= genre.genre_3 %></div>
-      </div>
-    <% } %>
 <% }); %>
