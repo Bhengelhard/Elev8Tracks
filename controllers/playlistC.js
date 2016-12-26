@@ -10,6 +10,7 @@ exports.index = function(req, res) {
 				var sql = "Select genre, count(*) as count from artists_genres group by genre order by count(*) desc limit(5)";
 				Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 				.then(function(genres) {
+					console.log(genres);
 					if(req.session.spotifyID) {
 						if(req.session.imported) {
 							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)
