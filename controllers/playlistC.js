@@ -8,7 +8,7 @@ exports.index = function(req, res) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
 				var sql = "Select genre, count(*) as count from artists_genres group by genre order by count(*) desc limit(5)";
-				Knex('genres_master').distinct('masterGenre','masterGenre_id').select()
+				Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 				.then(function(genres) {
 					if(req.session.spotifyID) {
 						if(req.session.imported) {
@@ -478,7 +478,7 @@ exports.videoSearch = function(req, res) {
 		// } else if (req.body.genreParams >= 200) {
 		// 	sql += wherestatement + ' songs_genres.genre_2_id = ' + req.body.genreParams;
 		// }
-		sql += wherestatement + ' artists_genres.masterGenre_id = ' + req.body.genreParams;
+		sql += wherestatement + ' artists_genres.mastergenre_id = ' + req.body.genreParams;
 	}
 
 	sql += ' ORDER BY ' + req.body.sortParams + ' DESC LIMIT 75 OFFSET ' + req.body.offset;
@@ -772,7 +772,7 @@ exports.blogInterviews = function(req, res) {
 }
 
 exports.refreshGenres = function(req, res) {
-	var masterGenre = 'genre_' + parseInt(req.body.count);
+	var mastergenre = 'genre_' + parseInt(req.body.count);
 	var subGenre = 'genre_' + parseInt(req.body.count+1);
 	if(req.body.genre == '*') {
 		Knex('genres').distinct('genre_1','genre_1_id').select()
@@ -782,7 +782,7 @@ exports.refreshGenres = function(req, res) {
 			});
 		});
 	} else {
-		Knex('genres').distinct('genre_2','genre_2_id').whereRaw(masterGenre + " = '" + req.body.genre + "' AND NOT " + subGenre + " = ''")
+		Knex('genres').distinct('genre_2','genre_2_id').whereRaw(mastergenre + " = '" + req.body.genre + "' AND NOT " + subGenre + " = ''")
 		.then(function(genres) {
 			res.render('genres', {genres: genres, count: req.body.count}, function(err, m) {
 				res.send(200,{html: m});
