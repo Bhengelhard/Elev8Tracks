@@ -144,6 +144,7 @@ app.get('/spotifyRelatedArtists', spotify.relatedArtists);
 
 app.post('/fbLogin', routes.fbLogin); 
 app.post('/fbCreateAccount', routes.fbCreateAccount);
+app.get('/fbOAuth', routes.fbOAuth);
 
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);

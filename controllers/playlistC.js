@@ -1027,3 +1027,10 @@ exports.loginRedirect = function(req, res) {
 	}
 	
 }
+
+exports.fbOAuth = function(req, res) {
+	console.log('testing-------------------');
+	console.log(req);
+	console.log('testing-------------------');
+	res.send(200,{});
+}
