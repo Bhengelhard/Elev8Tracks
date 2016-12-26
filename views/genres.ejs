@@ -1,6 +1,8 @@
 <div id="genreBarSelect"></div>
-<% genres.forEach(function(genre) { %>
+<% genres.forEach(function(genre) { 
+    if(genre.mastergenre != null) { %>
       <div id="d<%= genre.mastergenre %>" class="gItem query criteria" data-search="<%= genre.mastergenre %>" data-id="<%= genre.mastergenre_id %>">
         <div class="itemName"><%= genre.mastergenre %></div>
       </div>
-<% }); %>
+    <% } 
+}); %>
