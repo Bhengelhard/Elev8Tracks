@@ -4,6 +4,10 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+var config = require('./init/config');
+var Knex = require('./init/knex');
 
 //var redis = require('redis'); 
 var session = require('express-session'); 
@@ -16,15 +20,6 @@ if (process.env.REDISTOGO_URL) {
 } else {
     var client = require("redis").createClient();
 }
-
-// var url = require('url');
-// var redisURL = url.parse(process.env.REDISTOGO_URL); 
-
-// var client = redis.createClient(redisURL.host, redisURL.port); 
-// client.auth(redisURL.auth.split(':')[1]);
-
-// var client = redis.createClient('127.0.0.1', '8888'); 
-// client.auth('scooter2');
 
 var client_id = 'eb30459d560a459dbd9de1b1e9788bc5'; // Your client id
 var client_secret = 'bc32527d8a8f4cffba1d8d81e02998e3'; // Your client secret
@@ -51,6 +46,62 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
+
+//Passport setup for Facebook Login
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebookAuth.clientID,
+    clientSecret: config.facebookAuth.clientSecret,
+    callbackURL: config.facebookAuth.callbackURL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      //Check whether the User exists or not using profile.id
+      //Further DB code.
+      console.log(profile);
+      Knex('users').where('fb_id', profile.id)
+      .then(function(model) {
+        console.log(model.length);
+        if(model.length != 0)
+          return done(null, model);
+        else {
+          Knex('users').insert({username: profile.displayName, fb_id: profile.id})
+          .then(function() {
+            Knex('users').where('fb_id', profile.id)
+            .then(function(m) {
+              // req.session.user = profile.first_name;
+              // req.session.userid = decodeURIComponent(m[0].id);
+              // req.session.admin = decodeURIComponent(m[0].admin);
+              return done(null, m);
+            });
+          });
+        }
+      }).catch(function(e) {
+        console.log('catch');
+        Knex('users').insert({username: profile.displayName, fb_id: profile.id})
+        .then(function() {
+          Knex('users').where('fb_id', profile.id)
+          .then(function(m) {
+            // req.session.user = profile.first_name;
+            // req.session.userid = decodeURIComponent(m[0].id);
+            // req.session.admin = decodeURIComponent(m[0].admin);
+            return done(null, m);
+          });
+        });
+      });
+    });
+  }
+));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 var generateRandomString = function(length) {
   var text = '';
@@ -146,6 +197,19 @@ app.post('/fbLogin', routes.fbLogin);
 app.post('/fbCreateAccount', routes.fbCreateAccount);
 app.get('/fbOAuth', routes.fbOAuth);
 
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'public_profile,email'}));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect : '/sessionStore', 
+    failureRedirect : '/' 
+  }));
+
+app.get('/sessionStore', function(req, res) {
+  req.session.user = req.user[0].username;
+  req.session.userid = req.user[0].id;
+  req.session.admin = req.user[0].admin;
+  res.redirect('/');
+})
+
 console.log('Listening on 8888');
 app.listen(process.env.PORT || 8888);
 
@@ -167,7 +231,15 @@ function checkForMobile(req, res, next) {
     console.log("Going mobile");
     res.redirect('/mobile');
   } else {
-    // if we didn't detect mobile, call the next method, which will eventually call the desktop route
-    return next();
+      if(req.isAuthenticated()) {
+        req.session.user = req.user[0].username;
+        req.session.userid = req.user[0].id;
+        req.session.admin = req.user[0].admin;
+      } else {
+        req.session.destroy();
+        req.session = null;
+      }
+      // if we didn't detect mobile, call the next method, which will eventually call the desktop route
+      return next();
   }
 }
