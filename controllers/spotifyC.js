@@ -519,55 +519,59 @@ exports.dataUpdate = function(req, res) {
 }
 
 exports.artistMatch = function() {
-  Knex('artists')
-  .then(function(m) {
-    if(m.rows) {
-      m = m.rows;
-    } 
-    var n = 0;
-    m.forEach(function(artist) {
-      setTimeout(function() {
-        var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist.name) + '&limit=10&type=artist';
-        Knex('songs').where('artist_id', artist.id).limit(1)
-          .then(function(song) {
-            if(song[0] && song[0].vid) {
-              Knex('artists').where('id', artist.id).update({thumbnail: song[0].vid})
-              .then(function() {
-              });
+  Knex('artists_genres').truncate()
+  .then(function() {
+    Knex('artists')
+    .then(function(m) {
+      if(m.rows) {
+        m = m.rows;
+      } 
+      var n = 0;
+      m.forEach(function(artist) {
+        setTimeout(function() {
+          var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(artist.name) + '&limit=10&type=artist';
+          Knex('songs').where('artist_id', artist.id).limit(1)
+            .then(function(song) {
+              if(song[0] && song[0].vid) {
+                Knex('artists').where('id', artist.id).update({thumbnail: song[0].vid})
+                .then(function() {
+                });
+              }
+            });
+          request.get(url, function(error, data, body) {
+            var response = JSON.parse(body);
+            if(response.artists && response.artists.items && response.artists.items[0]) {
+                  var genres = '';
+                  console.log(response.artists.items);
+                  response.artists.items[0].genres.forEach(function(genre) {
+                    Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
+                    .then(function(){});
+                  })
+                  Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
+                  .then(function() {
+
+                  });
+                  console.log(response.artists.items[0].id);
+                  var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
+                  request.get(artistUrl, function(error, data, b) {
+                    var res = JSON.parse(b);
+                    if(res.artists && res.artists.items) {
+                      res.artists.items.forEach(function(artist) {
+                        Knex('related_artists').insert({artist_id1: response.artists.items[0].id, artist_id2: artist.id})
+                        .then(function(){
+
+                        });
+                      });
+                    }
+                  });
             }
           });
-        request.get(url, function(error, data, body) {
-          var response = JSON.parse(body);
-          if(response.artists && response.artists.items && response.artists.items[0]) {
-                var genres = '';
-                console.log(response.artists.items);
-                response.artists.items[0].genres.forEach(function(genre) {
-                  Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
-                  .then(function(){});
-                })
-                Knex('artists').where('id',artist.id).update({spotify_id: response.artists.items[0].id})
-                .then(function() {
-
-                });
-                console.log(response.artists.items[0].id);
-                var artistUrl = 'https://api.spotify.com/v1/artists/'+ response.artists.items[0].id +'/related-artists';
-                request.get(artistUrl, function(error, data, b) {
-                  var res = JSON.parse(b);
-                  if(res.artists && res.artists.items) {
-                    res.artists.items.forEach(function(artist) {
-                      Knex('related_artists').insert({artist_id1: response.artists.items[0].id, artist_id2: artist.id})
-                      .then(function(){
-
-                      });
-                    });
-                  }
-                });
-          }
-        });
-      }, n);
-      n += 1000;
+        }, n);
+        n += 1000;
+      });
     });
-  });
+  })
+  
 }
 
 exports.relatedArtists = function() {
@@ -607,4 +611,35 @@ exports.relatedArtists = function() {
       }
     })
   })
+}
+
+exports.genreDataCapture = function(req, res) {
+  Knex('artists_genres').truncate()
+  .then(function() {
+    Knex('artists').limit(20)
+    .then(function(m) {
+      if(m.rows) {
+        m = m.rows;
+      } 
+      var n = 0;
+      m.forEach(function(artist) {
+        setTimeout(function() {
+          var url = 'https://api.spotify.com/v1/artists/'+ artist.spotify_id;
+          request.get(url, function(error, data, body) {
+            var response = JSON.parse(body);
+            response.genres.forEach(function(genre) {
+              Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
+              .then(function() {
+                Knex('genres_master').where({genre: genre})
+                .then(function(res) {
+
+                })
+              });
+            });
+          });
+        }, n);
+        n += 1000;
+      });
+    });
+  });
 }
