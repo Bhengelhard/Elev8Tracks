@@ -197,6 +197,8 @@ app.post('/fbLogin', routes.fbLogin);
 app.post('/fbCreateAccount', routes.fbCreateAccount);
 app.get('/fbOAuth', routes.fbOAuth);
 
+app.get('/genreDataCapture', spotify.genreDataCapture);
+
 // app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'public_profile,email'}));
 // app.get('/auth/facebook/callback', passport.authenticate('facebook', {
 //     successRedirect : '/sessionStore', 

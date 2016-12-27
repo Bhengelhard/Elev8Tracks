@@ -1,5 +1,5 @@
 <div id="listBanner" class="artist" data-artist_id="<%= artist_id %>">
-  <div id="myListsBannerTitle"><%= name %></div>
+  <div id="listsBannerTitle"><%= name %></div>
   <% if(session.userid) { %>
     <% if(follow) { %>
       <div id="followList" data-follow="1" onclick="changeArtistFollow()">Unfollow Artist</div>
@@ -29,7 +29,7 @@
 
 
 <div id="listBanner" class="related">
-  <div id="myListsBannerTitle">Related Artists</div>
+  <div id="listsBannerTitle">Related Artists</div>
 </div>
   <% related.forEach(function(relate) { %>
     <% if(artist_id != relate.id) { %>

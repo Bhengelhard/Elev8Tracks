@@ -758,7 +758,7 @@ function logout() {
 			var time = transition();
         	pageEnter(res.html, time);
         	FB.logout(function(response) {
-			   // Person is now logged out
+			   console.log(response);
 			});
         	loginNav();
 		});
@@ -1680,9 +1680,16 @@ function thumbnails() {
 
 function loginRedirect() {
 	$.get("/loginRedirect", function(res) {
-		var time = transition();
-        pageEnter(res.html, time);
-        console.log('redirected');
+		if($('#account').length > 0) {
+			var time = transition();
+        	pageEnter(res.html, time);
+		}
         loginNav();
 	})
+}
+
+function genreDataCapture() {
+	$.get("/genreDataCapture", function(res) {
+		console.log('finished');
+	});
 }

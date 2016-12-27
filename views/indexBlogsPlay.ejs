@@ -42,6 +42,27 @@
   </head>
   <body>
     <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '250253932070886',
+          cookie     : true,  // enable cookies to allow the server to access 
+                              // the session
+          xfbml      : true,  // parse social plugins on this page
+          version    : 'v2.8' // use graph api version 2.8
+        });
+        FacebookLoginCheck();
+      };
+
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -51,66 +72,7 @@
       ga('send', 'pageview');
 
     </script>
-    <div id="navbar" class="home">
-      <div id="mainBar">
-      <!-- <div id="myLists" class="nav"><div class="navSelection"></div>ME</div> -->
-      <div id="title" class="nav selected active"><div class="navSelection"></div>
-      <img src="../../Elevate logo small.png" alt="large logo">
-      </div>
-      <div id="videoSearcherWrapper">
-        <input type="text" id="videoSearcher" placeholder="S e a r c h">
-        <div id="vgenre" class="criteriaType dItem">
-          <div class="dtitle">GENRE
-          <span class="glyphicon glyphicon-pushpin"></span>
-          </div>
-        </div>
-        <div id="vsort" class="criteriaType">
-          <div class="dtitle">SORT
-            <span class="glyphicon glyphicon-pushpin"></span>
-          </div>
-        </div>
-        <div id="vfilter" class="criteriaType">
-          <div class="dtitle">FILTER</div>
-          <div id="vitemStaff" class="dItem criteria query" data-search="staff">
-            <div class="itemName">Staff Picks</div>
-          </div>
-        </div>
-        <!-- <div id="vsearch" class="criteriaType">
-          <div class="dtitle">SEARCH</div>
-          <div id="vitemSongs" class="dItem criteria searched query" data-search="name">
-            <div class="itemName">Songs</div>
-          </div>
-          <div id="vitemArtists" class="dItem criteria searched query" data-search="artist">
-            <div class="itemName">Artists</div>
-          </div>
-          <div id="vitemTags" class="dItem criteria query" data-search="tags">
-            <div class="itemName">Tags</div>
-          </div>
-        </div> -->
-        <div class="navSelection"></div>
-      </div>
-        <% include myListsNav %>
-      </div>
-      <div id="sortBar" class="criteriaType">
-        <div id="sortBarSelect"></div>
-          <div id="vitemPopular" class="gItem criteria query" data-search="pop_trending">
-            <div class="itemName">TRENDING</div>
-          </div>
-          <div id="vitemPopular" class="gItem criteria query" data-search="pop_week">
-            <div class="itemName">POPULAR THIS WEEK</div>
-          </div>
-          <div id="vitemPopular" class="gItem criteria query" data-search="pop_1">
-            <div class="itemName">ALL TIME POPULAR</div>
-          </div>
-          <div id="vitemNewest" class="gItem criteria query" data-search="created_at">
-            <div class="itemName">NEWEST</div>
-          </div>
-      </div>
-      <div id="genreBar" class="criteriaType">
-        <% include genres %>
-      </div>
-      
-    </div>
+    <% include navbar %>
     <div id="spotifyControls">
       <div class="spotifyTitle">Spotify</div>
       <% include spotifyLists %>

@@ -55,7 +55,7 @@ exports.songsViewTrending = function(req, res) {
 		.then(function(songs) {
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
-				Knex('genres').distinct('genre_1','genre_1_id').select()
+				Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 				.then(function(genres) {
 					res.render('indexSongs', {songs: songs, session: req.session, user: req.session.user, user_id: req.session.userid, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 				});
@@ -70,7 +70,7 @@ exports.songsViewTrendingPlay = function(req, res) {
 			.then(function(songs) {
 				Knex('playlists').where('userid', req.session.userid)
 				.then(function(lists) {
-					Knex('genres').distinct('genre_1','genre_1_id').select()
+					Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 					.then(function(genres) {
 						res.render('indexSongsPlay', {songs: songs, play: play, session: req.session, user: req.session.user, user_id: req.session.userid, spotify: req.session.spotifyID, lists: lists, genres: genres, count: 0});
 					});
@@ -87,7 +87,7 @@ exports.blogPlay = function(req, res) {
 				var description = play[0].text.substring(0,200) + "...";
 				Knex('playlists').where('userid', req.session.userid)
 				.then(function(lists) {
-					Knex('genres').distinct('genre_1','genre_1_id').select()
+					Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 					.then(function(genres) {
 						if(req.session.spotifyID) {
 							if(req.session.imported) {
@@ -110,7 +110,7 @@ exports.blogPlay = function(req, res) {
 exports.blogs = function(req, res) {
 	Knex('blogs').orderBy('date', 'desc').join('songs','songs.vid', '=', 'blogs.vid')
 		.then(function(m) {
-			Knex('genres').distinct('genre_1','genre_1_id').select()
+			Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 			.then(function(genres) {
 				res.render('home', {spotify: req.session.spotifyID, blogs: m, genres: genres, admin: req.session.admin});
 			});
@@ -665,12 +665,48 @@ exports.addSong = function(req, res) {
 				Knex('songs_playlists').insert({song_id: req.body.song_ID, playlist_id: req.body.lid, entry: orderNo})
 				.then(function() {
 					console.log('ADDED');
+					editPlaylistAttributes(req.body.lid);
+					editPlaylistPop(req.body.lid)
 					res.send(200,{});
 				});
 			});
 		});
 	}).catch(function(e) {
 		res.send(400,{});
+	});
+}
+
+function editPlaylistAttributes(lid) {
+	Knex('playlists_genres').where({playlist_id: lid}).del()
+	.then(function() {
+		var sql = "SELECT mastergenre_id, count(distinct songs.id), count(mastergenre_id) FROM songs_playlists INNER JOIN songs ON songs.id=songs_playlists.song_id INNER JOIN artists_genres ON artists_genres.artist_id=songs.artist_id WHERE playlist_id = '"+lid+"' GROUP BY mastergenre_id"
+		Knex.raw(sql).then(function(m) {
+			if(m[0]) {m=m[0]} else if(m.rows) {m = m.rows}
+			Knex('songs_playlists').where({playlist_id: lid}).count('id')
+			.then(function(num) {
+				if(num[0]) {num=num[0]} else if(num.rows) {num = num.rows}
+				m.forEach(function(genre) {
+					if(genre['count(distinct songs.id)']*2 >= num['count(`id`)'] && genre['mastergenre_id'] != null) {
+						Knex('playlists_genres').insert({playlist_id: lid, genre_id: genre.mastergenre_id})
+						.then(function() {});
+					}
+				})
+
+			});
+		});
+	});
+}
+
+function editPlaylistPop(lid) {
+	Knex('playlists_pop').where({playlist_id: lid}).del()
+	.then(function() {
+		var sql = "SELECT sum(pop_1), sum(pop_week) FROM songs_playlists INNER JOIN songs ON songs.id=songs_playlists.song_id INNER JOIN popularity ON popularity.vid=songs.vid WHERE songs_playlists.playlist_id = '" + lid + "'";
+		Knex.raw(sql)
+		.then(function(m) {
+			if(m[0]) {m=m[0]} else if(m.rows) {m = m.rows}
+			Knex('playlists_pop').insert({playlist_id: lid, pop_1: m[0]['sum(pop_1)'], pop_week: m[0]['sum(pop_week)']})
+			.then(function(){});
+		});
 	});
 }
 

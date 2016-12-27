@@ -2558,6 +2558,16 @@ position: absolute;
     font-size: 20px;
     font-weight: 100;
 }
+#listsBannerTitle {
+	display: inline-block;
+    font-family: arial;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 100;
+    margin-left: 10px;
+}
 #listBanner span {
 	display: inline-block;
 	padding: 10px;
