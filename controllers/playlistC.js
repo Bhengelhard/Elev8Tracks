@@ -4,13 +4,12 @@ var request = require('request'); // "Request" library
 exports.index = function(req, res) {
 	Knex('blogs').orderBy('date', 'desc').join('songs','songs.vid', '=', 'blogs.vid')
 		.then(function(blogs) {
-			console.log(blogs);
+			console.log(req.session);
+			console.log(req.session.userid);
 			Knex('playlists').where('userid', req.session.userid)
 			.then(function(lists) {
-				var sql = "Select genre, count(*) as count from artists_genres group by genre order by count(*) desc limit(5)";
 				Knex('genres_master').distinct('mastergenre','mastergenre_id').select()
 				.then(function(genres) {
-					console.log(genres);
 					if(req.session.spotifyID) {
 						if(req.session.imported) {
 							Knex('spotify_playlists').where('spotify_id', req.session.spotifyID)

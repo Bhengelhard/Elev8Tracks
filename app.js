@@ -235,10 +235,7 @@ function checkForMobile(req, res, next) {
         req.session.user = req.user[0].username;
         req.session.userid = req.user[0].id;
         req.session.admin = req.user[0].admin;
-      } else {
-        req.session.destroy();
-        req.session = null;
-      }
+      } 
       // if we didn't detect mobile, call the next method, which will eventually call the desktop route
       return next();
   }
