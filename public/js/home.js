@@ -317,21 +317,21 @@ function fbCreateAccountRedirect(res) {
 }
 
 function fbLogin() {
-	// FB.login(function(response){
-	//   if (response.status === 'connected') {
-	//     fbCreateAccountRedirect(response);
-	//   } else if (response.status === 'not_authorized') {
-	//     // The person is logged into Facebook, but not your app.
-	//   } else {
-	//     // The person is not logged into Facebook, so we're not sure if
-	//     // they are logged into this app or not.
-	//   }
-	// }, {scope: 'public_profile,email', return_scopes: true});
+	FB.login(function(response){
+	  if (response.status === 'connected') {
+	    fbCreateAccountRedirect(response);
+	  } else if (response.status === 'not_authorized') {
+	    // The person is logged into Facebook, but not your app.
+	  } else {
+	    // The person is not logged into Facebook, so we're not sure if
+	    // they are logged into this app or not.
+	  }
+	}, {scope: 'public_profile,email', return_scopes: true});
 
 	// $.get("/auth/facebook", function(res) {
 	// 	console.log('done');
 	// });
-	window.location = "http://localhost:8888/auth/facebook";
+	// window.location = "http://localhost:8888/auth/facebook";
 }
 
 function nav(e) {
