@@ -1008,10 +1008,10 @@ exports.fbLogin = function(req, res) {
 	var int_id = parseInt(req.body.user_id);
 	Knex('users').where('fb_id', req.body.user_id)
 	.then(function(model) {
-		console.log(model);
-		req.session.user = decodeURIComponent(model[0].username);
-		req.session.userid = decodeURIComponent(model[0].id);
-		req.session.admin = decodeURIComponent(model[0].admin);
+		if(model[0]) {model = model[0]} else if(model.rows) {model = model.rows}
+		req.session.user = decodeURIComponent(model.username);
+		req.session.userid = decodeURIComponent(model.id);
+		req.session.admin = decodeURIComponent(model.admin);
 		res.send(200,{});
 	}).catch(function(e) {
 		res.send(400,{});
