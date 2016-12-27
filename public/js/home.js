@@ -299,7 +299,6 @@ function fbCreateAccountRedirect(res) {
 	console.log(res);
 	FB.api('/me', {fields: 'first_name, email'}, function(response) {
 	  console.log(response);
-		if(res.status == 'connected') {
 			$.ajax({
 				url: "/fbCreateAccount",
 			    type: "post",
@@ -312,7 +311,6 @@ function fbCreateAccountRedirect(res) {
 					loginRedirect();
 			    }
 			});
-		}
 	});
 }
 
@@ -759,6 +757,9 @@ function logout() {
 		$.get('/myLists', function(res) {
 			var time = transition();
         	pageEnter(res.html, time);
+        	FB.logout(function(response) {
+			   // Person is now logged out
+			});
         	loginNav();
 		});
 	});
@@ -1681,6 +1682,7 @@ function loginRedirect() {
 	$.get("/loginRedirect", function(res) {
 		var time = transition();
         pageEnter(res.html, time);
+        console.log('redirected');
         loginNav();
 	})
 }
