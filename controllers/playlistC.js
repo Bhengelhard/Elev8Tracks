@@ -600,6 +600,8 @@ exports.createList = function(req, res) {
 		if(model.length != 0) {
 			res.send(400, {err: 'found model'});
 		} else {
+			console.log(req.session.userid);
+			console.log(req.session.admin);
 			Knex('playlists').insert({name: req.body.listName, userid: req.session.userid, the_order: "", public: req.session.admin}).returning('id')
 			.then(function(m) {
 				res.send(200,{m: {id: m[0], name: req.body.listName}});
@@ -1013,7 +1015,10 @@ exports.fbLogin = function(req, res) {
 		if(model.anonymous) {model = model.anonymous}
 		req.session.user = decodeURIComponent(model.username);
 		req.session.userid = parseInt(decodeURIComponent(model.id));
-		req.session.admin = decodeURIComponent(model.admin);
+		if(model.admin == null)
+			req.session.admin = 0;
+		else
+			req.session.admin = decodeURIComponent(model.admin);
 		console.log(req.session.userid);
 		res.send(200,{});
 	}).catch(function(e) {
@@ -1024,18 +1029,26 @@ exports.fbLogin = function(req, res) {
 exports.fbCreateAccount = function(req, res) {
 	Knex('users').where('fb_id', req.body.user_id)
 	.then(function(model) {
+		if(model[0]) {model = model[0]} else if(model.rows) {model = model.rows}
 		req.session.user = req.body.username;
-		req.session.userid = decodeURIComponent(model[0].id);
-		req.session.admin = decodeURIComponent(model[0].admin);
+		req.session.userid = decodeURIComponent(model.id);
+		if(model.admin == null)
+			req.session.admin = 0;
+		else
+			req.session.admin = decodeURIComponent(model.admin);
 		res.send(200,{});
 	}).catch(function(e) {
 		Knex('users').insert({username: req.body.username, email: req.body.email, fb_id: req.body.user_id})
 		.then(function() {
 			Knex('users').where('fb_id', req.body.user_id)
 			.then(function(m) {
+				if(m[0]) {m = m[0]} else if(m.rows) {m = m.rows}
 				req.session.user = req.body.username;
-				req.session.userid = decodeURIComponent(m[0].id);
-				req.session.admin = decodeURIComponent(m[0].admin);
+				req.session.userid = decodeURIComponent(m.id);
+				if(m.admin == null)
+					req.session.admin = 0;
+				else
+					req.session.admin = decodeURIComponent(m.admin);
 				res.send(200,{});
 			});
 		});
