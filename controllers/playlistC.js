@@ -1004,10 +1004,11 @@ exports.thumbnails = function(req, res) {
 }
 
 exports.fbLogin = function(req, res) {
-	console.log(req.body.user_id);
+	console.log('--------------------------');
 	var int_id = parseInt(req.body.user_id);
 	Knex('users').where('fb_id', req.body.user_id)
 	.then(function(model) {
+		console.log(model);
 		if(model[0]) {model = model[0]} else if(model.rows) {model = model.rows}
 		req.session.user = decodeURIComponent(model.username);
 		req.session.userid = decodeURIComponent(model.id);
