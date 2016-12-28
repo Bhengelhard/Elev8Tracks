@@ -1012,9 +1012,9 @@ exports.fbLogin = function(req, res) {
 		if(model[0]) {model = model[0]} else if(model.rows) {model = model.rows}
 		if(model.anonymous) {model = model.anonymous}
 		req.session.user = decodeURIComponent(model.username);
-		req.session.userid = parseInt(req.body.user_id);
+		req.session.userid = parseInt(decodeURIComponent(model.id));
 		req.session.admin = decodeURIComponent(model.admin);
-		console.log(req.session.user);
+		console.log(req.session.userid);
 		res.send(200,{});
 	}).catch(function(e) {
 		res.send(400,{});
