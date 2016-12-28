@@ -1010,6 +1010,7 @@ exports.fbLogin = function(req, res) {
 	.then(function(model) {
 		console.log(model);
 		if(model[0]) {model = model[0]} else if(model.rows) {model = model.rows}
+		if(model.anonymous) {model = model.anonymous}
 		req.session.user = decodeURIComponent(model.username);
 		req.session.userid = decodeURIComponent(model.id);
 		req.session.admin = decodeURIComponent(model.admin);
