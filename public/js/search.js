@@ -35,9 +35,47 @@ function textSearchDB(sval) {
         success:function(res) {
         	$('.selected').removeClass('selected');
     		$('#videoSearcherWrapper').addClass('selected');
-    		clearParams();
+    		clearSearch();
         	var time = transition();
         	videoEnter(res.html, time, params[5][0]);
+        }
+    });
+}
+
+function textSearchUpdate(text) {
+	console.log('fired');
+	$.ajax({
+		url: "/textSearchUpdate",
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify({text: text}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	$('.videoSearcherWrapper .textSearchEntry').remove();
+        	$('.videoSearcherWrapper #textSearchUpdate').append(res.html);
+        }
+    });
+}
+
+function searchPlaylistDB(params) {
+	$('#navbar').removeClass('home');
+	$('#userListsNav').removeClass('home');
+	$('#player').removeClass('home');
+	$('#videoSearcher').val("");
+	$.ajax({
+		url: "/playlistSearch",
+        type: "post",
+        dataType: "json",
+        data: JSON.stringify({sval: params[4], searchParams: params[0], filterParams: params[1], sortParams: params[2], genreParams: params[3], audio: params[5], offset: params[6][0], limit:params[6][1]}),
+        contentType: "application/json",
+        cache: false,
+        timeout: 5000,
+        success:function(res) {
+        	$('.selected').removeClass('selected');
+        	var time = transition();
+        	videoEnter(res.html, time, params[6][0]);
         }
     });
 }
@@ -82,9 +120,12 @@ function searchParams() {
 	params.push(sortParams);
 	if($('#genreBar').find('.searched:last').length == 0)
 		var genreParams = 0
-	else
-		var genreParams = $('#genreBar').find('.searched:last').attr('data-id');
-	console.log(genreParams[1]);
+	else {
+		var genreParams = [];
+		$('#genreBar .searched').each(function() {
+			genreParams.push($(this).attr('data-search'));
+		});
+	}
 	params.push(genreParams);
 	var sval = $('#videoSearcher').val();
 	params.push(sval);
@@ -166,10 +207,3 @@ function buildSongs(m, name, lid) {
 // 	params.push(limits);
 // 	return params;
 // }
-
-function clearParams() {
-	$('#navbar .searched').removeClass('searched');
-	$('#navbar #vitemNewest').addClass('searched');
-	refreshGenres($('#genreBar .gItem:first'));
-	$('#vfilter').removeClass('filtered');
-}

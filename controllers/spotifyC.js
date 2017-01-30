@@ -613,33 +613,33 @@ exports.relatedArtists = function() {
   })
 }
 
-exports.genreDataCapture = function(req, res) {
-  Knex('artists_genres').truncate()
-  .then(function() {
-    Knex('artists').limit(20)
-    .then(function(m) {
-      if(m.rows) {
-        m = m.rows;
-      } 
-      var n = 0;
-      m.forEach(function(artist) {
-        setTimeout(function() {
-          var url = 'https://api.spotify.com/v1/artists/'+ artist.spotify_id;
-          request.get(url, function(error, data, body) {
-            var response = JSON.parse(body);
-            response.genres.forEach(function(genre) {
-              Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
-              .then(function() {
-                Knex('genres_master').where({genre: genre})
-                .then(function(res) {
+// exports.genreDataCapture = function(req, res) {
+//   Knex('artists_genres').truncate()
+//   .then(function() {
+//     Knex('artists').limit(20)
+//     .then(function(m) {
+//       if(m.rows) {
+//         m = m.rows;
+//       } 
+//       var n = 0;
+//       m.forEach(function(artist) {
+//         setTimeout(function() {
+//           var url = 'https://api.spotify.com/v1/artists/'+ artist.spotify_id;
+//           request.get(url, function(error, data, body) {
+//             var response = JSON.parse(body);
+//             response.genres.forEach(function(genre) {
+//               Knex('artists_genres').insert({artist_id: artist.id, genre: genre})
+//               .then(function() {
+//                 Knex('genres_master').where({genre: genre})
+//                 .then(function(res) {
 
-                })
-              });
-            });
-          });
-        }, n);
-        n += 1000;
-      });
-    });
-  });
-}
+//                 })
+//               });
+//             });
+//           });
+//         }, n);
+//         n += 1000;
+//       });
+//     });
+//   });
+// }

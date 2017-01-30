@@ -7,6 +7,8 @@ var prevHTML;
 
 $(document).ready(function() {
 
+	updateTags();
+
 	$('#vidBackground').prop('volume',0);
 
 	$(document).on("mousedown", ".playSong", blockClick);
@@ -18,6 +20,16 @@ $(document).ready(function() {
 	spotify();
 	$(document).on("click","#spotifyLogin", function() {
         spotifyLogin();
+    });
+
+    $('#videoSearcher').keyup(function() {
+    	textSearchUpdate($(this).val());
+    });
+    $('#videoSearcher').focus(function() {
+    	$(document).on("click", unfocusSearch);
+    });
+    $('#videoSearcher').blur(function() {
+    	console.log($(event.target));
     });
 
 	$('#vgenre').mouseenter(function() {
@@ -68,9 +80,6 @@ $(document).ready(function() {
 	});
 
 	$('#fullScreenWrapper').click(function() {
-		// $.get('/checkViews', function(res) {
-		// 	console.log(res);
-		// });
 		toggleFullScreen(document.body);
 	});
 
@@ -153,7 +162,10 @@ $(document).ready(function() {
 
     $(document).on("click",".query", function(e) {
     	var params = searchParams();
-		searchDB(params);
+		if($('#songsSearch').hasClass('searched'))
+			searchDB(params);
+		else
+			searchPlaylistDB(params);
     });
 
     $(window).scroll(function() {
@@ -253,6 +265,23 @@ $(document).ready(function() {
 		checkImportStatus();
 	}
 });
+
+function updateTags() {
+	$.ajax({
+			url: "/updateTags",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({ tags: [] }),
+		    contentType: "application/json",
+		    cache: false,
+		    timeout: 5000,
+	        success:function(res) {
+	        	console.log(res);
+				$('#genreBar .gItem').remove();
+				$('#genreBar').append(res.html);
+		    }
+		});
+}
 
 function checkImportStatus() {
 	console.log('checking');
@@ -706,6 +735,7 @@ function accountSignUp(e) {
 }
 
 function accountLogin(e) {
+	console.log($('#account #user'));
 	console.log(encodeURIComponent($('#account #user').val()));
 	if($(e.target).hasClass('active')) {
 		$.ajax({
@@ -1276,6 +1306,10 @@ function searchCriteriaToggle(e) {
     	case 'genreBar':
     		refreshGenres($(e.target).closest('.gItem'));
     		break;
+    	case 'vsearch':
+    		$('#vsearch').find('.searched').removeClass('searched');
+    		$(e.target).closest('.criteria').addClass('searched');
+    		break;
     	default:
     		$(e.target).closest('.criteria').toggleClass('searched');
     		if($('#vfilter').find('.searched').length) {
@@ -1628,11 +1662,11 @@ function unfollowArtist() {
 }
 
 function clearSearch() {
-	$('#genreBarSelect').css('opacity',0);
 	$('#sortBarSelect').css('opacity',0);
 	$('#genreBar .searched').removeClass('searched');
 	$('#sortBar .searched').removeClass('searched');
 	$('#vfilter .searched').removeClass('searched');
+	handleTags($('#genreBar .gItem:first'));
 	$('#vfilter').removeClass('filtered');
 }
 function blogEntryArtistSearch(e) {
@@ -1688,8 +1722,68 @@ function loginRedirect() {
 	})
 }
 
-function genreDataCapture() {
-	$.get("/genreDataCapture", function(res) {
+function moodTags() {
+	console.log('mood tags');
+	$.get("/moodTags", function(res) {
 		console.log('finished');
 	});
 }
+
+function handleTags(e) {
+	if(e)
+		$(e.target).closest('.tags').toggleClass('searched');
+	$('.tags:not(.searched)').css('opacity',0);
+	$('.tags:not(.searched)').animate({
+		width: '0px',
+		padding: '0px'
+	}, 200, function() {
+		$('.tags:not(.searched)').remove();
+		$('.addTag').remove();
+	});
+	var tags = [];
+	$('.tags.searched').each(function() {
+		tags.push($(this).attr('data-search'));
+	});
+	console.log(tags);
+	setTimeout(function() {
+		$.ajax({
+			url: "/updateTags",
+		    type: "post",
+		    dataType: "json",
+		    data: JSON.stringify({ tags: tags}),
+		    contentType: "application/json",
+		    cache: false,
+		    timeout: 5000,
+		    success:function(res) {
+		    	if($('.tags.searched').length > 0)
+		    		$('#genreBar').append("<div class='addTag'>+</div>");
+		    	$('#genreBar').append(res.html);
+		    }
+		});
+	}, 200);
+}
+
+function unfocusSearch(event) {
+	console.log($(event.target));
+    if($(event.target).closest('#videoSearcher').length == 0) {
+    	if($(event.target).closest('#textSearchUpdate').length == 0) {
+    		$('.videoSearcherWrapper .textSearchEntry').remove();
+    		$(document).off("click", unfocusSearch);
+    	} 
+    }
+}
+
+function addSearchTag(e) {
+	console.log('hello');
+	$('#genreBar .tags:not(.searched)').remove();
+	$('#genreBar').append('<div onclick="handleTags(event)" class="tags query criteria searched" data-search="'+ $(e.target).closest('.textSearchEntry').find('.itemName').html() +'" data-id="'+ $(e.target).closest('.textSearchEntry').find('.itemName').html() +'"><div class="itemName">'+ $(e.target).closest('.textSearchEntry').find('.itemName').html() +'</div></div>');
+	handleTags();
+	$('.videoSearcherWrapper .textSearchEntry').remove();
+	$('#videoSearcher').val('');
+	var params = searchParams();
+		if($('#songsSearch').hasClass('searched'))
+			searchDB(params);
+		else
+			searchPlaylistDB(params);
+}
+

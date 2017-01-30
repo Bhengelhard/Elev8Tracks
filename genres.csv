@@ -1,1 +1,153 @@
-id,genre_1,genre_1_ID,genre_2,genre_2_ID,genre_3,genre_41,Chill,100,Ambient,200,,Ambient2,Chill,100,Chill electronic,201,,Chill electronic3,Chill,100,Chill rap,202,,Chill rap4,Chill,100,Dream,203,,Chill psychedelic5,Chill,100,Indie chill,204,,Indie chill6,Chill,100,,205,,Downtempo7,Chill,100,,205,,Downtemp8,Electronic,101,Chill electronic,206,,Wave9,Electronic,101,Chill electronic,206,,Trip hop10,Electronic,101,Chill electronic,206,,Chillwave11,Electronic,101,Chill electronic,206,,Ambient 12,Electronic,101,Chill electronic,206,,Ambient13,Electronic,101,Dance,207,,Trance14,Electronic,101,Dance,207,,Techno15,Electronic,101,Dance,207,,Rave16,Electronic,101,Dance,207,Dubstep,Post-dubstep17,Electronic,101,Dance,207,,Nu-jazz18,Electronic,101,Dance,207,Chill,Minimal techno19,Electronic,101,Dance,207,Jumpstyle,Melbourne bounce20,Electronic,101,Dance,207,,Electronic dance music21,Electronic,101,Dance,207,,Electroclash22,Electronic,101,Dance,207,,Electro house23,Electronic,101,Dance,207,EDM,EDM24,Electronic,101,Dance,207,Dubstep,Dubstep25,Electronic,101,Dance,207,,Drum and bass26,Electronic,101,Dance,207,,Dance27,Electronic,101,Dance,207,,Big room trance28,Electronic,101,Dance,207,Alternative,Alternative dance29,Electronic,101,Experimental,208,,IDM30,Electronic,101,Experimental,208,,Experimental31,Electronic,101,Hip hop,209,Chill,Trip hop32,Electronic,101,Hip hop,209,House,Hip house33,Electronic,101,House,210,Tropical,Tropical house34,Electronic,101,House,210,,Tech house35,Electronic,101,House,210,,Progressive house36,Electronic,101,House,210,,House music37,Electronic,101,House,210,,House38,Electronic,101,House,210,,Electro house39,Electronic,101,House,210,,Electro house40,Electronic,101,House,210,,Electro house41,Electronic,101,House,210,Deep house,Deep house42,Electronic,101,House,210,,Big beat43,Electronic,101,Indie electronica,211,,Indietronica44,Electronic,101,Indie electronica,211,,Indielectronica45,Electronic,101,Indie electronica,211,,Folktronica46,Electronic,101,Indie electronica,211,,Electronic rock47,Electronic,101,Indie electronica,211,,Electro-indie48,Electronic,101,Nu-disco,212,,Nu-disco49,Electronic,101,Nu-disco,212,,Electric disco50,Electronic,101,Synthpop,213,,Synthpop51,Electronic,101,Synthpop,213,,Synthpop52,Electronic,101,Synthpop,213,,Nu-rock53,Electronic,101,Synthpop,213,,New wave54,Electronic,101,Synthpop,213,,Futurepop55,Electronic,101,Synthpop,213,,Electropop56,Electronic,101,,214,,Electronica57,Electronic,101,,214,,Electronic58,Electronic,101,,214,,Electric59,Hip hop,102,Dream rap,215,,Dream rap60,Hip hop,102,Electro rap,216,Chill,Trip hop61,Hip hop,102,Electro rap,216,,Hip house62,Hip hop,102,Experimental hip hop,217,,Turntablism63,Hip hop,102,Experimental hip hop,217,,Experimental hip hop64,Hip hop,102,Gangsta rap,218,,Trap65,Hip hop,102,Gangsta rap,218,,Southern rap66,Hip hop,102,Gangsta rap,218,,Hardcore hip hop67,Hip hop,102,Gangsta rap,218,,Gangsta rap68,Hip hop,102,Jazz rap,219,,Jazz rap69,Hip hop,102,Pop rap,220,,Pop-rap70,Hip hop,102,Soul,221,,Soul71,Hip hop,102,Soul,221,,R&B72,Hip hop,102,Soul,221,,R&B73,Hip hop,102,Soul,221,Alternative,PBR&B74,Hip hop,102,Soul,221,,Funk75,Hip hop,102,Soul,221,,Blues76,Hip hop,102,Soul,221,,Blue eyed soul77,Hip hop,102,Soul,221,Alternative,Alternative R&B78,Hip hop,102,,222,,Underground hip hop79,Hip hop,102,,222,,Rap80,Hip hop,102,,222,,Horrorcore81,Hip hop,102,,222,,Hip hop82,Hip hop,102,,222,,Hip hop83,Indie,103,Indie electronica,223,,Indielectronica84,Indie,103,Indie electronica,223,,Indie folk85,Indie,103,Indie electronica,223,,Folktronica86,Indie,103,Indie electronica,223,,Electro-indie87,Indie,103,Indie experimental,224,,Freak folk88,Indie,103,Indie pop,225,,Alternative pop89,Indie,103,Indie psychedelic,226,,Psychedelic folk90,Indie,103,Indie psychedelic,226,,New Weird America91,Indie,103,Indie rock,227,,Post-punk92,Indie,103,Indie rock,227,,Ambient indie rock93,Indie,103,Jazz,228,,Punk jazz94,Indie,103,Jazz,228,,Jazz fusion95,Indie,103,,229,,Neo folk96,Indie,103,,229,,Indie97,Pop,104,Dance pop,230,,Dance-pop98,Pop,104,Dance pop,230,,Dance pop99,Pop,104,Dream pop,231,,Dreampop100,Pop,104,Dream pop,231,,Dream pop101,Pop,104,Electropop,232,,New wave102,Pop,104,Electropop,232,,Electropop103,Pop,104,Experimental pop,233,,Experimental pop104,Pop,104,Indie pop,234,,Indie pop105,Pop,104,Indie pop,234,,Hipster pop106,Pop,104,Indie pop,234,,Alternative pop107,Pop,104,Pop rock,235,,Pop rock108,Pop,104,Pop rock,235,,Baroque pop109,Pop,104,Pop-rap,236,,Pop-rap110,Pop,104,Psychadelic pop,237,,Psychedelic pop111,Pop,104,Psychadelic pop,237,,Psychadelic pop112,Pop,104,,238,,Pop113,Psychedelic,105,Psychedelic folk,239,,Psychedelic folk114,Psychedelic,105,Psychedelic folk,239,,New Weird America115,Psychedelic,105,Psychedelic hip hop,240,,Psychedelic hip hop116,Psychedelic,105,Psychedelic pop,241,,Psychedelic pop117,Psychedelic,105,Psychedelic pop,241,,Psychadelic pop118,Psychedelic,105,Psychedelic rock,242,,Pyschedelic rock119,Psychedelic,105,Psychedelic rock,242,,Psychedelic rock120,Psychedelic,105,Psychedelic rock,242,,Psychadelic rock121,Psychedelic,105,Psychedelic rock,242,,Neo-psychedelia122,Psychedelic,105,Psychedelic rock,242,,Neo-psychadelia123,Retro,106,90s,243,,Retro 90s124,Retro,106,Disco,244,,Disco125,Retro,106,Jazz,245,,Retro jazz126,Retro,106,Jazz,245,,Funk127,Retro,106,Rock,246,,Retro rock128,Retro,106,,247,,Retro129,Rock,107,Alternative rock,248,,Space rock130,Rock,107,Alternative rock,248,,Soft rock131,Rock,107,Alternative rock,248,,Post-punk revival132,Rock,107,Alternative rock,248,,Noise pop133,Rock,107,Alternative rock,248,,Alternative rock134,Rock,107,Country,249,,Country135,Rock,107,Electronic rock,250,,Electronic rock136,Rock,107,Experimental rock,251,,Experimental rock137,Rock,107,Indie rock,252,,Post-punk revival138,Rock,107,Indie rock,252,,Lo-fi139,Rock,107,Indie rock,252,,Indie rock140,Rock,107,Indie rock,252,,Folk rock141,Rock,107,Pop rock,253,,Pop rock142,Rock,107,Pop rock,253,,Baroque pop143,Rock,107,Psychedelic rock,254,,Pyschedelic rock144,Rock,107,Psychedelic rock,254,,Psychedelic rock145,Rock,107,Psychedelic rock,254,,Psychadelic rock146,Rock,107,Psychedelic rock,254,,Neo-psychedelia147,Rock,107,Punk rock,255,,Post-punk revival148,Rock,107,,256,,Rock149,Rock,107,,256,,Post-punk revival150,Rock,107,,256,,Hard rock151,Rock,107,,256,,Garage rock152,Rock,107,,256,,Art rock
+id,genre_1,genre_1_id,genre_2,genre_2_id,genre_3,genre_4
+1,Chill,100,Ambient,200,,Ambient
+2,Chill,100,Chill electronic,201,,Chill electronic
+3,Chill,100,Chill rap,202,,Chill rap
+4,Chill,100,Dream,203,,Chill psychedelic
+5,Chill,100,Indie chill,204,,Indie chill
+6,Chill,100,,205,,Downtempo
+7,Chill,100,,205,,Downtemp
+8,Electronic,101,Chill electronic,206,,Wave
+9,Electronic,101,Chill electronic,206,,Trip hop
+10,Electronic,101,Chill electronic,206,,Chillwave
+11,Electronic,101,Chill electronic,206,,Ambient 
+12,Electronic,101,Chill electronic,206,,Ambient
+13,Electronic,101,Dance,207,,Trance
+14,Electronic,101,Dance,207,,Techno
+15,Electronic,101,Dance,207,,Rave
+16,Electronic,101,Dance,207,Dubstep,Post-dubstep
+17,Electronic,101,Dance,207,,Nu-jazz
+18,Electronic,101,Dance,207,Chill,Minimal techno
+19,Electronic,101,Dance,207,Jumpstyle,Melbourne bounce
+20,Electronic,101,Dance,207,,Electronic dance music
+21,Electronic,101,Dance,207,,Electroclash
+22,Electronic,101,Dance,207,,Electro house
+23,Electronic,101,Dance,207,EDM,EDM
+24,Electronic,101,Dance,207,Dubstep,Dubstep
+25,Electronic,101,Dance,207,,Drum and bass
+26,Electronic,101,Dance,207,,Dance
+27,Electronic,101,Dance,207,,Big room trance
+28,Electronic,101,Dance,207,Alternative,Alternative dance
+29,Electronic,101,Experimental,208,,IDM
+30,Electronic,101,Experimental,208,,Experimental
+31,Electronic,101,Hip hop,209,Chill,Trip hop
+32,Electronic,101,Hip hop,209,House,Hip house
+33,Electronic,101,House,210,Tropical,Tropical house
+34,Electronic,101,House,210,,Tech house
+35,Electronic,101,House,210,,Progressive house
+36,Electronic,101,House,210,,House music
+37,Electronic,101,House,210,,House
+38,Electronic,101,House,210,,Electro house
+39,Electronic,101,House,210,,Electro house
+40,Electronic,101,House,210,,Electro house
+41,Electronic,101,House,210,Deep house,Deep house
+42,Electronic,101,House,210,,Big beat
+43,Electronic,101,Indie electronica,211,,Indietronica
+44,Electronic,101,Indie electronica,211,,Indielectronica
+45,Electronic,101,Indie electronica,211,,Folktronica
+46,Electronic,101,Indie electronica,211,,Electronic rock
+47,Electronic,101,Indie electronica,211,,Electro-indie
+48,Electronic,101,Nu-disco,212,,Nu-disco
+49,Electronic,101,Nu-disco,212,,Electric disco
+50,Electronic,101,Synthpop,213,,Synthpop
+51,Electronic,101,Synthpop,213,,Synthpop
+52,Electronic,101,Synthpop,213,,Nu-rock
+53,Electronic,101,Synthpop,213,,New wave
+54,Electronic,101,Synthpop,213,,Futurepop
+55,Electronic,101,Synthpop,213,,Electropop
+56,Electronic,101,,214,,Electronica
+57,Electronic,101,,214,,Electronic
+58,Electronic,101,,214,,Electric
+59,Hip hop,102,Dream rap,215,,Dream rap
+60,Hip hop,102,Electro rap,216,Chill,Trip hop
+61,Hip hop,102,Electro rap,216,,Hip house
+62,Hip hop,102,Experimental hip hop,217,,Turntablism
+63,Hip hop,102,Experimental hip hop,217,,Experimental hip hop
+64,Hip hop,102,Gangsta rap,218,,Trap
+65,Hip hop,102,Gangsta rap,218,,Southern rap
+66,Hip hop,102,Gangsta rap,218,,Hardcore hip hop
+67,Hip hop,102,Gangsta rap,218,,Gangsta rap
+68,Hip hop,102,Jazz rap,219,,Jazz rap
+69,Hip hop,102,Pop rap,220,,Pop-rap
+70,Hip hop,102,Soul,221,,Soul
+71,Hip hop,102,Soul,221,,R&B
+72,Hip hop,102,Soul,221,,R&B
+73,Hip hop,102,Soul,221,Alternative,PBR&B
+74,Hip hop,102,Soul,221,,Funk
+75,Hip hop,102,Soul,221,,Blues
+76,Hip hop,102,Soul,221,,Blue eyed soul
+77,Hip hop,102,Soul,221,Alternative,Alternative R&B
+78,Hip hop,102,,222,,Underground hip hop
+79,Hip hop,102,,222,,Rap
+80,Hip hop,102,,222,,Horrorcore
+81,Hip hop,102,,222,,Hip hop
+82,Hip hop,102,,222,,Hip hop
+83,Indie,103,Indie electronica,223,,Indielectronica
+84,Indie,103,Indie electronica,223,,Indie folk
+85,Indie,103,Indie electronica,223,,Folktronica
+86,Indie,103,Indie electronica,223,,Electro-indie
+87,Indie,103,Indie experimental,224,,Freak folk
+88,Indie,103,Indie pop,225,,Alternative pop
+89,Indie,103,Indie psychedelic,226,,Psychedelic folk
+90,Indie,103,Indie psychedelic,226,,New Weird America
+91,Indie,103,Indie rock,227,,Post-punk
+92,Indie,103,Indie rock,227,,Ambient indie rock
+93,Indie,103,Jazz,228,,Punk jazz
+94,Indie,103,Jazz,228,,Jazz fusion
+95,Indie,103,,229,,Neo folk
+96,Indie,103,,229,,Indie
+97,Pop,104,Dance pop,230,,Dance-pop
+98,Pop,104,Dance pop,230,,Dance pop
+99,Pop,104,Dream pop,231,,Dreampop
+100,Pop,104,Dream pop,231,,Dream pop
+101,Pop,104,Electropop,232,,New wave
+102,Pop,104,Electropop,232,,Electropop
+103,Pop,104,Experimental pop,233,,Experimental pop
+104,Pop,104,Indie pop,234,,Indie pop
+105,Pop,104,Indie pop,234,,Hipster pop
+106,Pop,104,Indie pop,234,,Alternative pop
+107,Pop,104,Pop rock,235,,Pop rock
+108,Pop,104,Pop rock,235,,Baroque pop
+109,Pop,104,Pop-rap,236,,Pop-rap
+110,Pop,104,Psychadelic pop,237,,Psychedelic pop
+111,Pop,104,Psychadelic pop,237,,Psychadelic pop
+112,Pop,104,,238,,Pop
+113,Psychedelic,105,Psychedelic folk,239,,Psychedelic folk
+114,Psychedelic,105,Psychedelic folk,239,,New Weird America
+115,Psychedelic,105,Psychedelic hip hop,240,,Psychedelic hip hop
+116,Psychedelic,105,Psychedelic pop,241,,Psychedelic pop
+117,Psychedelic,105,Psychedelic pop,241,,Psychadelic pop
+118,Psychedelic,105,Psychedelic rock,242,,Pyschedelic rock
+119,Psychedelic,105,Psychedelic rock,242,,Psychedelic rock
+120,Psychedelic,105,Psychedelic rock,242,,Psychadelic rock
+121,Psychedelic,105,Psychedelic rock,242,,Neo-psychedelia
+122,Psychedelic,105,Psychedelic rock,242,,Neo-psychadelia
+123,Retro,106,90s,243,,Retro 90s
+124,Retro,106,Disco,244,,Disco
+125,Retro,106,Jazz,245,,Retro jazz
+126,Retro,106,Jazz,245,,Funk
+127,Retro,106,Rock,246,,Retro rock
+128,Retro,106,,247,,Retro
+129,Rock,107,Alternative rock,248,,Space rock
+130,Rock,107,Alternative rock,248,,Soft rock
+131,Rock,107,Alternative rock,248,,Post-punk revival
+132,Rock,107,Alternative rock,248,,Noise pop
+133,Rock,107,Alternative rock,248,,Alternative rock
+134,Rock,107,Country,249,,Country
+135,Rock,107,Electronic rock,250,,Electronic rock
+136,Rock,107,Experimental rock,251,,Experimental rock
+137,Rock,107,Indie rock,252,,Post-punk revival
+138,Rock,107,Indie rock,252,,Lo-fi
+139,Rock,107,Indie rock,252,,Indie rock
+140,Rock,107,Indie rock,252,,Folk rock
+141,Rock,107,Pop rock,253,,Pop rock
+142,Rock,107,Pop rock,253,,Baroque pop
+143,Rock,107,Psychedelic rock,254,,Pyschedelic rock
+144,Rock,107,Psychedelic rock,254,,Psychedelic rock
+145,Rock,107,Psychedelic rock,254,,Psychadelic rock
+146,Rock,107,Psychedelic rock,254,,Neo-psychedelia
+147,Rock,107,Punk rock,255,,Post-punk revival
+148,Rock,107,,256,,Rock
+149,Rock,107,,256,,Post-punk revival
+150,Rock,107,,256,,Hard rock
+151,Rock,107,,256,,Garage rock
+152,Rock,107,,256,,Art rock

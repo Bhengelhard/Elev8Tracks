@@ -1,0 +1,11 @@
+<div class="textSearchEntry"></div>
+<% tags.forEach(function(tag) { 
+    if(tag.mood != null) { %>
+      <div class="textSearchEntry" onclick="addSearchTag(event)">
+        <div class="addTag">+</div>
+        <div class="tags criteria" data-search="<%= tag.mood %>" data-id="<%= tag.mood %>">
+          <div class="itemName"><%= tag.mood %></div>
+        </div>
+      </div>
+    <% } 
+}); %>

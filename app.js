@@ -174,6 +174,7 @@ app.post('/unfollowList', routes.unfollowList);
 app.post('/followArtist', routes.followArtist);
 app.post('/unfollowArtist', routes.unfollowArtist);
 app.post('/findRelatedSongs', routes.findRelatedSongs);
+app.post('/playlistSearch', routes.playlistSearch);
 
 var stateKey = 'spotify_auth_state';
 
@@ -197,7 +198,11 @@ app.post('/fbLogin', routes.fbLogin);
 app.post('/fbCreateAccount', routes.fbCreateAccount);
 app.get('/fbOAuth', routes.fbOAuth);
 
-app.get('/genreDataCapture', spotify.genreDataCapture);
+app.get('/moodTags', routes.moodTags);
+app.post('/updateTags', routes.updateTags);
+app.get('/masterGenreUpdate', routes.masterGenreUpdate);
+
+app.post('/textSearchUpdate', routes.textSearchUpdate);
 
 // app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'public_profile,email'}));
 // app.get('/auth/facebook/callback', passport.authenticate('facebook', {

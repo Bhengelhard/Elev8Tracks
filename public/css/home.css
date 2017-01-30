@@ -532,7 +532,7 @@ body {
     color: #ff4400;
 } #genre:hover .vtitle {
 	padding-bottom: 15px;
-} #vfilter {
+} #vfilter, #vsearch {
 	position: relative;
 	overflow:hidden;
 	 float: left;
@@ -544,7 +544,7 @@ body {
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
-  } #vfilter:hover {
+  } #vfilter:hover, #vsearch:hover {
 	height: auto;
 	background-color: #000;
   padding-bottom: 15px;
@@ -555,20 +555,6 @@ body {
 	width: auto;
 }  #vfilter:hover .vtitle {
 	padding-bottom: 15px;
-}#vsearch {
-  	position: relative;
-  	overflow:hidden;
-  	 float: right;
-  height: 100%;
-  background-color: #222;
-  -webkit-transition: all .4s ease;
-    -moz-transition: all .4s ease;
-    -ms-transition: all .4s ease;
-    -o-transition: all .4s ease;
-    transition: all .4s ease;
-  } #vsearch:hover {
-	height: auto;
-  padding-bottom: 15px;
 } #vsearch:hover .vItem {
 	width: auto;
 } #vsearch:hover .vtitle {
@@ -686,7 +672,7 @@ body {
 	left: 0px;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,0,0);
+	background-color: rgba(0,0,0,0.4);
 	color: #fff;
 	z-index: 105;
 	-webkit-transition: all .2s ease;
@@ -696,7 +682,7 @@ body {
     transition: all .2s ease;
 } .block .description:hover {
 	background-color: rgba(0,0,0,0.7);
-} .block .description .name {
+} .block:not(.list) .description .name {
 	display: block;
 	position: relative;
 	padding: 10px 15px 0px 15px;
@@ -715,6 +701,25 @@ body {
     -ms-transition: all .2s ease;
     -o-transition: all .2s ease;
     transition: all .2s ease;
+} .block.list .description .name {
+	display: block;
+    position: relative;
+    padding: 10px 15px 0px 15px;
+    line-height: 24px;
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
+    font-size: 24px;
+    font-family: "arial";
+    text-align: center;
+} .block.list .description .entries {
+	display: block;
+    position: relative;
+    padding: 10px 15px 0px 15px;
+    line-height: 24px;
+    text-align: center;
+    font-size: 24px;
+    color: rgba(255,255,255,1);
+    border-radius: 5px;
 } .block .description .artist {
 	display: block;
 	position: relative;
@@ -1648,7 +1653,7 @@ position: absolute;
   min-width:700px;
 }
 #videoSearcher {
-	position: relative;
+  position: absolute;
   height: 60%;
   width: 300px;
   background-color: rgba(255,255,255,.2);
@@ -1656,11 +1661,14 @@ position: absolute;
   border: none;
   color: #fff;
   padding-left: 15px;
+  float: left;
+  top: 20%;
 } #videoSearcher:focus {
-	background-color: #444;
+	background-color: #fff;
+	color: #333;
 	outline: none;
 } #videoSearcher:hover {
-	background-color: #444;
+	background-color: #fff;
 }
 
 #nextSong {
@@ -2560,7 +2568,9 @@ position: absolute;
 }
 #listsBannerTitle {
 	display: inline-block;
+    position: absolute;
     font-family: arial;
+    left: 50px;
     height: 50px;
     line-height: 50px;
     color: #fff;
@@ -2568,20 +2578,6 @@ position: absolute;
     font-weight: 100;
     margin-left: 10px;
 }
-#listBanner span {
-	display: inline-block;
-	padding: 10px;
-	width: 50px;
-	height:100%;
-	text-align: center;
-	color: #fff;
-	padding:10px;
-	font-size: 24px;
-}
-#listBanner span:hover {
-	background-color: rgba(255,255,255,.3);
-}
-
 
 #spotifyControls {
 	position: fixed;
@@ -2894,4 +2890,99 @@ position: absolute;
 } #fbLogin:hover {
 	background-color: #5781E2;
 }
+
+.searchType {
+	display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    float: right;
+    height: 48px;
+    background-color: #222;
+    margin: 0px 10px 0px 10px;
+    width:80px;
+} .searchType>.itemName {
+	display: inline-block;
+} .searchTypeCheck {
+	width: 20px;
+    height: 20px;
+    border: 1px solid #aaa;
+    position: relative;
+    display: inline-block;
+    top: 5px;
+    margin-right: 5px;
+} .searchTypeCheck span {
+	position: absolute;
+    left: 3px;
+    top: 3px;
+}
+
+.tags {
+	/*-webkit-transition: all .1s ease;
+    -moz-transition: all .1s ease;
+    -ms-transition: all .1s ease;
+    -o-transition: all .1s ease;
+    transition: all .1s ease;*/
+	position: relative;
+    top: 0px;
+    margin-top: -20px;
+    display: inline-block;
+    padding: 0px 15px 0px 15px;
+    cursor: default;
+    text-transform: capitalize;
+    font-family: "arial";
+    font-size: 12px;
+	height: 30px;
+    background-color: rgba(255,255,255,0.2);
+    line-height: 30px;
+    border-radius: 15px;
+} .tags:hover {
+    background-color: rgba(255,255,255,0.3);
+} .tags.searched {
+	background-color: #ff4400;
+} .addTag {
+	display: inline-block;
+    font-size: 16px;
+    margin-left:5px;
+} .textSearchEntry .tags {
+	background-color: #999;
+	color: #fff;
+} .textSearchEntry {
+	min-height: 20px;
+	border-top: 1px dotted #aaa;
+} .textSearchEntry:hover {
+	background-color: #bbb;
+}
+.playlistBack {
+	height: 50px;
+    position: absolute;
+    display: inline;
+    left: 0px;
+    width: 50px;
+} .backArrow {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    width: 20px;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    height: 20px;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+} .playlistBack:hover {
+	background-color: rgba(255,255,255,.3);
+}
+.videoSearcherWrapper {
+	height: 50px;
+    width: 300px;
+    display: inline-block;
+    float: left;
+}
+#textSearchUpdate {
+	top: 25px;
+    position: relative;
+    background-color: #fff;
+}
+
 

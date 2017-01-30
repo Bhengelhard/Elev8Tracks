@@ -1,5 +1,7 @@
 <div id="listBanner" data-lid="<%= playlist_id %>" data-user-id="<%= user_id %>" data-back="<%= back %>">
-  <span class="glyphicon glyphicon-menu-left" aria-hidden="true" onclick="playlistBack(event)"></span>
+  <div onclick="playlistBack(event)" class="playlistBack">
+    <div class="backArrow"></div>
+  </div>
 <% if(user_id == session.userid) { %>
   <input type="text" id="listNameInput" value="<%= name %>"/>
   <% if(public) { %>

@@ -5,9 +5,8 @@
       <img src="../../Elevate logo small.png" alt="large logo">
       </div>
       <div id="videoSearcherWrapper">
-        <input type="text" id="videoSearcher" placeholder="S e a r c h">
-        <div id="vgenre" class="criteriaType dItem">
-          <div class="dtitle">GENRE
+        <div id="vgenre" class="criteriaType dItem pinned">
+          <div class="dtitle">TAGS
           <span class="glyphicon glyphicon-pushpin"></span>
           </div>
         </div>
@@ -22,23 +21,24 @@
             <div class="itemName">Staff Picks</div>
           </div>
         </div>
-        <!-- <div id="vsearch" class="criteriaType">
-          <div class="dtitle">SEARCH</div>
-          <div id="vitemSongs" class="dItem criteria searched query" data-search="name">
-            <div class="itemName">Songs</div>
+        <div class="videoSearcherWrapper">
+          <div id="textSearchUpdate"></div>
+          <input type="text" id="videoSearcher" placeholder="S e a r c h">
+        </div>
+          <div id="vsearch" class="criteriaType">
+            <div class="dtitle">SEARCH</div>
+            <div id="songsSearch" class="dItem criteria query searched" data-search="songs">
+              <div class="itemName">Songs</div>
+            </div>
+            <div id="playlistSearch" class="dItem criteria query" data-search="playlists">
+              <div class="itemName">Playlists</div>
+            </div>
           </div>
-          <div id="vitemArtists" class="dItem criteria searched query" data-search="artist">
-            <div class="itemName">Artists</div>
-          </div>
-          <div id="vitemTags" class="dItem criteria query" data-search="tags">
-            <div class="itemName">Tags</div>
-          </div>
-        </div> -->
         <div class="navSelection"></div>
       </div>
         <% include myListsNav %>
       </div>
-      <div id="sortBar" class="criteriaType">
+      <div id="sortBar" class="criteriaType genre">
         <div id="sortBarSelect"></div>
           <div id="vitemPopular" class="gItem criteria query" data-search="pop_trending">
             <div class="itemName">TRENDING</div>
@@ -53,7 +53,7 @@
             <div class="itemName">NEWEST</div>
           </div>
       </div>
-      <div id="genreBar" class="criteriaType">
+      <div id="genreBar" class="criteriaType pinned">
         <% include genres %>
       </div>
       

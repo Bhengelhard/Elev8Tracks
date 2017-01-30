@@ -1,0 +1,8 @@
+<div id="genreBarSelect"></div>
+<% tags.forEach(function(tag) { 
+    if(tag.mood != null) { %>
+      <div id="d<%= tag.mood %>" onclick="handleTags(event)" class="tags query criteria" data-search="<%= tag.mood %>" data-id="<%= tag.mood %>">
+        <div class="itemName"><%= tag.mood %></div>
+      </div>
+    <% } 
+}); %>

@@ -1,6 +1,4 @@
 <div id="userLists">
-<div id="myListsBanner" data-type="all">
-<div id="myListsBannerTitle" data-type="all">Most Popular Playlists</div></div>
 <% lists.forEach(function(list) { %>
     <div class="block inactive list" data-lid="<%=list.id %>" data-user="<%= list.userid %>"  onclick="showList(this)">
       <% if(list.thumbnail) { %>
@@ -8,6 +6,7 @@
       <% } %>
       <div class="description">
         <span class="name"><%=list.name %></span>
+        <span class="entries"><%=list.entries %> songs</span>
       </div>
     </div>
     <% }); %>
