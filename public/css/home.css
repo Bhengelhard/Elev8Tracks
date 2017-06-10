@@ -2880,6 +2880,19 @@ position: absolute;
     margin-bottom: 50px;
 }
 
+.adminUpdates {
+	position: relative;
+    top: 300px;
+    width: 200px;
+    padding: 10px;
+    background-color: #ff4400;
+    text-align: center;
+    color: #fff;
+    left: 50%;
+    margin-left: -100px;
+    margin-bottom: 50px;
+}
+
 #fbLogin {
     height: 50px;
     line-height: 50px;

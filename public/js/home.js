@@ -1787,3 +1787,10 @@ function addSearchTag(e) {
 			searchPlaylistDB(params);
 }
 
+function test() {
+	console.log('test');
+	$.get("/test", function(res) {
+		console.log(res);
+	});
+}
+

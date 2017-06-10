@@ -187,11 +187,14 @@ exports.storeSong = function(req, res) {
 				Knex('songs').insert({vid: req.body.vid, name: req.body.name, artist: req.body.artist, genre: req.body.genre, spotify_id: req.body.spotify_id, spotify_pop: req.body.pop, created_at: time, energy: req.body.energy, danceability: req.body.danceability, key: req.body.key, loudness: req.body.loudness, mode: req.body.mode, speechiness: req.body.speechiness, acousticness: req.body.acousticness, instrumentalness: req.body.instrumentalness, liveness: req.body.liveness, valence: req.body.valence, tempo: req.body.tempo})
 				.then(function() {
 					//createArtist(req.body.artist, req.body.artist_id, req.body.vid);
+					var sql = "select * from songs order by id desc limit 1"
+					Knex.raw(sql)
+					.then(function(song) {
+
 
 
 					Knex('artists').where('spotify_id', req.body.artist_id)
 						.then(function(oldArtist) {
-							console.log(oldArtist);
 							if(oldArtist[0]) {oldArtist=oldArtist[0]}
 							else if(oldArtist.rows) {oldArtist = oldArtist.rows}
 							if(oldArtist.length != 0) {
@@ -213,10 +216,8 @@ exports.storeSong = function(req, res) {
 					});
 
 
-					Knex('popularity').insert({vid: req.body.vid})
+					Knex('popularity').insert({vid: req.body.vid, song_id: song[0].id})
 					.then(function() {
-						Knex('songs').where('vid', req.body.vid)
-						.then(function(song) {
 							genres.forEach(function(genre) {
 								Knex('songs_genres').insert({song_id: song[0].id, genre_1_id: genre.genre_1_id, genre_2_id: genre.genre_2_id})
 								.then(function() {
@@ -235,7 +236,7 @@ exports.storeSong = function(req, res) {
                               		});
 								});
 							});
-						});
+					});
 					});
 				});
 			}
@@ -432,18 +433,6 @@ exports.artistSearch = function(req, res) {
 
 exports.videoSearch = function(req, res) {
 	var sql = "select *, count(songs_moods.song_id) as count from songs_moods inner join songs on songs_moods.song_id=songs.id INNER JOIN popularity ON songs.vid=popularity.vid"
-
-	// if(req.body.audio != 0) {
-	// 	var audio = ', ' + req.body.audio[0];
-	// 	var audioSearch = ' AND ' + req.body.audio[1];
-	// } else {
-	// 	var audio = '';
-	// 	var audioSearch = '';
-	// }
-
-	// var sql = 'SELECT DISTINCT songs.id, songs.vid, songs.name, songs.artist, songs.likes, songs.artist_id, songs.created_at, songs.staff, pop_week, pop_trending, pop_1' + audio + ' FROM songs INNER JOIN songs_moods ON songs.id=songs_moods.song_id';
-
-	// sql += ' INNER JOIN popularity ON songs.vid=popularity.vid ';
 
 	if(req.body.searchParams == 'artist')
 		sql += ' INNER JOIN artists ON songs.artist_id=artists.id ';
@@ -1280,4 +1269,39 @@ exports.textSearchUpdate = function(req, res) {
 			res.send({html: html});
 		});
 	});
+}
+
+exports.test = function(req, res) {
+	Knex('songs')
+	.then(function(m) {
+		console.log(m);
+		m.forEach(function(song) {
+			console.log(song.vid);
+			var items = getPublishDate(song.vid, song.id);
+			console.log(items);
+		});
+	});
+	
+	res.send({});
+}
+
+function getPublishDate(song) {
+	var api_key = 'AIzaSyAWmGLAJh2XHcMI71Htf705O8OM8HoA0hU';
+	gapi = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + song.vid + "&key=" + api_key + "&alt=json";
+  	options = {
+    	proxy: process.env.QUOTAGUARDSTATIC_URL,
+    	url: gapi,
+    	headers: {
+    	    'User-Agent': 'node.js'
+    	}
+  	};
+  	request(options, function(error, response, body) {
+    	var items = JSON.parse(body);
+    	if(items["items"] && items["items"][0] && items["items"][0].snippet && items["items"][0].snippet.publishedAt) {var data = items["items"][0].snippet.publishedAt} else {var data = ""}
+    	storePublishDate(data, song.id);
+    });
+}
+
+function storePublishDate(item, song_id) {
+	Knex('songs').where({id:song_id}).update({published:item.substring(0,10)}).then(function(){});
 }

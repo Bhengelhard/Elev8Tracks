@@ -401,14 +401,22 @@ exports.showList = function(req, res) {
 
 exports.matchSearch = function(req, res) {
   var search = req.body.name + ' ' + req.body.artist;
-  var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40';
-      request.get(url, function(error, data, body) {
-        var response = JSON.parse(body);
+  var songSearch = {
+      url: 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40',
+      headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+      json: true
+  };
+  // var url = 'https://api.spotify.com/v1/search?q=' + encodeURIComponent(search) + '&type=track&limit=40';
+      request.get(songSearch, function(error, data, body) {
+        var response = body;
         var query = '';
         // res.render('spotifyMatches', {songs: response.tracks.items}, function(err, model) {
         //     res.send(200,{html: model});
         //   });
         var searchResults = [];
+        console.log("---------------");
+        console.log(response);
+        console.log(response.tracks);
         response.tracks.items.forEach(function(track) {
           query += track.id + ',';
           searchResults.push({id: track.id, name: track.name, artist: track.artists[0].name, artist_id: track.artists[0].id, album: track.album.name, album_id: track.album.id, pop: track.popularity})
